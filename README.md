@@ -1,4 +1,4 @@
-# Gradle Minify Plugin! [![Build Status](https://secure.travis-ci.org/adler/gradle-minify-plugin.png)](http://travis-ci.org/adler/gradle-minify-plugin)
+# Gradle Minify Plugin! [![Build Status](https://travis-ci.org/616slayer616/gradle-minify-plugin.svg?branch=master)](https://travis-ci.org/616slayer616/gradle-minify-plugin)
 A simple gradle plugin to minify CSS and JavaScript files
 
 # Getting started
