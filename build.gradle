@@ -1,0 +1,21 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'groovy'
+    id 'maven'
+}
+
+group 'org.padler.gradle.minify'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'com.yahoo.platform.yui:yuicompressor:2.4.8'
+
+    testImplementation 'junit:junit:4.12'
+}
