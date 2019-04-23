@@ -20,6 +20,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
+gradlePlugin {
+    plugins {
+        minifyPlugin {
+            id = 'org.padler.gradle.minify'
+            implementationClass = 'org.padler.gradle.minify.MinifyPlugin'
+        }
+    }
+}
+
 pluginBundle {
     website = 'https://github.com/616slayer616/gradle-minify-plugin'
     vcsUrl = 'https://github.com/616slayer616/gradle-minify-plugin'
