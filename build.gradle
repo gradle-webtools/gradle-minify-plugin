@@ -1,4 +1,5 @@
 plugins {
+    id "com.gradle.plugin-publish" version "0.10.1"
     id 'java-gradle-plugin'
     id 'groovy'
     id 'maven'
@@ -11,11 +12,23 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
     implementation 'com.yahoo.platform.yui:yuicompressor:2.4.8'
 
     testImplementation 'junit:junit:4.12'
+}
+
+pluginBundle {
+    website = 'https://github.com/616slayer616/gradle-minify-plugin'
+    vcsUrl = 'https://github.com/616slayer616/gradle-minify-plugin'
+    description = 'A simple gradle plugin to minify CSS and JavaScript files'
+    tags = ['css', 'javascript', 'js', 'minify', 'minification']
+
+    plugins {
+        minifyPlugin {
+            displayName = 'Gradle Minify Plugin'
+        }
+    }
 }
