@@ -8,12 +8,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class Minifier {
 
     public void minify(String srcDir, String dstDir) {
-        try {
-            List<Path> files = Files.walk(Paths.get(srcDir), 1).filter(f -> !f.toString().equals(srcDir)).collect(Collectors.toList());
+        try (Stream<Path> filesStream = Files.walk(Paths.get(srcDir), 1).filter(f -> !f.toString().equals(srcDir))) {
+            List<Path> files = filesStream.collect(Collectors.toList());
             for (Path f : files) {
                 if (f.toFile().isFile()) {
                     Path dst = Paths.get(dstDir);
@@ -25,7 +26,6 @@ public abstract class Minifier {
                     minify(f.toString(), newDstDir);
                 }
             }
-
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
