@@ -13,7 +13,7 @@ public abstract class Minifier {
 
     public void minify(String srcDir, String dstDir) {
         try {
-            List<Path> files = Files.list(Paths.get(srcDir)).filter(f -> !f.toString().equals(srcDir)).collect(Collectors.toList());
+            List<Path> files = Files.walk(Paths.get(srcDir), 1).filter(f -> !f.toString().equals(srcDir)).collect(Collectors.toList());
             for (Path f : files) {
                 if (f.toFile().isFile()) {
                     Path dst = Paths.get(dstDir);
