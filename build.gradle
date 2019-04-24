@@ -3,12 +3,18 @@ plugins {
     id 'java-gradle-plugin'
     id 'groovy'
     id 'maven'
+    id 'jacoco'
+    id "org.sonarqube" version "2.7"
 }
 
 group 'org.padler.gradle.minify'
 version '1.0'
 
 sourceCompatibility = 1.8
+
+jacoco {
+    toolVersion = "0.8.3"
+}
 
 repositories {
     mavenCentral()
@@ -39,5 +45,12 @@ pluginBundle {
         minifyPlugin {
             displayName = 'Gradle Minify Plugin'
         }
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "JGradle Minify Plugin"
+        property "sonar.projectKey", "616slayer616_gradle-minify-plugin"
     }
 }
