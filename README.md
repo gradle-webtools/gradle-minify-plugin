@@ -34,6 +34,16 @@ buildscript {
 apply plugin: "org.padler.gradle.minify"
 ```
 
+### Configuration
+````groovy
+minification {
+    cssDstDir = "$buildDir/dist/css"
+    cssSrcDir = "${rootDir}/src/main/resources/static/css"
+    jsDstDir = "$buildDir/dist/js"
+    jsSrcDir = "${rootDir}/src/main/resources/static/js"
+}
+````
+
 ## See Also
 The [Gradle CSS Plugin](https://github.com/eriwen/gradle-css-plugin)!
 
