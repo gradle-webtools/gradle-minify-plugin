@@ -6,8 +6,8 @@ addons:
     organization: "616slayer616-github"
     token: $sonarKey
 script:
-  - ./gradlew clean build -s
-  - sonar-scanner
+  - ./gradlew build -s
+  - ./gradlew sonarqube
 branches:
   only:
     - master
