@@ -1,6 +1,7 @@
 # Gradle Minify Plugin!
 [![Build Status](https://travis-ci.org/616slayer616/gradle-minify-plugin.svg?branch=master)](https://travis-ci.org/616slayer616/gradle-minify-plugin)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=616slayer616_gradle-minify-plugin)](https://sonarcloud.io/dashboard/index/616slayer616_gradle-minify-plugin)
+
 [![Comments (%)](https://sonarcloud.io/api/badges/measure?key=616slayer616_gradle-minify-plugin&metric=comment_lines_density)](https://sonarcloud.io/component_measures?id=616slayer616_gradle-minify-plugin&metric=comment_lines_density)
 [![Open issues](https://sonarcloud.io/api/badges/measure?key=616slayer616_gradle-minify-plugin&metric=open_issues)](https://sonarcloud.io/component_measures?id=616slayer616_gradle-minify-plugin&metric=open_issues)
 [![Code smells](https://sonarcloud.io/api/badges/measure?key=616slayer616_gradle-minify-plugin&metric=code_smells)](https://sonarcloud.io/component_measures?id=616slayer616_gradle-minify-plugin&metric=code_smells)
