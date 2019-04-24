@@ -52,6 +52,6 @@ sonarqube {
     properties {
         property "sonar.projectName", "JGradle Minify Plugin"
         property "sonar.projectKey", "616slayer616_gradle-minify-plugin"
-        property "sonar.coverage.exclusions", '*Extension*'
+        property "sonar.coverage.exclusions", 'MinifyPluginExtension'
     }
 }

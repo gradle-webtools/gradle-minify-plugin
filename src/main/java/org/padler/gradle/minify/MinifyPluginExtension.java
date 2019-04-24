@@ -42,14 +42,4 @@ public class MinifyPluginExtension {
         this.jsSrcDir = jsSrcDir;
     }
 
-    @Override
-    public String toString() {
-        return "MinifyPluginExtension{" +
-                "cssDstDir='" + cssDstDir + '\'' +
-                ", cssSrcDir='" + cssSrcDir + '\'' +
-                ", jsDstDir='" + jsDstDir + '\'' +
-                ", jsSrcDir='" + jsSrcDir + '\'' +
-                '}';
-    }
-
 }
