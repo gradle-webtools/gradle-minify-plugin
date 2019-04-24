@@ -9,7 +9,7 @@ import org.padler.gradle.minify.minifier.Minifier;
 public class MinifyTask extends DefaultTask {
 
     @TaskAction
-    public void greet() {
+    public void minify() {
         MinifyPluginExtension extension = getProject().getExtensions().findByType(MinifyPluginExtension.class);
         if (extension == null) {
             extension = new MinifyPluginExtension();
