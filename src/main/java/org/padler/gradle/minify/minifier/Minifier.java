@@ -19,10 +19,10 @@ public abstract class Minifier {
                 if (f.toFile().isFile()) {
                     Path dst = Paths.get(dstDir);
                     File dstFile = new File(dst.toString(), f.getFileName().toString());
+                    dstFile.getParentFile().mkdirs();
                     minify(f.toFile(), dstFile);
                 } else if (f.toFile().isDirectory()) {
                     String newDstDir = dstDir + "/" + f.getFileName().toString();
-                    new File(newDstDir).mkdirs();
                     minify(f.toString(), newDstDir);
                 }
             }
