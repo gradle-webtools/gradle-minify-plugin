@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.nio.file.Files;
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS;
 import static org.gradle.util.GFileUtils.writeFile;
@@ -22,10 +23,14 @@ public class MinifyTaskTest {
 
     private void setUpTestProject() throws Exception {
         File buildFile = testProjectDir.newFile("build.gradle");
-        testProjectDir.newFile("css.css");
-        testProjectDir.newFile("js.js");
+        File cssDir = testProjectDir.newFolder("css");
+        File jsDir = testProjectDir.newFolder("js");
+        File cssFile = new File(cssDir, "css.css");
+        File jsFile = new File(jsDir, "js.js");
+        cssFile.createNewFile();
+        Files.write(jsFile.toPath(), "alert('Hello, world!');".getBytes());
         String plugin = "plugins { id 'org.padler.gradle.minify' version '1.0' }";
-        String config = "minification{cssDstDir=\"$buildDir/dist/css\"\ncssSrcDir=\"${rootDir}/css.css\"\njsDstDir=\"$buildDir/dist/js\"\njsSrcDir=\"${rootDir}/js.js\"}";
+        String config = "minification{cssDstDir=\"$buildDir/dist/css\"\ncssSrcDir=\"${rootDir}/css\"\njsDstDir=\"$buildDir/dist/js\"\njsSrcDir=\"${rootDir}/js\"}";
         writeFile(plugin + "\n" + config, buildFile);
     }
 
