@@ -22,16 +22,10 @@ public class JsMinifierTest {
 
     @Test
     public void minifyFile() throws Exception {
-        JsMinifier jsMinifier = new JsMinifier();
-        File jsSrc = testProjectDir.newFolder("js");
-        File sub = testProjectDir.newFolder("js", "sub");
+        CssMinifier cssMinifier = new CssMinifier();
         File dst = testProjectDir.newFolder("dst");
-        File jsFile = new File(jsSrc, "js.js");
-        File subFile = new File(sub, "subjs.js");
-        Files.write(jsFile.toPath(), "alert('Hello, world!');".getBytes());
-        Files.write(subFile.toPath(), "alert('Hello, world!');".getBytes());
 
-        jsMinifier.minify(jsSrc.toString(), dst.getAbsolutePath());
+        cssMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
         assertThat(files.size(), is(2));

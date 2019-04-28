@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public abstract class Minifier {
 
     public void minify(String srcDir, String dstDir) {
-        try (Stream<Path> filesStream = Files.walk(Paths.get(srcDir), 1).filter(f -> !f.toString().equals(srcDir))) {
+        try (Stream<Path> filesStream = Files.list(Paths.get(srcDir)).filter(f -> !f.toString().equals(srcDir))) {
             List<Path> files = filesStream.collect(Collectors.toList());
             for (Path f : files) {
                 if (f.toFile().isFile()) {

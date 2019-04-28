@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -23,15 +24,9 @@ public class CssMinifierTest {
     @Test
     public void minifyFile() throws Exception {
         CssMinifier cssMinifier = new CssMinifier();
-        File cssSrc = testProjectDir.newFolder("css");
-        File sub = testProjectDir.newFolder("css", "sub");
         File dst = testProjectDir.newFolder("dst");
-        File cssFile = new File(cssSrc, "css.css");
-        File subFile = new File(sub, "subcss.css");
-        cssFile.createNewFile();
-        subFile.createNewFile();
 
-        cssMinifier.minify(cssSrc.toString(), dst.getAbsolutePath());
+        cssMinifier.minify("src/test/resources/css", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
         assertThat(files.size(), is(2));
