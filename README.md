@@ -27,7 +27,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "org.adler:gradle-minify-plugin:1.0"
+    classpath "gradle.plugin.org.padler.gradle.minify:gradle-minify-plugin:1.0"
   }
 }
 
