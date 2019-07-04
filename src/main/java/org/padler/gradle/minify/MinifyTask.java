@@ -18,8 +18,10 @@ public class MinifyTask extends DefaultTask {
         Minifier cssMinifier = new CssMinifier();
         Minifier jsMinifier = new JsMinifier();
 
-        cssMinifier.minify(extension.getCssSrcDir(), extension.getCssDstDir());
-        jsMinifier.minify(extension.getJsSrcDir(), extension.getJsDstDir());
+        if (!extension.getCssSrcDir().isEmpty() && !extension.getCssDstDir().isEmpty())
+            cssMinifier.minify(extension.getCssSrcDir(), extension.getCssDstDir());
+        if (!extension.getJsSrcDir().isEmpty() && !extension.getJsDstDir().isEmpty())
+            jsMinifier.minify(extension.getJsSrcDir(), extension.getJsDstDir());
     }
 
 }
