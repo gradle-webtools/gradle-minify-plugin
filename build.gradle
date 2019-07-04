@@ -1,19 +1,20 @@
 plugins {
     id "com.gradle.plugin-publish" version "0.10.1"
+    id 'maven-publish'
     id 'java-gradle-plugin'
     id 'groovy'
     id 'maven'
     id 'jacoco'
-    id "org.sonarqube" version "2.7"
+    id "org.sonarqube" version "2.7.1"
 }
 
 group 'org.padler.gradle.minify'
-version '1.0'
+version '1.1'
 
 sourceCompatibility = 1.8
 
 jacoco {
-    toolVersion = "0.8.3"
+    toolVersion = "0.8.4"
 }
 
 repositories {
@@ -21,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.yahoo.platform.yui:yuicompressor:2.4.8'
+    implementation 'com.yahoo.platform.yui:yuicompressor:2.4.7'
 
     testImplementation 'junit:junit:4.12'
 }
@@ -31,6 +32,15 @@ gradlePlugin {
         minifyPlugin {
             id = 'org.padler.gradle.minify'
             implementationClass = 'org.padler.gradle.minify.MinifyPlugin'
+        }
+    }
+}
+
+publishing {
+    publications {
+        pluginPublication(MavenPublication) {
+            groupId project.group
+            version project.version
         }
     }
 }
