@@ -1,6 +1,6 @@
 language: groovy
 jdk:
-  - openjdk8
+  - openjdk11
 addons:
   sonarcloud:
     organization: "616slayer616-github"
@@ -8,6 +8,3 @@ addons:
 script:
   - ./gradlew build -s
   - ./gradlew sonarqube
-branches:
-  only:
-    - master
