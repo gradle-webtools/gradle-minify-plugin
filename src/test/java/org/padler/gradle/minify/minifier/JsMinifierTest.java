@@ -22,10 +22,10 @@ public class JsMinifierTest {
 
     @Test
     public void minifyFile() throws Exception {
-        CssMinifier cssMinifier = new CssMinifier();
+        JsMinifier jsMinifier = new JsMinifier();
         File dst = testProjectDir.newFolder("dst");
 
-        cssMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
+        jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
         assertThat(files.size(), is(2));
