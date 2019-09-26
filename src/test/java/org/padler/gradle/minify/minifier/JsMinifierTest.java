@@ -34,4 +34,17 @@ public class JsMinifierTest {
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
         assertThat(subFiles.size(), is(1));
     }
+
+    @Test
+    public void minifyEmptyFile() throws Exception {
+        JsMinifier jsMinifier = new JsMinifier();
+        File src = testProjectDir.newFolder("empty");
+        testProjectDir.newFile("empty/empty.js");
+        File dst = testProjectDir.newFolder("dst");
+
+        jsMinifier.minify(src.getAbsolutePath(), dst.getAbsolutePath());
+
+        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
+        assertThat(files.size(), is(1));
+    }
 }
