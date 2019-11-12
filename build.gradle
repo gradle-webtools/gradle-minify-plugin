@@ -3,13 +3,12 @@ plugins {
     id 'maven-publish'
     id 'java-gradle-plugin'
     id 'groovy'
-    id 'maven'
     id 'jacoco'
-    id "org.sonarqube" version "2.7.1"
+    id "org.sonarqube" version "2.8"
 }
 
 group 'org.padler.gradle.minify'
-version '1.1.2'
+version '1.2.0'
 
 sourceCompatibility = 1.8
 
@@ -17,7 +16,7 @@ ext['gradle.publish.key'] = System.getenv('GRADLE_PUBLISH_KEY')
 ext['gradle.publish.secret'] = System.getenv('GRADLE_PUBLISH_SECRET')
 
 jacoco {
-    toolVersion = "0.8.4"
+    toolVersion = "0.8.5"
 }
 
 repositories {
