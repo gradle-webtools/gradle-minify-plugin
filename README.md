@@ -14,7 +14,7 @@ A simple gradle plugin to minify CSS and JavaScript files
 ### Gradle
 ```groovy
 plugins {
-  id "org.padler.gradle.minify" version "1.2.0"
+  id "org.padler.gradle.minify" version "1.2.1"
 }
 ```
 
@@ -27,7 +27,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.org.padler.gradle.minify:gradle-minify-plugin:1.2.0"
+    classpath "gradle.plugin.org.padler.gradle.minify:gradle-minify-plugin:1.2.1"
   }
 }
 

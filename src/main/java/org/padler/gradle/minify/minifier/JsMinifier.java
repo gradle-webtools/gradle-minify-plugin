@@ -20,6 +20,8 @@ public class JsMinifier extends Minifier {
             iosR.close();
             iosW.close();
         } else {
+            if (dstFile.exists())
+                Files.delete(dstFile.toPath());
             Files.copy(srcFile.toPath(), dstFile.toPath());
         }
     }
