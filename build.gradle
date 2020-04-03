@@ -40,6 +40,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.javascript/closure-compiler
     implementation 'com.google.javascript:closure-compiler:v20200315'
 
+    // https://mvnrepository.com/artifact/com.google.closure-stylesheets/closure-stylesheets
+    implementation 'com.google.closure-stylesheets:closure-stylesheets:1.5.0'
 
     testImplementation 'junit:junit:4.12'
 }
