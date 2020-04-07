@@ -12,7 +12,7 @@ public class MinifyPlugin implements Plugin<Project> {
     public void apply(Project project) {
         project.getExtensions().create(EXTENSION_NAME, MinifyPluginExtension.class);
         MinifyTask minify = project.getTasks().create(TASK_NAME, MinifyTask.class);
-        minify.setGroup("build setup");
+        minify.setGroup("build");
     }
 
 }
