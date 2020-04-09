@@ -83,6 +83,7 @@ public class CssMinifier extends Minifier {
     final class CompilerErrorManager extends BasicErrorManager {
         @Override
         public void print(String msg) {
+            // Do nothing to have all errors at the end
         }
 
         @Override
