@@ -39,6 +39,11 @@ public class CssMinifier extends Minifier {
         }
     }
 
+    @Override
+    protected String getMinifierName() {
+        return "CSS Minifier";
+    }
+
     private JobDescription createJobDescription(File file) throws IOException {
         JobDescriptionBuilder builder = new JobDescriptionBuilder();
         builder.setInputOrientation(JobDescription.InputOrientation.LTR);
@@ -76,24 +81,18 @@ public class CssMinifier extends Minifier {
     }
 
     final class CompilerErrorManager extends BasicErrorManager {
-        private boolean warningsAsErrors = false;
-
         @Override
         public void print(String msg) {
-            System.err.println(msg);
+        }
+
+        @Override
+        public void report(GssError error) {
+            report.add(new Error(error));
         }
 
         @Override
         public void reportWarning(GssError warning) {
-            if (warningsAsErrors) {
-                report(warning);
-            } else {
-                super.reportWarning(warning);
-            }
-        }
-
-        public void setWarningsAsErrors(boolean state) {
-            warningsAsErrors = state;
+            report.add(new Warning(warning));
         }
     }
 

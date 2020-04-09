@@ -2,7 +2,6 @@ package org.padler.gradle.minify.minifier;
 
 import com.google.common.collect.ImmutableList;
 import com.google.javascript.jscomp.*;
-import org.gradle.api.GradleException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,11 +13,16 @@ import static com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS
 
 public class JsMinifier extends Minifier {
 
-    CompilerOptions options = new CompilerOptions();
+    private CompilerOptions options = new CompilerOptions();
 
     public JsMinifier() {
         CompilationLevel.valueOf(SIMPLE_OPTIMIZATIONS.name()).setOptionsForCompilationLevel(options);
         WarningLevel.QUIET.setOptionsForWarningLevel(options);
+    }
+
+    @Override
+    protected String getMinifierName() {
+        return "JS Minifier";
     }
 
     @Override
@@ -34,11 +38,12 @@ public class JsMinifier extends Minifier {
             if (result.success) {
                 iosW.write(compiler.toSource());
             } else {
-                StringBuilder error = new StringBuilder();
-                for (JSError jsError : result.errors) {
-                    error.append(jsError.getSourceName()).append(":").append(jsError.getLineno()).append(" - ").append(jsError.getDescription());
+                for (JSError error : result.errors) {
+                    report.add(new Error(error));
                 }
-                throw new GradleException(error.toString());
+                for (JSError warning : result.warnings) {
+                    report.add(new Warning(warning));
+                }
             }
             iosW.flush();
         }

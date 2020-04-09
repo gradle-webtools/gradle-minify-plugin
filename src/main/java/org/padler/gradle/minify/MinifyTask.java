@@ -60,5 +60,4 @@ public class MinifyTask extends DefaultTask {
             jsMinifier.minify(extension.getJsSrcDir(), extension.getJsDstDir());
         }
     }
-
 }
