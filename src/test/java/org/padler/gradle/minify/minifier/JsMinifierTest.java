@@ -1,5 +1,6 @@
 package org.padler.gradle.minify.minifier;
 
+import org.gradle.api.GradleException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class JsMinifierTest {
 
@@ -49,6 +51,23 @@ public class JsMinifierTest {
         Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
         assertThat(subFiles.size(), is(2));
+    }
+
+    @Test
+    public void minifyFileWithError() throws Exception {
+        JsMinifier jsMinifier = new JsMinifier();
+        jsMinifier.getMinifierOptions().setCreateSoureMaps(true);
+        File dst = testProjectDir.newFolder("dst");
+
+        try {
+            jsMinifier.minify("src/test/resources/errors/js", dst.getAbsolutePath());
+            fail("expected exception");
+        } catch (GradleException e) {
+            List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
+            assertThat(files.size(), is(1));
+            assertThat(jsMinifier.report.getErrors().size(), is(1));
+            assertThat(jsMinifier.report.getWarnings().size(), is(0));
+        }
     }
 
     @Test

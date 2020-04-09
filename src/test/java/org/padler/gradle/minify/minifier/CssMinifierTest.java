@@ -34,4 +34,18 @@ public class CssMinifierTest {
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
         assertThat(subFiles.size(), is(1));
     }
+
+    @Test
+    public void minifyFileWithError() throws Exception {
+        CssMinifier cssMinifier = new CssMinifier();
+        File dst = testProjectDir.newFolder("dst");
+
+        cssMinifier.minify("src/test/resources/errors/css", dst.getAbsolutePath());
+
+        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
+        assertThat(files.size(), is(1));
+
+        assertThat(cssMinifier.report.getErrors().size(), is(0));
+        assertThat(cssMinifier.report.getWarnings().size(), is(1));
+    }
 }
