@@ -12,8 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 
 /**
@@ -30,10 +28,7 @@ public class CssMinifier extends Minifier {
             CompilerErrorManager errorManager = new CompilerErrorManager();
             ClosureStylesheetCompiler compiler = new ClosureStylesheetCompiler(job, exitCodeHandler, errorManager);
             String compilerOutput = compiler.execute();
-            OpenOption create = StandardOpenOption.CREATE;
-            OpenOption write = StandardOpenOption.WRITE;
-            OpenOption truncateExisting = StandardOpenOption.TRUNCATE_EXISTING;
-            Files.write(dstFile.toPath(), compilerOutput.getBytes(), create, write, truncateExisting);
+            writeToFile(dstFile, compilerOutput);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

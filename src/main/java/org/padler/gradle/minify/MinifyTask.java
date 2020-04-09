@@ -8,6 +8,7 @@ import org.gradle.api.tasks.TaskAction;
 import org.padler.gradle.minify.minifier.CssMinifier;
 import org.padler.gradle.minify.minifier.JsMinifier;
 import org.padler.gradle.minify.minifier.Minifier;
+import org.padler.gradle.minify.minifier.MinifierOptions;
 
 import java.io.File;
 
@@ -49,6 +50,12 @@ public class MinifyTask extends DefaultTask {
         return new File(extension.getCssDstDir());
     }
 
+    @Optional
+    @Input
+    public Boolean getCreateJsSourceMaps() {
+        return extension.getCreateJsSourceMaps();
+    }
+
     @TaskAction
     public void minify() {
         if (!extension.getCssSrcDir().isEmpty() && !extension.getCssDstDir().isEmpty()) {
@@ -57,6 +64,8 @@ public class MinifyTask extends DefaultTask {
         }
         if (!extension.getJsSrcDir().isEmpty() && !extension.getJsDstDir().isEmpty()) {
             Minifier jsMinifier = new JsMinifier();
+            MinifierOptions minifierOptions = jsMinifier.getMinifierOptions();
+            minifierOptions.setCreateSoureMaps(extension.getCreateJsSourceMaps());
             jsMinifier.minify(extension.getJsSrcDir(), extension.getJsDstDir());
         }
     }

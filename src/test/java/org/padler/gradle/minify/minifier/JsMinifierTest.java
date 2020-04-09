@@ -36,6 +36,22 @@ public class JsMinifierTest {
     }
 
     @Test
+    public void minifyFileWithSourceMaps() throws Exception {
+        JsMinifier jsMinifier = new JsMinifier();
+        jsMinifier.getMinifierOptions().setCreateSoureMaps(true);
+        File dst = testProjectDir.newFolder("dst");
+
+        jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
+
+        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
+        assertThat(files.size(), is(3));
+
+        Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
+        List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
+        assertThat(subFiles.size(), is(2));
+    }
+
+    @Test
     public void minifyEmptyFile() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         File src = testProjectDir.newFolder("empty");

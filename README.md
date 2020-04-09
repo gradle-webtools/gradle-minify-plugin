@@ -44,6 +44,8 @@ minification {
     cssSrcDir = "${rootDir}/src/main/resources/static/css"
     jsDstDir = "$buildDir/dist/js"
     jsSrcDir = "${rootDir}/src/main/resources/static/js"
+
+    createJsSourceMaps = true
 }
 ````
 

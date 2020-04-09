@@ -33,10 +33,23 @@ public class JsMinifier extends Minifier {
 
             List<SourceFile> externs = AbstractCommandLineRunner.getBuiltinExterns(new CompilerOptions().getEnvironment());
             SourceFile sourceFile = SourceFile.fromFile(srcFile.getAbsolutePath());
+
+            File sourceMap = null;
+            if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
+                sourceMap = new File(dstFile.getAbsolutePath() + ".map");
+                options.setSourceMapOutputPath(sourceMap.getAbsolutePath());
+            }
+
             Result result = compiler.compile(externs, ImmutableList.of(sourceFile), options);
 
             if (result.success) {
                 iosW.write(compiler.toSource());
+
+                if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
+                    StringBuilder sourceMapContent = new StringBuilder();
+                    result.sourceMap.appendTo(sourceMapContent, dstFile.getName());
+                    writeToFile(sourceMap, sourceMapContent.toString());
+                }
             } else {
                 for (JSError error : result.errors) {
                     report.add(new Error(error));

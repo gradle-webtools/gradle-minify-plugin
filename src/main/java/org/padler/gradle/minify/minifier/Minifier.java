@@ -5,14 +5,14 @@ import org.gradle.api.GradleException;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class Minifier {
+
+    protected MinifierOptions minifierOptions = new MinifierOptions();
 
     protected final Report report = new Report();
 
@@ -73,5 +73,24 @@ public abstract class Minifier {
                 .append(report.getWarnings().size())
                 .append(" warning(s)\n");
         return reportStr.toString();
+    }
+
+    protected void writeToFile(File dstFile, String string) {
+        OpenOption create = StandardOpenOption.CREATE;
+        OpenOption write = StandardOpenOption.WRITE;
+        OpenOption truncateExisting = StandardOpenOption.TRUNCATE_EXISTING;
+        try {
+            Files.write(dstFile.toPath(), string.getBytes(), create, write, truncateExisting);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public MinifierOptions getMinifierOptions() {
+        return minifierOptions;
+    }
+
+    public void setMinifierOptions(MinifierOptions minifierOptions) {
+        this.minifierOptions = minifierOptions;
     }
 }
