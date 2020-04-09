@@ -53,15 +53,6 @@ gradlePlugin {
     }
 }
 
-publishing {
-    publications {
-        pluginPublication(MavenPublication) {
-            groupId project.group
-            version project.version
-        }
-    }
-}
-
 pluginBundle {
     website = 'https://github.com/616slayer616/gradle-minify-plugin'
     vcsUrl = 'https://github.com/616slayer616/gradle-minify-plugin'
