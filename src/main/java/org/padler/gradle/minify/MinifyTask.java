@@ -24,28 +24,28 @@ public class MinifyTask extends DefaultTask {
     @Optional
     @InputDirectory
     public File getJsSrcDir() {
-        if(extension.getJsSrcDir().isEmpty()) return null;
+        if (extension.getJsSrcDir().isEmpty()) return null;
         return new File(extension.getJsSrcDir());
     }
 
     @Optional
     @InputDirectory
     public File getCssSrcDir() {
-        if(extension.getCssSrcDir().isEmpty()) return null;
+        if (extension.getCssSrcDir().isEmpty()) return null;
         return new File(extension.getCssSrcDir());
     }
 
     @Optional
     @OutputDirectory
     public File getJsDstDir() {
-        if(extension.getJsDstDir().isEmpty()) return null;
+        if (extension.getJsDstDir().isEmpty()) return null;
         return new File(extension.getJsDstDir());
     }
 
     @Optional
     @OutputDirectory
     public File getCssDstDir() {
-        if(extension.getCssDstDir().isEmpty()) return null;
+        if (extension.getCssDstDir().isEmpty()) return null;
         return new File(extension.getCssDstDir());
     }
 
