@@ -35,6 +35,11 @@ public class CssMinifier extends Minifier {
     }
 
     @Override
+    protected String rename(String oldName) {
+        return oldName.replace(".css", ".min.css");
+    }
+
+    @Override
     protected String getMinifierName() {
         return "CSS Minifier";
     }

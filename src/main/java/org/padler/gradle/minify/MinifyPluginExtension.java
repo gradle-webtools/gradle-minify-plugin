@@ -11,6 +11,7 @@ public class MinifyPluginExtension {
     private String jsSrcDir = "";
 
     private Boolean createJsSourceMaps = false;
+    private Boolean renameToMin = false;
 
     public String getCssDstDir() {
         return cssDstDir;
@@ -50,5 +51,13 @@ public class MinifyPluginExtension {
 
     public void setCreateJsSourceMaps(Boolean createJsSourceMaps) {
         this.createJsSourceMaps = createJsSourceMaps;
+    }
+
+    public Boolean getRenameToMin() {
+        return renameToMin;
+    }
+
+    public void setRenameToMin(Boolean renameToMin) {
+        this.renameToMin = renameToMin;
     }
 }

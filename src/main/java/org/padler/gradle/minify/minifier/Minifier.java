@@ -29,7 +29,11 @@ public abstract class Minifier {
             for (Path f : files) {
                 if (f.toFile().isFile()) {
                     Path dst = Paths.get(dstDir);
-                    File dstFile = new File(dst.toString(), f.getFileName().toString());
+                    String fileName = f.getFileName().toString();
+                    if (Boolean.TRUE.equals(minifierOptions.getRenameToMin())) {
+                        fileName = rename(fileName);
+                    }
+                    File dstFile = new File(dst.toString(), fileName);
                     dstFile.getParentFile().mkdirs();
                     minify(f.toFile(), dstFile);
                 } else if (f.toFile().isDirectory()) {
@@ -49,10 +53,6 @@ public abstract class Minifier {
             throw new UncheckedIOException(e);
         }
     }
-
-    protected abstract String getMinifierName();
-
-    protected abstract void minifyFile(File srcFile, File dstFile) throws IOException;
 
     protected String createReport() {
         StringBuilder reportStr = new StringBuilder();
@@ -93,4 +93,10 @@ public abstract class Minifier {
     public void setMinifierOptions(MinifierOptions minifierOptions) {
         this.minifierOptions = minifierOptions;
     }
+
+    protected abstract String getMinifierName();
+
+    protected abstract void minifyFile(File srcFile, File dstFile) throws IOException;
+
+    protected abstract String rename(String oldName);
 }

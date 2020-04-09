@@ -21,11 +21,6 @@ public class JsMinifier extends Minifier {
     }
 
     @Override
-    protected String getMinifierName() {
-        return "JS Minifier";
-    }
-
-    @Override
     protected void minifyFile(File srcFile, File dstFile) throws IOException {
         com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
 
@@ -60,5 +55,15 @@ public class JsMinifier extends Minifier {
             }
             iosW.flush();
         }
+    }
+
+    @Override
+    protected String getMinifierName() {
+        return "JS Minifier";
+    }
+
+    @Override
+    protected String rename(String oldName) {
+        return oldName.replace(".js", ".min.js");
     }
 }
