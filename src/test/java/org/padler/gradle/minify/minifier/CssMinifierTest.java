@@ -36,6 +36,22 @@ public class CssMinifierTest {
     }
 
     @Test
+    public void minifyFileWithSourceMaps() throws Exception {
+        CssMinifier cssMinifier = new CssMinifier();
+        cssMinifier.getMinifierOptions().setCreateSoureMaps(true);
+        File dst = testProjectDir.newFolder("dst");
+
+        cssMinifier.minify("src/test/resources/css", dst.getAbsolutePath());
+
+        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
+        assertThat(files.size(), is(3));
+
+        Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
+        List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
+        assertThat(subFiles.size(), is(2));
+    }
+
+    @Test
     public void minifyFileWithError() throws Exception {
         CssMinifier cssMinifier = new CssMinifier();
         File dst = testProjectDir.newFolder("dst");

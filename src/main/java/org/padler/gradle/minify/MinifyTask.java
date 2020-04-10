@@ -49,6 +49,12 @@ public class MinifyTask extends DefaultTask {
 
     @Optional
     @Input
+    public Boolean getCreateCssSourceMaps() {
+        return extension.getCreateCssSourceMaps();
+    }
+
+    @Optional
+    @Input
     public Boolean getCreateJsSourceMaps() {
         return extension.getCreateJsSourceMaps();
     }
@@ -64,6 +70,7 @@ public class MinifyTask extends DefaultTask {
         if (!extension.getCssSrcDir().isEmpty() && !extension.getCssDstDir().isEmpty()) {
             Minifier cssMinifier = new CssMinifier();
             MinifierOptions minifierOptions = cssMinifier.getMinifierOptions();
+            minifierOptions.setCreateSoureMaps(extension.getCreateCssSourceMaps());
             minifierOptions.setOriginalFileNames(extension.getOriginalFileNames());
             cssMinifier.minify(extension.getCssSrcDir(), extension.getCssDstDir());
         }

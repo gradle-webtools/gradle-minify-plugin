@@ -8,6 +8,7 @@ import com.google.common.css.compiler.ast.GssError;
 import com.google.common.css.compiler.commandline.DefaultCommandLineCompiler;
 import com.google.common.css.compiler.gssfunctions.DefaultGssFunctionMapProvider;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -27,7 +28,13 @@ public class CssMinifier extends Minifier {
             ExitCodeHandler exitCodeHandler = new DefaultExitCodeHandler();
             CompilerErrorManager errorManager = new CompilerErrorManager();
             ClosureStylesheetCompiler compiler = new ClosureStylesheetCompiler(job, exitCodeHandler, errorManager);
-            String compilerOutput = compiler.execute();
+
+            File sourcemapFile = null;
+            if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
+                sourcemapFile = new File(dstFile.getAbsolutePath() + ".map");
+            }
+
+            String compilerOutput = compiler.execute(null, sourcemapFile);
             writeToFile(dstFile, compilerOutput);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -72,7 +79,7 @@ public class CssMinifier extends Minifier {
         GssFunctionMapProvider gssFunMapProv = new DefaultGssFunctionMapProvider();
         builder.setGssFunctionMapProvider(gssFunMapProv);
         builder.setSourceMapLevel(JobDescription.SourceMapDetailLevel.DEFAULT);
-        builder.setCreateSourceMap(false);
+        builder.setCreateSourceMap(minifierOptions.getCreateSoureMaps());
 
         String fileContents = new String(Files.readAllBytes(file.toPath()));
         builder.addInput(new SourceCode(file.getName(), fileContents));
@@ -103,8 +110,9 @@ public class CssMinifier extends Minifier {
             super(job, exitCodeHandler, errorManager);
         }
 
-        public String execute() {
-            return super.execute(null, null);
+        @Override
+        public String execute(@Nullable File renameFile, @Nullable File sourcemapFile) {
+            return super.execute(renameFile, sourcemapFile);
         }
     }
 }

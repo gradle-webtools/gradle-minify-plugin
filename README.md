@@ -45,10 +45,17 @@ minification {
     jsDstDir = "$buildDir/dist/js"
     jsSrcDir = "${rootDir}/src/main/resources/static/js"
 
-    originalFileNames = true
+    createCssSourceMaps = true
     createJsSourceMaps = true
 }
 ````
+
+## Options
+| option                      | effect                                                   | values                          | default         |
+| --------------------------- |:--------------------------------------------------------:| -------------------------------:| ---------------:|
+| createCssSourceMaps         | Creates CSS source maps                                  | true, false                     | false           |
+| createJsSourceMaps          | Creates JS source maps                                   | true, false                     | false           |
+| originalFileNames           | Preserves filenames instead of renaming to .min.         | true, false                     | false           |
 
 ## See Also
 The [Gradle CSS Plugin](https://github.com/eriwen/gradle-css-plugin)!

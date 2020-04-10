@@ -29,10 +29,10 @@ public class JsMinifier extends Minifier {
             List<SourceFile> externs = AbstractCommandLineRunner.getBuiltinExterns(new CompilerOptions().getEnvironment());
             SourceFile sourceFile = SourceFile.fromFile(srcFile.getAbsolutePath());
 
-            File sourceMap = null;
+            File sourcemapFile = null;
             if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
-                sourceMap = new File(dstFile.getAbsolutePath() + ".map");
-                options.setSourceMapOutputPath(sourceMap.getAbsolutePath());
+                sourcemapFile = new File(dstFile.getAbsolutePath() + ".map");
+                options.setSourceMapOutputPath(sourcemapFile.getAbsolutePath());
             }
 
             Result result = compiler.compile(externs, ImmutableList.of(sourceFile), options);
@@ -43,7 +43,7 @@ public class JsMinifier extends Minifier {
                 if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
                     StringBuilder sourceMapContent = new StringBuilder();
                     result.sourceMap.appendTo(sourceMapContent, dstFile.getName());
-                    writeToFile(sourceMap, sourceMapContent.toString());
+                    writeToFile(sourcemapFile, sourceMapContent.toString());
                 }
             } else {
                 for (JSError error : result.errors) {
