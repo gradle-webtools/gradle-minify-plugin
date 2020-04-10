@@ -30,7 +30,7 @@ public abstract class Minifier {
                 if (f.toFile().isFile()) {
                     Path dst = Paths.get(dstDir);
                     String fileName = f.getFileName().toString();
-                    if (Boolean.TRUE.equals(minifierOptions.getRenameToMin())) {
+                    if (Boolean.TRUE.equals(minifierOptions.getOriginalFileNames())) {
                         fileName = rename(fileName);
                     }
                     File dstFile = new File(dst.toString(), fileName);

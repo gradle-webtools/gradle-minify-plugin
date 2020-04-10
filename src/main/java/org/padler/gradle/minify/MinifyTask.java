@@ -55,8 +55,8 @@ public class MinifyTask extends DefaultTask {
 
     @Optional
     @Input
-    public Boolean getRenameToMin() {
-        return extension.getRenameToMin();
+    public Boolean getOriginalFileNames() {
+        return extension.getOriginalFileNames();
     }
 
     @TaskAction
@@ -64,14 +64,14 @@ public class MinifyTask extends DefaultTask {
         if (!extension.getCssSrcDir().isEmpty() && !extension.getCssDstDir().isEmpty()) {
             Minifier cssMinifier = new CssMinifier();
             MinifierOptions minifierOptions = cssMinifier.getMinifierOptions();
-            minifierOptions.setRenameToMin(extension.getRenameToMin());
+            minifierOptions.setOriginalFileNames(extension.getOriginalFileNames());
             cssMinifier.minify(extension.getCssSrcDir(), extension.getCssDstDir());
         }
         if (!extension.getJsSrcDir().isEmpty() && !extension.getJsDstDir().isEmpty()) {
             Minifier jsMinifier = new JsMinifier();
             MinifierOptions minifierOptions = jsMinifier.getMinifierOptions();
             minifierOptions.setCreateSoureMaps(extension.getCreateJsSourceMaps());
-            minifierOptions.setRenameToMin(extension.getRenameToMin());
+            minifierOptions.setOriginalFileNames(extension.getOriginalFileNames());
             jsMinifier.minify(extension.getJsSrcDir(), extension.getJsDstDir());
         }
     }

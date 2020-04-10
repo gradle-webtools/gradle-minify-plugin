@@ -45,7 +45,7 @@ minification {
     jsDstDir = "$buildDir/dist/js"
     jsSrcDir = "${rootDir}/src/main/resources/static/js"
 
-    renameToMin = true
+    originalFileNames = true
     createJsSourceMaps = true
 }
 ````

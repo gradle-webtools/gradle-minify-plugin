@@ -2,7 +2,7 @@ package org.padler.gradle.minify.minifier;
 
 public class MinifierOptions {
     private Boolean createSoureMaps = false;
-    private Boolean renameToMin = false;
+    private Boolean originalFileNames = false;
 
     public Boolean getCreateSoureMaps() {
         return createSoureMaps;
@@ -12,11 +12,11 @@ public class MinifierOptions {
         this.createSoureMaps = createSoureMaps;
     }
 
-    public Boolean getRenameToMin() {
-        return renameToMin;
+    public Boolean getOriginalFileNames() {
+        return originalFileNames;
     }
 
-    public void setRenameToMin(Boolean renameToMin) {
-        this.renameToMin = renameToMin;
+    public void setOriginalFileNames(Boolean originalFileNames) {
+        this.originalFileNames = originalFileNames;
     }
 }
