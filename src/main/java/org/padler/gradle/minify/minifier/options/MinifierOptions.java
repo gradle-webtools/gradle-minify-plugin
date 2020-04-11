@@ -1,4 +1,4 @@
-package org.padler.gradle.minify.minifier;
+package org.padler.gradle.minify.minifier.options;
 
 public class MinifierOptions {
     private Boolean createSoureMaps = false;

@@ -1,6 +1,10 @@
 package org.padler.gradle.minify.minifier;
 
 import org.gradle.api.GradleException;
+import org.padler.gradle.minify.minifier.options.MinifierOptions;
+import org.padler.gradle.minify.minifier.result.Error;
+import org.padler.gradle.minify.minifier.result.Report;
+import org.padler.gradle.minify.minifier.result.Warning;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +15,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class Minifier {
-
-    protected MinifierOptions minifierOptions = new MinifierOptions();
 
     protected final Report report = new Report();
 
@@ -30,7 +32,7 @@ public abstract class Minifier {
                 if (f.toFile().isFile()) {
                     Path dst = Paths.get(dstDir);
                     String fileName = f.getFileName().toString();
-                    if (Boolean.FALSE.equals(minifierOptions.getOriginalFileNames())) {
+                    if (Boolean.FALSE.equals(getMinifierOptions().getOriginalFileNames())) {
                         fileName = rename(fileName);
                     }
                     File dstFile = new File(dst.toString(), fileName);
@@ -86,13 +88,7 @@ public abstract class Minifier {
         }
     }
 
-    public MinifierOptions getMinifierOptions() {
-        return minifierOptions;
-    }
-
-    public void setMinifierOptions(MinifierOptions minifierOptions) {
-        this.minifierOptions = minifierOptions;
-    }
+    public abstract MinifierOptions getMinifierOptions();
 
     protected abstract String getMinifierName();
 

@@ -1,4 +1,4 @@
-package org.padler.gradle.minify.minifier;
+package org.padler.gradle.minify.minifier.result;
 
 import java.util.ArrayList;
 import java.util.List;

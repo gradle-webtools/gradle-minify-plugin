@@ -7,6 +7,9 @@ import com.google.common.css.compiler.ast.ErrorManager;
 import com.google.common.css.compiler.ast.GssError;
 import com.google.common.css.compiler.commandline.DefaultCommandLineCompiler;
 import com.google.common.css.compiler.gssfunctions.DefaultGssFunctionMapProvider;
+import org.padler.gradle.minify.minifier.options.CSSMinifierOptions;
+import org.padler.gradle.minify.minifier.result.Error;
+import org.padler.gradle.minify.minifier.result.Warning;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -20,6 +23,8 @@ import java.util.HashMap;
  * Implemented with help from https://github.com/marcodelpercio https://github.com/google/closure-stylesheets/issues/101
  */
 public class CssMinifier extends Minifier {
+
+    protected CSSMinifierOptions minifierOptions = new CSSMinifierOptions();
 
     @Override
     protected void minifyFile(File srcFile, File dstFile) {
@@ -42,13 +47,18 @@ public class CssMinifier extends Minifier {
     }
 
     @Override
-    protected String rename(String oldName) {
-        return oldName.replace(".css", ".min.css");
+    public CSSMinifierOptions getMinifierOptions() {
+        return minifierOptions;
     }
 
     @Override
     protected String getMinifierName() {
         return "CSS Minifier";
+    }
+
+    @Override
+    protected String rename(String oldName) {
+        return oldName.replace(".css", ".min.css");
     }
 
     private JobDescription createJobDescription(File file) throws IOException {

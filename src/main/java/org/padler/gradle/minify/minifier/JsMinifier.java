@@ -2,6 +2,9 @@ package org.padler.gradle.minify.minifier;
 
 import com.google.common.collect.ImmutableList;
 import com.google.javascript.jscomp.*;
+import org.padler.gradle.minify.minifier.options.JSMinifierOptions;
+import org.padler.gradle.minify.minifier.result.Error;
+import org.padler.gradle.minify.minifier.result.Warning;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,14 +12,17 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS;
+import static com.google.javascript.jscomp.WarningLevel.QUIET;
 
 public class JsMinifier extends Minifier {
+
+    protected JSMinifierOptions minifierOptions = new JSMinifierOptions();
 
     private CompilerOptions options = new CompilerOptions();
 
     public JsMinifier() {
-        CompilationLevel.valueOf(SIMPLE_OPTIMIZATIONS.name()).setOptionsForCompilationLevel(options);
-        WarningLevel.QUIET.setOptionsForWarningLevel(options);
+        SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+        QUIET.setOptionsForWarningLevel(options);
     }
 
     @Override
@@ -52,6 +58,11 @@ public class JsMinifier extends Minifier {
             }
         }
 
+    }
+
+    @Override
+    public JSMinifierOptions getMinifierOptions() {
+        return minifierOptions;
     }
 
     @Override
