@@ -1,8 +1,11 @@
 package org.padler.gradle.minify.minifier.result;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Report {
     private final List<Error> errors = new ArrayList<>();
     private final List<Warning> warnings = new ArrayList<>();
