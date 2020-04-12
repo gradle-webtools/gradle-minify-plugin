@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS;
@@ -33,6 +34,7 @@ public class JsMinifier extends Minifier {
             if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
                 sourcemapFile = new File(dstFile.getAbsolutePath() + ".map");
                 options.setSourceMapOutputPath(sourcemapFile.getAbsolutePath());
+                options.setSourceMapLocationMappings(Collections.singletonList(new LocationMapping()));
             }
 
             Result result = compiler.compile(externs, ImmutableList.of(sourceFile), options);
