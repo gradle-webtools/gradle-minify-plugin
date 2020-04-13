@@ -7,13 +7,11 @@ import com.google.common.css.compiler.ast.ErrorManager;
 import com.google.common.css.compiler.ast.GssError;
 import com.google.common.css.compiler.commandline.DefaultCommandLineCompiler;
 import com.google.common.css.compiler.gssfunctions.DefaultGssFunctionMapProvider;
-import org.gradle.api.GradleException;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.HashMap;
 
@@ -29,8 +27,7 @@ public class CssMinifier extends Minifier {
             JobDescription job = createJobDescription(srcFile);
             ExitCodeHandler exitCodeHandler = new DefaultExitCodeHandler();
             CompilerErrorManager errorManager = new CompilerErrorManager();
-            LocationMapping locationMapping = new LocationMapping(baseDir);
-            ClosureStylesheetCompiler compiler = new ClosureStylesheetCompiler(job, exitCodeHandler, errorManager, locationMapping.map(srcFile));
+            ClosureStylesheetCompiler compiler = new ClosureStylesheetCompiler(job, exitCodeHandler, errorManager);
 
             File sourcemapFile = null;
             if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
@@ -109,18 +106,8 @@ public class CssMinifier extends Minifier {
 
     public class ClosureStylesheetCompiler extends DefaultCommandLineCompiler {
 
-        public ClosureStylesheetCompiler(JobDescription job, ExitCodeHandler exitCodeHandler, ErrorManager errorManager,
-                                         String filename) {
+        public ClosureStylesheetCompiler(JobDescription job, ExitCodeHandler exitCodeHandler, ErrorManager errorManager) {
             super(job, exitCodeHandler, errorManager);
-
-            try {
-                DefaultCommandLineCompiler parent = this;
-                Field gssSourceMapGenerator = parent.getClass().getSuperclass().getDeclaredField("gssSourceMapGenerator");
-                gssSourceMapGenerator.setAccessible(true);
-                gssSourceMapGenerator.set(parent, new ImprovedGssSourceMapGenerator(job.sourceMapLevel, filename));
-            } catch (IllegalAccessException | NoSuchFieldException e) {
-                throw new GradleException(e.getMessage());
-            }
         }
 
         @Override
