@@ -12,11 +12,7 @@ public class LocationMapping implements SourceMap.LocationMapping {
     private String baseDir;
 
     public LocationMapping(File baseDir) {
-        if (isWindows()) {
-            this.baseDir = baseDir.getAbsolutePath().replace("\\", "/");
-        } else {
-            this.baseDir = baseDir.getAbsolutePath();
-        }
+        this.baseDir = convertPath(baseDir);
     }
 
     @Nullable
@@ -28,8 +24,21 @@ public class LocationMapping implements SourceMap.LocationMapping {
             return null;
     }
 
+    @Nullable
+    public String map(File location) {
+        String file = convertPath(location);
+        return map(file);
+    }
+
     private static boolean isWindows() {
         return OS.contains("win");
     }
 
+    private static String convertPath(File file) {
+        if (isWindows()) {
+            return file.getAbsolutePath().replace("\\", "/");
+        } else {
+            return file.getAbsolutePath();
+        }
+    }
 }
