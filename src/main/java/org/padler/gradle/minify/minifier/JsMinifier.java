@@ -22,7 +22,7 @@ public class JsMinifier extends Minifier {
     }
 
     @Override
-    protected void minifyFile(File srcFile, File dstFile, File baseDir) throws IOException {
+    protected void minifyFile(File srcFile, File dstFile) throws IOException {
         com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
 
         try (OutputStreamWriter iosW = new OutputStreamWriter(new FileOutputStream(dstFile))) {
@@ -34,7 +34,7 @@ public class JsMinifier extends Minifier {
             if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
                 sourcemapFile = new File(dstFile.getAbsolutePath() + ".map");
                 options.setSourceMapOutputPath(sourcemapFile.getAbsolutePath());
-                options.setSourceMapLocationMappings(Collections.singletonList(new LocationMapping(baseDir)));
+                options.setSourceMapLocationMappings(Collections.singletonList(new LocationMapping()));
             }
 
             Result result = compiler.compile(externs, ImmutableList.of(sourceFile), options);

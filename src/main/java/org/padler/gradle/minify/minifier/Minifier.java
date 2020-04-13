@@ -17,13 +17,13 @@ public abstract class Minifier {
     protected final Report report = new Report();
 
     public void minify(String srcDir, String dstDir) {
-        minifyInternal(srcDir, dstDir, srcDir);
+        minifyInternal(srcDir, dstDir);
         System.err.println(createReport());
         if (!report.getErrors().isEmpty())
             throw new GradleException(report.getErrors() + " Errors in " + getMinifierName());
     }
 
-    protected void minifyInternal(String srcDir, String dstDir, String baseDir) {
+    protected void minifyInternal(String srcDir, String dstDir) {
         try (Stream<Path> filesStream = Files.list(Paths.get(srcDir)).filter(f -> !f.toString().equals(srcDir))) {
             List<Path> files = filesStream.collect(Collectors.toList());
             for (Path f : files) {
@@ -35,10 +35,10 @@ public abstract class Minifier {
                     }
                     File dstFile = new File(dst.toString(), fileName);
                     dstFile.getParentFile().mkdirs();
-                    minify(f.toFile(), dstFile, new File(baseDir));
+                    minify(f.toFile(), dstFile);
                 } else if (f.toFile().isDirectory()) {
                     String newDstDir = dstDir + "/" + f.getFileName().toString();
-                    minifyInternal(f.toString(), newDstDir, baseDir);
+                    minifyInternal(f.toString(), newDstDir);
                 }
             }
         } catch (IOException e) {
@@ -46,9 +46,9 @@ public abstract class Minifier {
         }
     }
 
-    protected void minify(File srcFile, File dstFile, File baseDir) {
+    protected void minify(File srcFile, File dstFile) {
         try {
-            minifyFile(srcFile, dstFile, baseDir);
+            minifyFile(srcFile, dstFile);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -96,7 +96,7 @@ public abstract class Minifier {
 
     protected abstract String getMinifierName();
 
-    protected abstract void minifyFile(File srcFile, File dstFile, File baseDir) throws IOException;
+    protected abstract void minifyFile(File srcFile, File dstFile) throws IOException;
 
     protected abstract String rename(String oldName);
 }

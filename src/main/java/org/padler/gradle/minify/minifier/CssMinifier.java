@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class CssMinifier extends Minifier {
 
     @Override
-    protected void minifyFile(File srcFile, File dstFile, File baseDir) {
+    protected void minifyFile(File srcFile, File dstFile) {
         try {
             JobDescription job = createJobDescription(srcFile);
             ExitCodeHandler exitCodeHandler = new DefaultExitCodeHandler();
