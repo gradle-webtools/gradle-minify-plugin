@@ -32,11 +32,13 @@ public abstract class Minifier {
                 if (f.toFile().isFile()) {
                     Path dst = Paths.get(dstDir);
                     String fileName = f.getFileName().toString();
+                    File copy = new File(dst.toString(), fileName);
                     if (Boolean.FALSE.equals(getMinifierOptions().getOriginalFileNames())) {
                         fileName = rename(fileName);
                     }
                     File dstFile = new File(dst.toString(), fileName);
                     dstFile.getParentFile().mkdirs();
+                    Files.copy(f, copy.toPath());
                     minify(f.toFile(), dstFile);
                 } else if (f.toFile().isDirectory()) {
                     String newDstDir = dstDir + "/" + f.getFileName().toString();

@@ -32,13 +32,11 @@ public class JsMinifierTest {
         jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(2));
-        Path jsFile = files.stream().filter(path -> path.toFile().isFile()).findFirst().orElse(null);
-        assertThat(jsFile.toFile().getAbsolutePath(), containsString("min.js"));
+        assertThat(files.size(), is(3));
 
         Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size(), is(1));
+        assertThat(subFiles.size(), is(2));
     }
 
     @Test
@@ -68,11 +66,11 @@ public class JsMinifierTest {
         jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(3));
+        assertThat(files.size(), is(4));
 
         Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size(), is(2));
+        assertThat(subFiles.size(), is(3));
     }
 
     @Test
@@ -86,7 +84,7 @@ public class JsMinifierTest {
             fail("expected exception");
         } catch (GradleException e) {
             List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-            assertThat(files.size(), is(0));
+            assertThat(files.size(), is(1));
             assertThat(jsMinifier.report.getErrors().size(), is(1));
             assertThat(jsMinifier.report.getWarnings().size(), is(0));
         }
@@ -102,6 +100,6 @@ public class JsMinifierTest {
         jsMinifier.minify(src.getAbsolutePath(), dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(1));
+        assertThat(files.size(), is(2));
     }
 }

@@ -28,11 +28,11 @@ public class CssMinifierTest {
         cssMinifier.minify("src/test/resources/css", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(2));
+        assertThat(files.size(), is(3));
 
         Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size(), is(1));
+        assertThat(subFiles.size(), is(2));
     }
 
     @Test
@@ -44,11 +44,11 @@ public class CssMinifierTest {
         cssMinifier.minify("src/test/resources/css", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(3));
+        assertThat(files.size(), is(4));
 
         Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size(), is(2));
+        assertThat(subFiles.size(), is(3));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class CssMinifierTest {
         cssMinifier.minify("src/test/resources/errors/css", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(1));
+        assertThat(files.size(), is(2));
 
         assertThat(cssMinifier.report.getErrors().size(), is(0));
         assertThat(cssMinifier.report.getWarnings().size(), is(1));
