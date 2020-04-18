@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'org.padler.gradle.minify'
-version '1.4.1'
+version '1.4.2'
 
 sourceCompatibility = 1.8
 

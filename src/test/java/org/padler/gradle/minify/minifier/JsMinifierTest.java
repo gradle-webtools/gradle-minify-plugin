@@ -86,7 +86,7 @@ public class JsMinifierTest {
             fail("expected exception");
         } catch (GradleException e) {
             List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-            assertThat(files.size(), is(1));
+            assertThat(files.size(), is(0));
             assertThat(jsMinifier.report.getErrors().size(), is(1));
             assertThat(jsMinifier.report.getWarnings().size(), is(0));
         }
