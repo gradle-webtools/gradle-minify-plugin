@@ -1,4 +1,4 @@
-package org.padler.gradle.minify.minifier.options;
+package org.padler.gradle.minify;
 
 import com.google.common.collect.Lists;
 import com.google.common.css.JobDescription;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class CSSMinifierOptions extends MinifierOptions {
+public class MinifyCSSPluginExtension {
     private JobDescription.InputOrientation inputOrientation = JobDescription.InputOrientation.LTR;
     private JobDescription.OutputOrientation outputOrientation = JobDescription.OutputOrientation.LTR;
     private JobDescription.OutputFormat outputFormat = JobDescription.OutputFormat.COMPRESSED;

@@ -1,6 +1,5 @@
 package org.padler.gradle.minify.minifier;
 
-import com.google.common.collect.Lists;
 import com.google.common.css.*;
 import com.google.common.css.compiler.ast.BasicErrorManager;
 import com.google.common.css.compiler.ast.ErrorManager;
@@ -16,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.util.HashMap;
 
 /**
  * Uses closure stylesheets.
@@ -63,32 +61,31 @@ public class CssMinifier extends Minifier {
 
     private JobDescription createJobDescription(File file) throws IOException {
         JobDescriptionBuilder builder = new JobDescriptionBuilder();
-        builder.setInputOrientation(JobDescription.InputOrientation.LTR);
-        builder.setOutputOrientation(JobDescription.OutputOrientation.LTR);
-        builder.setOutputFormat(JobDescription.OutputFormat.COMPRESSED);
-        builder.setCopyrightNotice(null);
-        builder.setTrueConditionNames(Lists.newArrayList());
-        builder.setAllowDefPropagation(true);
-        builder.setAllowUnrecognizedFunctions(true);
-        builder.setAllowedNonStandardFunctions(Lists.newArrayList());
-        builder.setAllowedUnrecognizedProperties(Lists.newArrayList());
-        builder.setAllowUnrecognizedProperties(true);
-        builder.setVendor(null);
-        builder.setAllowKeyframes(true);
-        builder.setAllowWebkitKeyframes(true);
-        builder.setProcessDependencies(true);
-        builder.setExcludedClassesFromRenaming(Lists.newArrayList());
-        builder.setSimplifyCss(true);
-        /* sadly the following line is necessary until they introduce support for --allow-duplicate-declarations  */
-        builder.setEliminateDeadStyles(false);
+        builder.setInputOrientation(minifierOptions.getInputOrientation());
+        builder.setOutputOrientation(minifierOptions.getOutputOrientation());
+        builder.setOutputFormat(minifierOptions.getOutputFormat());
+        builder.setCopyrightNotice(minifierOptions.getCopyrightNotice());
+        builder.setTrueConditionNames(minifierOptions.getTrueConditionNames());
+        builder.setAllowDefPropagation(minifierOptions.getAllowDefPropagation());
+        builder.setAllowUnrecognizedFunctions(minifierOptions.getAllowUnrecognizedFunctions());
+        builder.setAllowedNonStandardFunctions(minifierOptions.getAllowedNonStandardFunctions());
+        builder.setAllowedUnrecognizedProperties(minifierOptions.getAllowedUnrecognizedProperties());
+        builder.setAllowUnrecognizedProperties(minifierOptions.getAllowUnrecognizedProperties());
+        builder.setVendor(minifierOptions.getVendor());
+        builder.setAllowKeyframes(minifierOptions.getAllowKeyframes());
+        builder.setAllowWebkitKeyframes(minifierOptions.getAllowWebkitKeyframes());
+        builder.setProcessDependencies(minifierOptions.getProcessDependencies());
+        builder.setExcludedClassesFromRenaming(minifierOptions.getExcludedClassesFromRenaming());
+        builder.setSimplifyCss(minifierOptions.getSimplifyCss());
+        builder.setEliminateDeadStyles(minifierOptions.getEliminateDeadStyles());
         builder.setCssSubstitutionMapProvider(IdentitySubstitutionMap::new);
-        builder.setCssRenamingPrefix("");
-        builder.setPreserveComments(false);
-        builder.setOutputRenamingMapFormat(OutputRenamingMapFormat.JSON);
-        builder.setCompileConstants(new HashMap<>());
+        builder.setCssRenamingPrefix(minifierOptions.getCssRenamingPrefix());
+        builder.setPreserveComments(minifierOptions.getPreserveComments());
+        builder.setOutputRenamingMapFormat(minifierOptions.getOutputRenamingMapFormat());
+        builder.setCompileConstants(minifierOptions.getCompileConstants());
         GssFunctionMapProvider gssFunMapProv = new DefaultGssFunctionMapProvider();
         builder.setGssFunctionMapProvider(gssFunMapProv);
-        builder.setSourceMapLevel(JobDescription.SourceMapDetailLevel.DEFAULT);
+        builder.setSourceMapLevel(minifierOptions.getSourceMapLevel());
         builder.setCreateSourceMap(minifierOptions.getCreateSoureMaps());
 
         String fileContents = new String(Files.readAllBytes(file.toPath()));
