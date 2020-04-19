@@ -38,7 +38,7 @@ public abstract class Minifier {
                     }
                     File dstFile = new File(dst.toString(), fileName);
                     dstFile.getParentFile().mkdirs();
-                    Files.copy(f, copy.toPath());
+                    Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     minify(f.toFile(), dstFile);
                 } else if (f.toFile().isDirectory()) {
                     String newDstDir = dstDir + "/" + f.getFileName().toString();
