@@ -24,4 +24,12 @@ public class MinifyPluginExtension {
         c.setDelegate(css);
         c.call();
     }
+
+    private MinifyJSPluginExtension js = new MinifyJSPluginExtension();
+
+    public void js(Closure c) {
+        c.setResolveStrategy(DELEGATE_FIRST);
+        c.setDelegate(js);
+        c.call();
+    }
 }

@@ -11,23 +11,16 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import static com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS;
-import static com.google.javascript.jscomp.WarningLevel.QUIET;
-
 public class JsMinifier extends Minifier {
 
     protected JSMinifierOptions minifierOptions = new JSMinifierOptions();
 
     private CompilerOptions options = new CompilerOptions();
 
-    public JsMinifier() {
-        SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
-        QUIET.setOptionsForWarningLevel(options);
-    }
-
     @Override
     protected void minifyFile(File srcFile, File dstFile) throws IOException {
         com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
+        setOptions();
 
         List<SourceFile> externs = AbstractCommandLineRunner.getBuiltinExterns(new CompilerOptions().getEnvironment());
         SourceFile sourceFile = SourceFile.fromFile(srcFile.getAbsolutePath());
@@ -58,6 +51,56 @@ public class JsMinifier extends Minifier {
             }
         }
 
+    }
+
+    private void setOptions() {
+        minifierOptions.getCompilationLevel().setOptionsForCompilationLevel(options);
+        options.setEnvironment(minifierOptions.getEnv());
+        if (minifierOptions.getLanguageIn() != null)
+            options.setLanguageIn(minifierOptions.getLanguageIn());
+        if (minifierOptions.getLanguageOut() != null)
+            options.setLanguageOut(minifierOptions.getLanguageOut());
+
+        minifierOptions.getWarningLevel().setOptionsForWarningLevel(options);
+        options.setExtraAnnotationNames(minifierOptions.getExtraAnnotationNames());
+        options.setStrictModeInput(minifierOptions.getStrictModeInput());
+
+        if (minifierOptions.getDebug())
+            minifierOptions.getCompilationLevel().setDebugOptionsForCompilationLevel(options);
+
+        options.setExportLocalPropertyDefinitions(minifierOptions.getExportLocalPropertyDefinitions());
+
+        for (CommandLineRunner.FormattingOption formattingOption : minifierOptions.getFormatting()) {
+            switch (formattingOption) {
+                case PRETTY_PRINT:
+                    options.setPrettyPrint(true);
+                    break;
+                case PRINT_INPUT_DELIMITER:
+                    options.printInputDelimiter = true;
+                    break;
+                case SINGLE_QUOTES:
+                    options.setPreferSingleQuotes(true);
+                    break;
+                default:
+                    throw new RuntimeException("Unknown formatting option: " + this);
+            }
+        }
+
+        options.setGenerateExports(minifierOptions.getGenerateExports());
+        options.setRenamePrefixNamespace(minifierOptions.getRenamePrefixNamespace());
+        options.setRenamePrefix(minifierOptions.getRenameVariablePrefix());
+        options.setModuleResolutionMode(minifierOptions.getModuleResolution());
+        options.setProcessCommonJSModules(minifierOptions.getProcessCommonJsModules());
+        options.setPackageJsonEntryNames(minifierOptions.getPackageJsonEntryNames());
+        options.setAngularPass(minifierOptions.getAngularPass());
+        options.setDartPass(minifierOptions.getDartPass());
+        options.setForceLibraryInjection(minifierOptions.getForceInjectLibrary());
+        options.setPolymerVersion(minifierOptions.getPolymerVersion());
+        options.setRewritePolyfills(minifierOptions.getRewritePolyfills());
+        options.setOutputCharset(minifierOptions.getCharset());
+        options.setChecksOnly(minifierOptions.getChecksOnly());
+        if (minifierOptions.getBrowserFeaturesetYear() != null)
+            options.setBrowserFeaturesetYear(minifierOptions.getBrowserFeaturesetYear());
     }
 
     @Override

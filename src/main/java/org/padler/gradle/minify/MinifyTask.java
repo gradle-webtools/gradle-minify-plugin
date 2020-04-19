@@ -62,6 +62,32 @@ public class MinifyTask extends MinifyTaskBase {
         minifierOptions.setCreateSoureMaps(extension.getCreateJsSourceMaps());
         minifierOptions.setOriginalFileNames(extension.getOriginalFileNames());
 
+        // JS specific options
+        minifierOptions.setCompilationLevel(extension.getJs().getCompilationLevel());
+        minifierOptions.setEnv(extension.getJs().getEnv());
+        minifierOptions.setLanguageIn(extension.getJs().getLanguageIn());
+        minifierOptions.setLanguageOut(extension.getJs().getLanguageOut());
+        minifierOptions.setWarningLevel(extension.getJs().getWarningLevel());
+        minifierOptions.setExtraAnnotationNames(extension.getJs().getExtraAnnotationNames());
+        minifierOptions.setStrictModeInput(extension.getJs().getStrictModeInput());
+        minifierOptions.setDebug(extension.getJs().getDebug());
+        minifierOptions.setExportLocalPropertyDefinitions(extension.getJs().getExportLocalPropertyDefinitions());
+        minifierOptions.setFormatting(extension.getJs().getFormatting());
+        minifierOptions.setGenerateExports(extension.getJs().getGenerateExports());
+        minifierOptions.setRenamePrefixNamespace(extension.getJs().getRenamePrefixNamespace());
+        minifierOptions.setRenameVariablePrefix(extension.getJs().getRenameVariablePrefix());
+        minifierOptions.setModuleResolution(extension.getJs().getModuleResolution());
+        minifierOptions.setProcessCommonJsModules(extension.getJs().getProcessCommonJsModules());
+        minifierOptions.setPackageJsonEntryNames(extension.getJs().getPackageJsonEntryNames());
+        minifierOptions.setAngularPass(extension.getJs().getAngularPass());
+        minifierOptions.setDartPass(extension.getJs().getDartPass());
+        minifierOptions.setForceInjectLibrary(extension.getJs().getForceInjectLibrary());
+        minifierOptions.setPolymerVersion(extension.getJs().getPolymerVersion());
+        minifierOptions.setRewritePolyfills(extension.getJs().getRewritePolyfills());
+        minifierOptions.setCharset(extension.getJs().getCharset());
+        minifierOptions.setChecksOnly(extension.getJs().getChecksOnly());
+        minifierOptions.setBrowserFeaturesetYear(extension.getJs().getBrowserFeaturesetYear());
+
         return jsMinifier;
     }
 }

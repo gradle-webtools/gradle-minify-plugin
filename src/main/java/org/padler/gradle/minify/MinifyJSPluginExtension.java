@@ -1,4 +1,4 @@
-package org.padler.gradle.minify.minifier.options;
+package org.padler.gradle.minify;
 
 import com.google.javascript.jscomp.CommandLineRunner;
 import com.google.javascript.jscomp.CompilationLevel;
@@ -19,7 +19,7 @@ import static com.google.javascript.jscomp.WarningLevel.QUIET;
 
 @Getter
 @Setter
-public class JSMinifierOptions extends MinifierOptions {
+public class MinifyJSPluginExtension {
     private CompilationLevel compilationLevel = SIMPLE_OPTIMIZATIONS;
     private CompilerOptions.Environment env = BROWSER;
     private CompilerOptions.LanguageMode languageIn = null;
