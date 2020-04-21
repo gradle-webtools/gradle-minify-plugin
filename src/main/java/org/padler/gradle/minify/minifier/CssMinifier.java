@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Uses closure stylesheets.
@@ -42,6 +43,11 @@ public class CssMinifier extends Minifier {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    @Override
+    protected boolean fileTypeMatches(Path f) {
+        return "css".equals(getExtension(f.toString()));
     }
 
     @Override

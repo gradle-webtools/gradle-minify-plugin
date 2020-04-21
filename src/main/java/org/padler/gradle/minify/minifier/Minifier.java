@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,8 +39,10 @@ public abstract class Minifier {
                     }
                     File dstFile = new File(dst.toString(), fileName);
                     dstFile.getParentFile().mkdirs();
-                    Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    minify(f.toFile(), dstFile);
+                    if (fileTypeMatches(f)) {
+                        Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        minify(f.toFile(), dstFile);
+                    }
                 } else if (f.toFile().isDirectory()) {
                     String newDstDir = dstDir + "/" + f.getFileName().toString();
                     minifyInternal(f.toString(), newDstDir);
@@ -89,6 +92,15 @@ public abstract class Minifier {
             throw new UncheckedIOException(e);
         }
     }
+
+    protected String getExtension(String filename) {
+        return Optional.ofNullable(filename)
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(filename.lastIndexOf('.') + 1))
+                .orElse("");
+    }
+
+    protected abstract boolean fileTypeMatches(Path f);
 
     public abstract MinifierOptions getMinifierOptions();
 

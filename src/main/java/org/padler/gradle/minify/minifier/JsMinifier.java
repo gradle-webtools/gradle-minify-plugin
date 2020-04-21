@@ -8,6 +8,7 @@ import org.padler.gradle.minify.minifier.result.Warning;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -101,6 +102,11 @@ public class JsMinifier extends Minifier {
         options.setChecksOnly(minifierOptions.getChecksOnly());
         if (minifierOptions.getBrowserFeaturesetYear() != null)
             options.setBrowserFeaturesetYear(minifierOptions.getBrowserFeaturesetYear());
+    }
+
+    @Override
+    protected boolean fileTypeMatches(Path f) {
+        return "js".equals(getExtension(f.toString()));
     }
 
     @Override
