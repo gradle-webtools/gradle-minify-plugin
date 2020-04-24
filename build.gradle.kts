@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "org.padler.gradle.minify"
-version = "1.4.5-SNAPSHOT"
+version = "1.5.0"
 
 if (!project.hasProperty("gradle.publish.key"))
     ext["gradle.publish.key"] = System.getenv("GRADLE_PUBLISH_KEY")
