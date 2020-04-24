@@ -19,7 +19,7 @@ public class MinifyPluginExtension {
 
     private MinifyCSSPluginExtension css = new MinifyCSSPluginExtension();
 
-    public void css(Closure c) {
+    public void css(Closure<MinifyCSSPluginExtension> c) {
         c.setResolveStrategy(DELEGATE_FIRST);
         c.setDelegate(css);
         c.call();
@@ -27,7 +27,7 @@ public class MinifyPluginExtension {
 
     private MinifyJSPluginExtension js = new MinifyJSPluginExtension();
 
-    public void js(Closure c) {
+    public void js(Closure<MinifyJSPluginExtension> c) {
         c.setResolveStrategy(DELEGATE_FIRST);
         c.setDelegate(js);
         c.call();

@@ -30,7 +30,7 @@ public class JsMinifier extends Minifier {
         if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
             sourcemapFile = new File(dstFile.getAbsolutePath() + ".map");
             options.setSourceMapOutputPath(sourcemapFile.getAbsolutePath());
-            options.setSourceMapLocationMappings(Collections.singletonList(new LocationMapping()));
+            options.setSourceMapLocationMappings(Collections.singletonList(new RelativePathLocationMapping()));
         }
 
         Result result = compiler.compile(externs, ImmutableList.of(sourceFile), options);
@@ -66,7 +66,7 @@ public class JsMinifier extends Minifier {
         options.setExtraAnnotationNames(minifierOptions.getExtraAnnotationNames());
         options.setStrictModeInput(minifierOptions.getStrictModeInput());
 
-        if (minifierOptions.getDebug())
+        if (Boolean.TRUE.equals(minifierOptions.getDebug()))
             minifierOptions.getCompilationLevel().setDebugOptionsForCompilationLevel(options);
 
         options.setExportLocalPropertyDefinitions(minifierOptions.getExportLocalPropertyDefinitions());
@@ -83,7 +83,7 @@ public class JsMinifier extends Minifier {
                     options.setPreferSingleQuotes(true);
                     break;
                 default:
-                    throw new RuntimeException("Unknown formatting option: " + this);
+                    throw new IllegalStateException("Unknown formatting option: " + this);
             }
         }
 

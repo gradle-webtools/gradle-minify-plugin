@@ -4,7 +4,7 @@ import com.google.javascript.jscomp.SourceMap;
 
 import javax.annotation.Nullable;
 
-public class LocationMapping implements SourceMap.LocationMapping {
+public class RelativePathLocationMapping implements SourceMap.LocationMapping {
     @Nullable
     @Override
     public String map(String location) {
