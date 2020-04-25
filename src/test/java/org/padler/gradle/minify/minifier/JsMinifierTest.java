@@ -1,9 +1,8 @@
 package org.padler.gradle.minify.minifier;
 
 import org.gradle.api.GradleException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -12,94 +11,94 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JsMinifierTest {
 
-    @Rule
-    public final TemporaryFolder testProjectDir =
-            new TemporaryFolder();
+    @TempDir
+    public File testProjectDir;
 
     @Test
     public void minifyFile() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
-        File dst = testProjectDir.newFolder("dst");
+        File dst = new File(testProjectDir, "dst");
+        dst.mkdir();
 
         jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(3));
+        assertThat(files.size()).isEqualTo(3);
 
         Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size(), is(2));
+        assertThat(subFiles.size()).isEqualTo(2);
     }
 
     @Test
     public void minifyFileWithoutRenaming() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         jsMinifier.getMinifierOptions().setOriginalFileNames(true);
-        File dst = testProjectDir.newFolder("dst");
+        File dst = new File(testProjectDir, "dst");
+        dst.mkdir();
 
         jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(2));
+        assertThat(files.size()).isEqualTo(2);
         Path jsFile = files.stream().filter(path -> path.toFile().isFile()).findFirst().orElse(null);
-        assertThat(jsFile.toFile().getAbsolutePath(), not(containsString("min.js")));
+        assertThat(jsFile.toFile().getAbsolutePath()).doesNotContain("min.js");
 
         Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size(), is(1));
+        assertThat(subFiles.size()).isEqualTo(1);
     }
 
     @Test
     public void minifyFileWithSourceMaps() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         jsMinifier.getMinifierOptions().setCreateSoureMaps(true);
-        File dst = testProjectDir.newFolder("dst");
+        File dst = new File(testProjectDir, "dst");
+        dst.mkdir();
 
         jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(4));
+        assertThat(files.size()).isEqualTo(4);
 
         Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
         List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size(), is(3));
+        assertThat(subFiles.size()).isEqualTo(3);
     }
 
     @Test
     public void minifyFileWithError() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         jsMinifier.getMinifierOptions().setCreateSoureMaps(true);
-        File dst = testProjectDir.newFolder("dst");
+        File dst = new File(testProjectDir, "dst");
+        dst.mkdir();
 
-        try {
-            jsMinifier.minify("src/test/resources/errors/js", dst.getAbsolutePath());
-            fail("expected exception");
-        } catch (GradleException e) {
-            List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-            assertThat(files.size(), is(1));
-            assertThat(jsMinifier.report.getErrors().size(), is(1));
-            assertThat(jsMinifier.report.getWarnings().size(), is(0));
-        }
+        assertThrows(GradleException.class, () -> jsMinifier.minify("src/test/resources/errors/js", dst.getAbsolutePath()));
+
+        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
+        assertThat(files.size()).isEqualTo(1);
+        assertThat(jsMinifier.report.getErrors().size()).isEqualTo(1);
+        assertThat(jsMinifier.report.getWarnings().size()).isEqualTo(0);
     }
 
     @Test
     public void minifyEmptyFile() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
-        File src = testProjectDir.newFolder("empty");
-        testProjectDir.newFile("empty/empty.js");
-        File dst = testProjectDir.newFolder("dst");
+        File src = new File(testProjectDir, "empty");
+        src.mkdir();
+        File empty = new File(src, "empty.js");
+        empty.createNewFile();
+        File dst = new File(testProjectDir, "dst");
+        dst.mkdir();
 
         jsMinifier.minify(src.getAbsolutePath(), dst.getAbsolutePath());
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size(), is(2));
+        assertThat(files.size()).isEqualTo(2);
     }
 }

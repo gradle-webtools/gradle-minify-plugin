@@ -25,6 +25,14 @@ if (!project.hasProperty("gradle.publish.secret"))
 
 tasks.test {
     finalizedBy("jacocoTestReport")
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
+tasks.test {
+    finalizedBy("jacocoTestReport")
 }
 
 jacoco {
@@ -53,7 +61,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.closure-stylesheets/closure-stylesheets
     implementation("com.google.closure-stylesheets:closure-stylesheets:1.5.0")
 
-    testImplementation("junit:junit:4.12")
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
+
+    // https://mvnrepository.com/artifact/org.assertj/assertj-core
+    testImplementation("org.assertj:assertj-core:3.15.0")
 }
 
 gradlePlugin {

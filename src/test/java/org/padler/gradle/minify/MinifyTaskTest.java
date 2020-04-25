@@ -2,29 +2,28 @@ package org.padler.gradle.minify;
 
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.GradleRunner;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.nio.file.Files;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS;
 import static org.gradle.util.GFileUtils.writeFile;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.padler.gradle.minify.MinifyPlugin.TASK_NAME;
 
 public class MinifyTaskTest {
 
-    @Rule
-    public final TemporaryFolder testProjectDir =
-            new TemporaryFolder();
+    @TempDir
+    public File testProjectDir;
 
     private void setUpTestProject() throws Exception {
-        File buildFile = testProjectDir.newFile("build.gradle");
-        File cssDir = testProjectDir.newFolder("css");
-        File jsDir = testProjectDir.newFolder("js");
+        File buildFile = new File(testProjectDir, "build.gradle");
+        File cssDir = new File(testProjectDir, "css");
+        File jsDir = new File(testProjectDir, "js");
+        cssDir.mkdir();
+        jsDir.mkdir();
         File cssFile = new File(cssDir, "css.css");
         File jsFile = new File(jsDir, "js.js");
         cssFile.createNewFile();
@@ -39,12 +38,12 @@ public class MinifyTaskTest {
         setUpTestProject();
 
         BuildResult result = GradleRunner.create()
-                .withProjectDir(testProjectDir.getRoot())
+                .withProjectDir(testProjectDir)
                 .withPluginClasspath()
                 .withArguments(TASK_NAME, "--stacktrace")
                 .build();
 
-        assertThat(result.task(":" + TASK_NAME).getOutcome(), equalTo(SUCCESS));
+        assertThat(result.task(":" + TASK_NAME).getOutcome()).isEqualTo(SUCCESS);
     }
 
 }
