@@ -5,6 +5,8 @@ import org.padler.gradle.minify.minifier.options.MinifierOptions;
 import org.padler.gradle.minify.minifier.result.Error;
 import org.padler.gradle.minify.minifier.result.Report;
 import org.padler.gradle.minify.minifier.result.Warning;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,11 +19,15 @@ import java.util.stream.Stream;
 
 public abstract class Minifier {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Minifier.class);
+
     protected final Report report = new Report();
 
     public void minify(String srcDir, String dstDir) {
         minifyInternal(srcDir, dstDir);
-        System.err.println(createReport());
+        if (LOGGER.isErrorEnabled()) {
+            LOGGER.error(createReport());
+        }
         if (!report.getErrors().isEmpty())
             throw new GradleException(report.getErrors() + " Errors in " + getMinifierName());
     }
