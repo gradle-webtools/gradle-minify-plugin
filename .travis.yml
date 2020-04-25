@@ -1,6 +1,6 @@
 language: groovy
 jdk:
-  - openjdk11
+  - openjdk13
 addons:
   sonarcloud:
     organization: "616slayer616-github"
