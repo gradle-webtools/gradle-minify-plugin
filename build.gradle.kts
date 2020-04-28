@@ -10,7 +10,12 @@ plugins {
 }
 
 group = "org.padler.gradle.minify"
-version = "1.5.0"
+version = "1.5.1"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 if (!project.hasProperty("gradle.publish.key"))
     ext["gradle.publish.key"] = System.getenv("GRADLE_PUBLISH_KEY")
