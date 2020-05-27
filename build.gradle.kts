@@ -1,10 +1,10 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.71"
+    id("org.jetbrains.kotlin.jvm") version "1.3.72"
     id("com.gradle.plugin-publish") version "0.11.0"
     id("maven-publish")
     id("java-gradle-plugin")
     id("groovy")
-    id("io.freefair.lombok") version "4.1.6"
+    id("io.freefair.lombok") version "5.1.0"
     id("jacoco")
     id("org.sonarqube") version "2.8"
 }
@@ -51,10 +51,10 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations
-    implementation("com.google.auto.value:auto-value-annotations:1.7")
+    implementation("com.google.auto.value:auto-value-annotations:1.7.2")
 
     // https://mvnrepository.com/artifact/com.google.javascript/closure-compiler
-    implementation("com.google.javascript:closure-compiler:v20200406")
+    implementation("com.google.javascript:closure-compiler:v20200517")
 
     // https://mvnrepository.com/artifact/com.google.closure-stylesheets/closure-stylesheets
     implementation("com.google.closure-stylesheets:closure-stylesheets:1.5.0")
@@ -63,7 +63,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
 
     // https://mvnrepository.com/artifact/org.assertj/assertj-core
-    testImplementation("org.assertj:assertj-core:3.15.0")
+    testImplementation("org.assertj:assertj-core:3.16.1")
 }
 
 gradlePlugin {
