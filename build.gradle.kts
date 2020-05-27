@@ -50,8 +50,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.yahoo.platform.yui:yuicompressor:2.4.8")
-
     // https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations
     implementation("com.google.auto.value:auto-value-annotations:1.7")
 
