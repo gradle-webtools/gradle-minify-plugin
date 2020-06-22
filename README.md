@@ -17,7 +17,7 @@ Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and [
 ### Gradle
 ```groovy
 plugins {
-  id "org.padler.gradle.minify" version "1.5.1"
+  id "org.padler.gradle.minify" version "1.6.0"
 }
 ```
 
@@ -30,7 +30,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.org.padler.gradle.minify:gradle-minify-plugin:1.5.1"
+    classpath "gradle.plugin.org.padler.gradle.minify:gradle-minify-plugin:1.6.0"
   }
 }
 
