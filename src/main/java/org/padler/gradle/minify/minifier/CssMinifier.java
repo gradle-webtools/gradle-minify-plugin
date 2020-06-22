@@ -39,6 +39,9 @@ public class CssMinifier extends Minifier {
             }
 
             String compilerOutput = compiler.execute(null, sourcemapFile);
+            if (sourcemapFile != null) {
+                compilerOutput += "\n/*# sourceMappingURL=" + sourcemapFile.getName() + " */";
+            }
             writeToFile(dstFile, compilerOutput);
         } catch (IOException e) {
             throw new UncheckedIOException(e);

@@ -36,13 +36,16 @@ public class JsMinifier extends Minifier {
         Result result = compiler.compile(externs, ImmutableList.of(sourceFile), options);
 
         if (result.success) {
-            writeToFile(dstFile, compiler.toSource());
+            String source = compiler.toSource();
 
             if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
                 StringBuilder sourceMapContent = new StringBuilder();
                 result.sourceMap.appendTo(sourceMapContent, dstFile.getName());
                 writeToFile(sourcemapFile, sourceMapContent.toString());
+
+                source += "\n//# sourceMappingURL=" + sourcemapFile.getName();
             }
+            writeToFile(dstFile, source);
         } else {
             for (JSError error : result.errors) {
                 report.add(new Error(error));
