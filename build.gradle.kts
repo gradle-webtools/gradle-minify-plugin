@@ -51,10 +51,10 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations
-    implementation("com.google.auto.value:auto-value-annotations:1.7.2")
+    implementation("com.google.auto.value:auto-value-annotations:1.7.3")
 
     // https://mvnrepository.com/artifact/com.google.javascript/closure-compiler
-    implementation("com.google.javascript:closure-compiler:v20200517")
+    implementation("com.google.javascript:closure-compiler:v20200614")
 
     // https://mvnrepository.com/artifact/com.google.closure-stylesheets/closure-stylesheets
     implementation("com.google.closure-stylesheets:closure-stylesheets:1.5.0")
