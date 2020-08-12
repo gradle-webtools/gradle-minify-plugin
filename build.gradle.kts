@@ -1,12 +1,12 @@
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    id("com.gradle.plugin-publish") version "0.11.0"
+    id("com.gradle.plugin-publish") version "0.12.0"
     id("maven-publish")
     id("java-gradle-plugin")
     id("groovy")
-    id("io.freefair.lombok") version "5.1.0"
+    id("io.freefair.lombok") version "5.1.1"
     id("jacoco")
-    id("org.sonarqube") version "2.8"
+    id("org.sonarqube") version "3.0"
 }
 
 group = "org.padler.gradle.minify"
@@ -51,10 +51,10 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations
-    implementation("com.google.auto.value:auto-value-annotations:1.7.3")
+    implementation("com.google.auto.value:auto-value-annotations:1.7.4")
 
     // https://mvnrepository.com/artifact/com.google.javascript/closure-compiler
-    implementation("com.google.javascript:closure-compiler:v20200614")
+    implementation("com.google.javascript:closure-compiler:v20200719")
 
     // https://mvnrepository.com/artifact/com.google.closure-stylesheets/closure-stylesheets
     implementation("com.google.closure-stylesheets:closure-stylesheets:1.5.0")
