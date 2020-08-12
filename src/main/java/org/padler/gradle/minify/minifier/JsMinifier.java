@@ -19,6 +19,7 @@ public class JsMinifier extends Minifier {
     private CompilerOptions options = new CompilerOptions();
 
     @Override
+    @SuppressWarnings("java:S2259") // suppresses false positive at sourcemapFile.getName()
     protected void minifyFile(File srcFile, File dstFile) throws IOException {
         com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
         setOptions();

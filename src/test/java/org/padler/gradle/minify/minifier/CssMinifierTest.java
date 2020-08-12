@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CssMinifierTest {
+class CssMinifierTest {
 
     @TempDir
     public File testProjectDir;
 
     @Test
-    public void minifyFile() throws Exception {
+    void minifyFile() throws Exception {
         CssMinifier cssMinifier = new CssMinifier();
         File dst = new File(testProjectDir, "dst");
         dst.mkdir();
@@ -36,7 +36,7 @@ public class CssMinifierTest {
     }
 
     @Test
-    public void minifyFileWithSourceMaps() throws Exception {
+    void minifyFileWithSourceMaps() throws Exception {
         CssMinifier cssMinifier = new CssMinifier();
         cssMinifier.getMinifierOptions().setCreateSoureMaps(true);
         File dst = new File(testProjectDir, "dst");
@@ -61,7 +61,7 @@ public class CssMinifierTest {
     }
 
     @Test
-    public void minifyFileWithError() throws Exception {
+    void minifyFileWithError() throws Exception {
         CssMinifier cssMinifier = new CssMinifier();
         File dst = new File(testProjectDir, "dst");
         dst.mkdir();
