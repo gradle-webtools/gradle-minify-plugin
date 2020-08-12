@@ -94,7 +94,7 @@ class JsMinifierTest {
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
         assertThat(files.size()).isEqualTo(1);
         assertThat(jsMinifier.report.getErrors().size()).isEqualTo(1);
-        assertThat(jsMinifier.report.getWarnings().size()).isEqualTo(0);
+        assertThat(jsMinifier.report.getWarnings()).isEmpty();
     }
 
     @Test

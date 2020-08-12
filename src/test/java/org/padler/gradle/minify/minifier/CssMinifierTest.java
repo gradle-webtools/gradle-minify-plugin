@@ -71,7 +71,7 @@ class CssMinifierTest {
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
         assertThat(files.size()).isEqualTo(2);
 
-        assertThat(cssMinifier.report.getErrors().size()).isEqualTo(0);
+        assertThat(cssMinifier.report.getErrors()).isEmpty();
         assertThat(cssMinifier.report.getWarnings().size()).isEqualTo(1);
     }
 }
