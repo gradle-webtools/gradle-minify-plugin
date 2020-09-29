@@ -36,7 +36,7 @@ tasks.test {
 }
 
 jacoco {
-    toolVersion = "0.8.5"
+    toolVersion = "0.8.6"
 }
 
 tasks.jacocoTestReport {
@@ -54,16 +54,16 @@ dependencies {
     implementation("com.google.auto.value:auto-value-annotations:1.7.4")
 
     // https://mvnrepository.com/artifact/com.google.javascript/closure-compiler
-    implementation("com.google.javascript:closure-compiler:v20200830")
+    implementation("com.google.javascript:closure-compiler:v20200920")
 
     // https://mvnrepository.com/artifact/com.google.closure-stylesheets/closure-stylesheets
     implementation("com.google.closure-stylesheets:closure-stylesheets:1.5.0")
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
 
     // https://mvnrepository.com/artifact/org.assertj/assertj-core
-    testImplementation("org.assertj:assertj-core:3.17.20")
+    testImplementation("org.assertj:assertj-core:3.17.2")
 }
 
 gradlePlugin {
