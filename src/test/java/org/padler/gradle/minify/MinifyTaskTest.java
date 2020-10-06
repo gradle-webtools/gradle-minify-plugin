@@ -13,7 +13,7 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS;
 import static org.gradle.util.GFileUtils.writeFile;
 import static org.padler.gradle.minify.MinifyPlugin.TASK_NAME;
 
-public class MinifyTaskTest {
+class MinifyTaskTest {
 
     @TempDir
     public File testProjectDir;
@@ -34,7 +34,7 @@ public class MinifyTaskTest {
     }
 
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
         setUpTestProject();
 
         BuildResult result = GradleRunner.create()

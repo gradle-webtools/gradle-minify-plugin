@@ -1,16 +1,16 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    id("com.gradle.plugin-publish") version "0.11.0"
+    id("org.jetbrains.kotlin.jvm") version "1.4.10"
+    id("com.gradle.plugin-publish") version "0.12.0"
     id("maven-publish")
     id("java-gradle-plugin")
     id("groovy")
-    id("io.freefair.lombok") version "5.1.0"
+    id("io.freefair.lombok") version "5.2.1"
     id("jacoco")
-    id("org.sonarqube") version "2.8"
+    id("org.sonarqube") version "3.0"
 }
 
 group = "org.padler.gradle.minify"
-version = "1.6.0"
+version = "1.7.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -36,7 +36,7 @@ tasks.test {
 }
 
 jacoco {
-    toolVersion = "0.8.5"
+    toolVersion = "0.8.6"
 }
 
 tasks.jacocoTestReport {
@@ -51,19 +51,18 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations
-    implementation("com.google.auto.value:auto-value-annotations:1.7.3")
+    implementation("com.google.auto.value:auto-value-annotations:1.7.4")
 
     // https://mvnrepository.com/artifact/com.google.javascript/closure-compiler
-    implementation("com.google.javascript:closure-compiler:v20200614")
+    implementation("com.google.javascript:closure-compiler:v20200920")
 
-    // https://mvnrepository.com/artifact/com.google.closure-stylesheets/closure-stylesheets
-    implementation("com.google.closure-stylesheets:closure-stylesheets:1.5.0")
+    implementation("org.padler:closure-stylesheets:1.6.0")
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
 
     // https://mvnrepository.com/artifact/org.assertj/assertj-core
-    testImplementation("org.assertj:assertj-core:3.16.1")
+    testImplementation("org.assertj:assertj-core:3.17.2")
 }
 
 gradlePlugin {

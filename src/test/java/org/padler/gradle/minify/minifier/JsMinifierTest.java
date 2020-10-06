@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class JsMinifierTest {
+class JsMinifierTest {
 
     @TempDir
     public File testProjectDir;
 
     @Test
-    public void minifyFile() throws Exception {
+    void minifyFile() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         File dst = new File(testProjectDir, "dst");
         dst.mkdir();
@@ -38,7 +38,7 @@ public class JsMinifierTest {
     }
 
     @Test
-    public void minifyFileWithoutRenaming() throws Exception {
+    void minifyFileWithoutRenaming() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         jsMinifier.getMinifierOptions().setOriginalFileNames(true);
         File dst = new File(testProjectDir, "dst");
@@ -57,7 +57,7 @@ public class JsMinifierTest {
     }
 
     @Test
-    public void minifyFileWithSourceMaps() throws Exception {
+    void minifyFileWithSourceMaps() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         jsMinifier.getMinifierOptions().setCreateSoureMaps(true);
         File dst = new File(testProjectDir, "dst");
@@ -82,22 +82,23 @@ public class JsMinifierTest {
     }
 
     @Test
-    public void minifyFileWithError() throws Exception {
+    void minifyFileWithError() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         jsMinifier.getMinifierOptions().setCreateSoureMaps(true);
         File dst = new File(testProjectDir, "dst");
         dst.mkdir();
 
-        assertThrows(GradleException.class, () -> jsMinifier.minify("src/test/resources/errors/js", dst.getAbsolutePath()));
+        String dstPath = dst.getAbsolutePath();
+        assertThrows(GradleException.class, () -> jsMinifier.minify("src/test/resources/errors/js", dstPath));
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
         assertThat(files.size()).isEqualTo(1);
         assertThat(jsMinifier.report.getErrors().size()).isEqualTo(1);
-        assertThat(jsMinifier.report.getWarnings().size()).isEqualTo(0);
+        assertThat(jsMinifier.report.getWarnings()).isEmpty();
     }
 
     @Test
-    public void minifyEmptyFile() throws Exception {
+    void minifyEmptyFile() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
         File src = new File(testProjectDir, "empty");
         src.mkdir();
