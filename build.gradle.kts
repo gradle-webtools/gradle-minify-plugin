@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "org.padler.gradle.minify"
-version = "1.6.1"
+version = "1.7.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -56,8 +56,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.javascript/closure-compiler
     implementation("com.google.javascript:closure-compiler:v20200920")
 
-    // https://mvnrepository.com/artifact/com.google.closure-stylesheets/closure-stylesheets
-    implementation("com.google.closure-stylesheets:closure-stylesheets:1.5.0")
+    implementation("org.padler:closure-stylesheets:1.6.0")
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
