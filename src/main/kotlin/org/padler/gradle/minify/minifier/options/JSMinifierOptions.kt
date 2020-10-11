@@ -16,6 +16,7 @@ import java.nio.charset.Charset
 import java.util.*
 
 object CharsetSerializer : KSerializer<Charset> {
+
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Charset", PrimitiveKind.STRING)
     override fun serialize(encoder: Encoder, value: Charset) = encoder.encodeString(value.name())
     override fun deserialize(decoder: Decoder) = charset(decoder.decodeString())
@@ -48,4 +49,62 @@ data class JSMinifierOptions(
         var charset: Charset = Charsets.UTF_8,
         var checksOnly: Boolean = false,
         var browserFeaturesetYear: Int? = null
-) : MinifierOptions()
+) : MinifierOptions() {
+
+    constructor(
+            compilationLevel: CompilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS,
+            env: CompilerOptions.Environment = CompilerOptions.Environment.BROWSER,
+            languageIn: CompilerOptions.LanguageMode? = null,
+            languageOut: CompilerOptions.LanguageMode? = null,
+            warningLevel: WarningLevel = WarningLevel.QUIET,
+            extraAnnotationNames: List<String> = ArrayList(),
+            strictModeInput: Boolean = false,
+            debug: Boolean = false,
+            exportLocalPropertyDefinitions: Boolean = false,
+            formatting: List<CommandLineRunner.FormattingOption> = ArrayList(),
+            generateExports: Boolean = false,
+            renamePrefixNamespace: String? = null,
+            renameVariablePrefix: String? = null,
+            moduleResolution: ModuleLoader.ResolutionMode = ModuleLoader.ResolutionMode.BROWSER,
+            processCommonJsModules: Boolean = false,
+            packageJsonEntryNames: List<String> = ArrayList(),
+            angularPass: Boolean = false,
+            dartPass: Boolean = false,
+            forceInjectLibrary: List<String> = ArrayList(),
+            polymerVersion: Int? = null,
+            rewritePolyfills: Boolean = false,
+            charset: Charset = Charsets.UTF_8,
+            checksOnly: Boolean = false,
+            browserFeaturesetYear: Int? = null,
+            createSourceMaps: Boolean? = null,
+            originalFileNames: Boolean? = null
+    ) : this(
+            compilationLevel,
+            env,
+            languageIn,
+            languageOut,
+            warningLevel,
+            extraAnnotationNames,
+            strictModeInput,
+            debug,
+            exportLocalPropertyDefinitions,
+            formatting,
+            generateExports,
+            renamePrefixNamespace,
+            renameVariablePrefix,
+            moduleResolution,
+            processCommonJsModules,
+            packageJsonEntryNames,
+            angularPass,
+            dartPass,
+            forceInjectLibrary,
+            polymerVersion,
+            rewritePolyfills,
+            charset,
+            checksOnly,
+            browserFeaturesetYear
+    ) {
+        if (createSourceMaps != null) this.createSourceMaps = createSourceMaps
+        if (originalFileNames != null) this.originalFileNames = originalFileNames
+    }
+}

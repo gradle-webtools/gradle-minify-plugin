@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS;
 import static org.gradle.util.GFileUtils.writeFile;
-import static org.padler.gradle.minify.MinifyPlugin.TASK_NAME;
 
 class MinifyTaskTest {
 
@@ -19,7 +18,7 @@ class MinifyTaskTest {
     public File testProjectDir;
 
     private void setUpTestProject() throws Exception {
-        File buildFile = new File(testProjectDir, "build.gradle");
+        File buildFile = new File(testProjectDir, "build.gradle.kts");
         File cssDir = new File(testProjectDir, "css");
         File jsDir = new File(testProjectDir, "js");
         cssDir.mkdir();
@@ -27,11 +26,11 @@ class MinifyTaskTest {
         File cssFile = new File(cssDir, "css.css");
         File jsFile = new File(jsDir, "js.js");
         cssFile.createNewFile();
-        Files.write(jsFile.toPath(), "alert('Hello, world!');".getBytes());
-        String plugin = "plugins { id 'org.padler.gradle.minify' version '1.6.0' }";
-        String config = "tasks.register(\"minify\", org.padler.gradle.minify.JsMinifyTask) { \n" +
-                "srcDir = file(\"js\")\n"+
-                "dstDir = file(\"build/js\")"+
+        Files.write(jsFile.toPath(), "alert('Hello, world!');\n\nalert('Hello, world!');\n\nalert('Hello, world!');\n\nalert('Hello, world!');\n\n".getBytes());
+        String plugin = "plugins { id (\"org.padler.gradle.minify\") version \"1.6.0\" }";
+        String config = "tasks.create<org.padler.gradle.minify.JsMinifyTask>(\"minify\") { \n" +
+                "srcDir = project.file(\"js\")\n" +
+                "dstDir = project.file(\"build/js\")" +
                 "}";
         writeFile(plugin + "\n" + config, buildFile);
     }
@@ -43,10 +42,10 @@ class MinifyTaskTest {
         BuildResult result = GradleRunner.create()
                 .withProjectDir(testProjectDir)
                 .withPluginClasspath()
-                .withArguments(TASK_NAME, "--stacktrace")
+                .withArguments("minify", "--stacktrace")
                 .build();
 
-        assertThat(result.task(":" + TASK_NAME).getOutcome()).isEqualTo(SUCCESS);
+        assertThat(result.task(":minify").getOutcome()).isEqualTo(SUCCESS);
+        assertThat(new File(testProjectDir, "build/js/js.js")).hasContent("'use strict';alert(\"Hello, world!\");alert(\"Hello, world!\");alert(\"Hello, world!\");alert(\"Hello, world!\");");
     }
-
 }

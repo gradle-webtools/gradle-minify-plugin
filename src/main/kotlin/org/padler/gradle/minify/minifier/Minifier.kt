@@ -59,7 +59,7 @@ abstract class Minifier {
         }
     }
 
-    protected fun minifyFileSave(srcFile: File, dstFile: File) {
+    private fun minifyFileSave(srcFile: File, dstFile: File) {
         try {
             minifyFile(srcFile, dstFile)
         } catch (e: IOException) {

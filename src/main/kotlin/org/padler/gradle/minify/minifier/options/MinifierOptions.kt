@@ -1,6 +1,6 @@
 package org.padler.gradle.minify.minifier.options
 
-open class MinifierOptions {
-    var createSourceMaps = false
-    var originalFileNames = false
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+open class MinifierOptions(open var createSourceMaps: Boolean = false, open var originalFileNames: Boolean = false)
