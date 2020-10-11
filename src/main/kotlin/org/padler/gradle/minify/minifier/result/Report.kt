@@ -1,28 +1,16 @@
-package org.padler.gradle.minify.minifier.result;
+package org.padler.gradle.minify.minifier.result
 
-import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter
+import java.util.*
 
 @Getter
-public class Report {
-    private final List<Error> errors = new ArrayList<>();
-    private final List<Warning> warnings = new ArrayList<>();
-
-    public void add(Error error) {
-        errors.add(error);
+class Report {
+    val errors: MutableList<Error> = mutableListOf()
+    val warnings: MutableList<Warning> = mutableListOf()
+    fun add(error: Error) {
+        errors.add(error)
     }
-
-    public void add(Warning warning) {
-        warnings.add(warning);
-    }
-
-    public List<Error> getErrors() {
-        return errors;
-    }
-
-    public List<Warning> getWarnings() {
-        return warnings;
+    fun add(warning: Warning) {
+        warnings.add(warning)
     }
 }

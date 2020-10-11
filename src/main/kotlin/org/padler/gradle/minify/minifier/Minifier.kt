@@ -1,118 +1,114 @@
-package org.padler.gradle.minify.minifier;
+package org.padler.gradle.minify.minifier
 
-import org.gradle.api.GradleException;
-import org.padler.gradle.minify.minifier.options.MinifierOptions;
-import org.padler.gradle.minify.minifier.result.Error;
-import org.padler.gradle.minify.minifier.result.Report;
-import org.padler.gradle.minify.minifier.result.Warning;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.gradle.api.GradleException
+import org.padler.gradle.minify.minifier.options.MinifierOptions
+import org.padler.gradle.minify.minifier.result.Report
+import org.slf4j.LoggerFactory
+import java.io.File
+import java.io.IOException
+import java.io.UncheckedIOException
+import java.nio.file.*
+import java.util.*
+import java.util.stream.Collectors
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.*;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+abstract class Minifier {
 
-public abstract class Minifier {
+    val report = Report()
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Minifier.class);
-
-    protected final Report report = new Report();
-
-    public void minify(String srcDir, String dstDir) {
-        minifyInternal(srcDir, dstDir);
-        if (LOGGER.isErrorEnabled()) {
-            LOGGER.error(createReport());
-        }
-        if (!report.getErrors().isEmpty())
-            throw new GradleException(report.getErrors() + " Errors in " + getMinifierName());
+    companion object {
+        private val LOGGER = LoggerFactory.getLogger(Minifier::class.java)
     }
 
-    protected void minifyInternal(String srcDir, String dstDir) {
-        try (Stream<Path> filesStream = Files.list(Paths.get(srcDir)).filter(f -> !f.toString().equals(srcDir))) {
-            List<Path> files = filesStream.collect(Collectors.toList());
-            for (Path f : files) {
-                if (f.toFile().isFile()) {
-                    Path dst = Paths.get(dstDir);
-                    String fileName = f.getFileName().toString();
-                    File copy = new File(dst.toString(), fileName);
-                    if (Boolean.FALSE.equals(getMinifierOptions().getOriginalFileNames())) {
-                        fileName = rename(fileName);
-                    }
-                    File dstFile = new File(dst.toString(), fileName);
-                    dstFile.getParentFile().mkdirs();
-                    if (fileTypeMatches(f)) {
-                        Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                        minify(f.toFile(), dstFile);
-                    }
-                } else if (f.toFile().isDirectory()) {
-                    String newDstDir = dstDir + "/" + f.getFileName().toString();
-                    minifyInternal(f.toString(), newDstDir);
-                }
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+    fun minify(srcDir: File, dstDir: File): Unit = minify(srcDir.path, dstDir.path)
+
+    fun minify(srcDir: String, dstDir: String) {
+        minifyInternal(srcDir, dstDir)
+        if (LOGGER.isErrorEnabled) {
+            LOGGER.error(createReport())
         }
+        if (report.errors.isNotEmpty()) throw GradleException(report.errors.toString() + " Errors in " + minifierName)
     }
 
-    protected void minify(File srcFile, File dstFile) {
+    private fun minifyInternal(srcDir: String, dstDir: String) {
         try {
-            minifyFile(srcFile, dstFile);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            Files.list(Paths.get(srcDir)).filter { f: Path -> f.toString() != srcDir }
+                    .use { filesStream ->
+                        val files = filesStream.collect(Collectors.toList())
+                        for (f in files) {
+                            if (f.toFile().isFile) {
+                                val dst = Paths.get(dstDir)
+                                var fileName = f.fileName.toString()
+                                val copy = File(dst.toString(), fileName)
+                                if (minifierOptions.originalFileNames) {
+                                    fileName = rename(fileName)
+                                }
+                                val dstFile = File(dst.toString(), fileName)
+                                dstFile.parentFile.mkdirs()
+                                if (fileTypeMatches(f)) {
+                                    Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                                    minifyFileSave(f.toFile(), dstFile)
+                                }
+                            } else if (f.toFile().isDirectory) {
+                                val newDstDir = dstDir + "/" + f.fileName.toString()
+                                minifyInternal(f.toString(), newDstDir)
+                            }
+                        }
+                    }
+        } catch (e: IOException) {
+            throw UncheckedIOException(e)
         }
     }
 
-    protected String createReport() {
-        StringBuilder reportStr = new StringBuilder();
-        for (Error error : report.getErrors()) {
-            reportStr.append("Error: ");
-            reportStr.append(error);
-            reportStr.append("\n");
+    protected fun minifyFileSave(srcFile: File, dstFile: File) {
+        try {
+            minifyFile(srcFile, dstFile)
+        } catch (e: IOException) {
+            throw UncheckedIOException(e)
         }
-        for (Warning warning : report.getWarnings()) {
-            reportStr.append("Warning: ");
-            reportStr.append(warning);
-            reportStr.append("\n");
+    }
+
+    private fun createReport(): String {
+        val reportStr = StringBuilder()
+        for (error in report.errors) {
+            reportStr.append("Error: ")
+            reportStr.append(error)
+            reportStr.append("\n")
         }
-        reportStr.append(getMinifierName())
+        for (warning in report.warnings) {
+            reportStr.append("Warning: ")
+            reportStr.append(warning)
+            reportStr.append("\n")
+        }
+        reportStr.append(minifierName)
                 .append(": ")
-                .append(report.getErrors().size())
+                .append(report.errors.size)
                 .append(" error(s), ")
-                .append(report.getWarnings().size())
-                .append(" warning(s)\n");
-        return reportStr.toString();
+                .append(report.warnings.size)
+                .append(" warning(s)\n")
+        return reportStr.toString()
     }
 
-    protected void writeToFile(File dstFile, String string) {
-        OpenOption create = StandardOpenOption.CREATE;
-        OpenOption write = StandardOpenOption.WRITE;
-        OpenOption truncateExisting = StandardOpenOption.TRUNCATE_EXISTING;
+    protected fun writeToFile(dstFile: File, string: String) {
+        val create: OpenOption = StandardOpenOption.CREATE
+        val write: OpenOption = StandardOpenOption.WRITE
+        val truncateExisting: OpenOption = StandardOpenOption.TRUNCATE_EXISTING
         try {
-            Files.write(dstFile.toPath(), string.getBytes(), create, write, truncateExisting);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            Files.write(dstFile.toPath(), string.toByteArray(), create, write, truncateExisting)
+        } catch (e: IOException) {
+            throw UncheckedIOException(e)
         }
     }
 
-    protected String getExtension(String filename) {
+    protected fun getExtension(filename: String): String {
         return Optional.ofNullable(filename)
-                .filter(f -> f.contains("."))
-                .map(f -> f.substring(filename.lastIndexOf('.') + 1))
-                .orElse("");
+                .filter { f: String -> f.contains(".") }
+                .map { f: String -> f.substring(filename.lastIndexOf('.') + 1) }
+                .orElse("")
     }
+    protected abstract fun fileTypeMatches(f: Path): Boolean
+    abstract val minifierOptions: MinifierOptions
+    protected abstract val minifierName: String
+    protected abstract fun minifyFile(srcFile: File, dstFile: File)
 
-    protected abstract boolean fileTypeMatches(Path f);
-
-    public abstract MinifierOptions getMinifierOptions();
-
-    protected abstract String getMinifierName();
-
-    protected abstract void minifyFile(File srcFile, File dstFile) throws IOException;
-
-    protected abstract String rename(String oldName);
+    protected abstract fun rename(oldName: String): String
 }

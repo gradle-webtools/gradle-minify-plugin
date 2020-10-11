@@ -1,18 +1,16 @@
-package org.padler.gradle.minify;
+package org.padler.gradle.minify
 
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
-public class MinifyPlugin implements Plugin<Project> {
+open class MinifyPlugin : Plugin<Project> {
 
-    public static final String EXTENSION_NAME = "minification";
-    public static final String TASK_NAME = "minify";
+    override fun apply(project: Project) {
 
-    @Override
-    public void apply(Project project) {
-        project.getExtensions().create(EXTENSION_NAME, MinifyPluginExtension.class);
-        MinifyTask minify = project.getTasks().create(TASK_NAME, MinifyTask.class);
-        minify.setGroup("build");
     }
 
+    companion object {
+        const val EXTENSION_NAME = "minification"
+        const val TASK_NAME = "minify"
+    }
 }

@@ -1,134 +1,113 @@
-package org.padler.gradle.minify.minifier;
+package org.padler.gradle.minify.minifier
 
-import com.google.common.css.*;
-import com.google.common.css.compiler.ast.BasicErrorManager;
-import com.google.common.css.compiler.ast.ErrorManager;
-import com.google.common.css.compiler.ast.GssError;
-import com.google.common.css.compiler.commandline.DefaultCommandLineCompiler;
-import com.google.common.css.compiler.gssfunctions.DefaultGssFunctionMapProvider;
-import org.padler.gradle.minify.minifier.options.CSSMinifierOptions;
-import org.padler.gradle.minify.minifier.result.Error;
-import org.padler.gradle.minify.minifier.result.Warning;
-
-import javax.annotation.Nullable;
-import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import com.google.common.css.*
+import com.google.common.css.compiler.ast.BasicErrorManager
+import com.google.common.css.compiler.ast.ErrorManager
+import com.google.common.css.compiler.ast.GssError
+import com.google.common.css.compiler.commandline.DefaultCommandLineCompiler
+import com.google.common.css.compiler.gssfunctions.DefaultGssFunctionMapProvider
+import org.padler.gradle.minify.minifier.options.CSSMinifierOptions
+import org.padler.gradle.minify.minifier.result.Error
+import org.padler.gradle.minify.minifier.result.Warning
+import java.io.File
+import java.io.IOException
+import java.io.UncheckedIOException
+import java.nio.file.Files
+import java.nio.file.Path
 
 /**
  * Uses closure stylesheets.
  * Implemented with help from https://github.com/marcodelpercio https://github.com/google/closure-stylesheets/issues/101
  */
-public class CssMinifier extends Minifier {
+class CssMinifier(override var minifierOptions: CSSMinifierOptions = CSSMinifierOptions()) : Minifier() {
 
-    protected CSSMinifierOptions minifierOptions = new CSSMinifierOptions();
-
-    @Override
-    protected void minifyFile(File srcFile, File dstFile) {
+    override fun minifyFile(srcFile: File, dstFile: File) {
         try {
-            JobDescription job = createJobDescription(srcFile);
-            ExitCodeHandler exitCodeHandler = new DefaultExitCodeHandler();
-            CompilerErrorManager errorManager = new CompilerErrorManager();
-            ClosureStylesheetCompiler compiler = new ClosureStylesheetCompiler(job, exitCodeHandler, errorManager);
-
-            File sourcemapFile = null;
-            if (Boolean.TRUE.equals(minifierOptions.getCreateSoureMaps())) {
-                sourcemapFile = new File(dstFile.getAbsolutePath() + ".map");
+            val job = createJobDescription(srcFile)
+            val exitCodeHandler = DefaultExitCodeHandler()
+            val errorManager = CompilerErrorManager()
+            val compiler = ClosureStylesheetCompiler(job, exitCodeHandler, errorManager)
+            var sourcemapFile: File? = null
+            if (minifierOptions.createSourceMaps) {
+                sourcemapFile = File(dstFile.absolutePath + ".map")
             }
-
-            String compilerOutput = compiler.execute(null, sourcemapFile);
+            var compilerOutput = compiler.execute(null, sourcemapFile)
             if (sourcemapFile != null) {
-                compilerOutput += "\n/*# sourceMappingURL=" + sourcemapFile.getName() + " */";
+                compilerOutput += "\n/*# sourceMappingURL=${sourcemapFile.name} */"
             }
-            writeToFile(dstFile, compilerOutput);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            writeToFile(dstFile, compilerOutput)
+        } catch (e: IOException) {
+            throw UncheckedIOException(e)
         }
     }
 
-    @Override
-    protected boolean fileTypeMatches(Path f) {
-        return "css".equals(getExtension(f.toString()));
+    override fun fileTypeMatches(f: Path): Boolean {
+        return "css" == getExtension(f.toString())
     }
 
-    @Override
-    public CSSMinifierOptions getMinifierOptions() {
-        return minifierOptions;
+    override val minifierName = "CSS Minifier"
+
+    override fun rename(oldName: String): String {
+        return oldName.replace(".css", ".min.css")
     }
 
-    @Override
-    protected String getMinifierName() {
-        return "CSS Minifier";
+    @Throws(IOException::class)
+    private fun createJobDescription(file: File): JobDescription {
+        val builder = JobDescriptionBuilder()
+        builder.setInputOrientation(minifierOptions.inputOrientation)
+        builder.setOutputOrientation(minifierOptions.outputOrientation)
+        builder.setOutputFormat(minifierOptions.outputFormat)
+        builder.setCopyrightNotice(minifierOptions.copyrightNotice)
+        builder.setTrueConditionNames(minifierOptions.trueConditionNames)
+        builder.setAllowDefPropagation(minifierOptions.allowDefPropagation)
+        builder.setAllowUnrecognizedFunctions(minifierOptions.allowUnrecognizedFunctions)
+        builder.setAllowedNonStandardFunctions(minifierOptions.allowedNonStandardFunctions)
+        builder.setAllowedUnrecognizedProperties(minifierOptions.allowedUnrecognizedProperties)
+        builder.setAllowUnrecognizedProperties(minifierOptions.allowUnrecognizedProperties)
+        builder.setVendor(minifierOptions.vendor)
+        builder.setAllowKeyframes(minifierOptions.allowKeyframes)
+        builder.setAllowWebkitKeyframes(minifierOptions.allowWebkitKeyframes)
+        builder.setProcessDependencies(minifierOptions.processDependencies)
+        builder.setExcludedClassesFromRenaming(minifierOptions.excludedClassesFromRenaming)
+        builder.setSimplifyCss(minifierOptions.simplifyCss)
+        builder.setEliminateDeadStyles(minifierOptions.eliminateDeadStyles)
+        builder.setCssSubstitutionMapProvider(SubstitutionMapProvider { IdentitySubstitutionMap() })
+        builder.setCssRenamingPrefix(minifierOptions.cssRenamingPrefix)
+        builder.setPreserveComments(minifierOptions.preserveComments)
+        builder.setOutputRenamingMapFormat(minifierOptions.outputRenamingMapFormat)
+        builder.setCompileConstants(minifierOptions.compileConstants)
+        val gssFunMapProv: GssFunctionMapProvider = DefaultGssFunctionMapProvider()
+        builder.setGssFunctionMapProvider(gssFunMapProv)
+        builder.setSourceMapLevel(minifierOptions.sourceMapLevel)
+        builder.setCreateSourceMap(minifierOptions.createSourceMaps)
+        val fileContents = String(Files.readAllBytes(file.toPath()))
+        builder.addInput(SourceCode(file.name, fileContents))
+        return builder.jobDescription
     }
 
-    @Override
-    protected String rename(String oldName) {
-        return oldName.replace(".css", ".min.css");
-    }
+    internal inner class CompilerErrorManager : BasicErrorManager() {
 
-    private JobDescription createJobDescription(File file) throws IOException {
-        JobDescriptionBuilder builder = new JobDescriptionBuilder();
-        builder.setInputOrientation(minifierOptions.getInputOrientation());
-        builder.setOutputOrientation(minifierOptions.getOutputOrientation());
-        builder.setOutputFormat(minifierOptions.getOutputFormat());
-        builder.setCopyrightNotice(minifierOptions.getCopyrightNotice());
-        builder.setTrueConditionNames(minifierOptions.getTrueConditionNames());
-        builder.setAllowDefPropagation(minifierOptions.getAllowDefPropagation());
-        builder.setAllowUnrecognizedFunctions(minifierOptions.getAllowUnrecognizedFunctions());
-        builder.setAllowedNonStandardFunctions(minifierOptions.getAllowedNonStandardFunctions());
-        builder.setAllowedUnrecognizedProperties(minifierOptions.getAllowedUnrecognizedProperties());
-        builder.setAllowUnrecognizedProperties(minifierOptions.getAllowUnrecognizedProperties());
-        builder.setVendor(minifierOptions.getVendor());
-        builder.setAllowKeyframes(minifierOptions.getAllowKeyframes());
-        builder.setAllowWebkitKeyframes(minifierOptions.getAllowWebkitKeyframes());
-        builder.setProcessDependencies(minifierOptions.getProcessDependencies());
-        builder.setExcludedClassesFromRenaming(minifierOptions.getExcludedClassesFromRenaming());
-        builder.setSimplifyCss(minifierOptions.getSimplifyCss());
-        builder.setEliminateDeadStyles(minifierOptions.getEliminateDeadStyles());
-        builder.setCssSubstitutionMapProvider(IdentitySubstitutionMap::new);
-        builder.setCssRenamingPrefix(minifierOptions.getCssRenamingPrefix());
-        builder.setPreserveComments(minifierOptions.getPreserveComments());
-        builder.setOutputRenamingMapFormat(minifierOptions.getOutputRenamingMapFormat());
-        builder.setCompileConstants(minifierOptions.getCompileConstants());
-        GssFunctionMapProvider gssFunMapProv = new DefaultGssFunctionMapProvider();
-        builder.setGssFunctionMapProvider(gssFunMapProv);
-        builder.setSourceMapLevel(minifierOptions.getSourceMapLevel());
-        builder.setCreateSourceMap(minifierOptions.getCreateSoureMaps());
-
-        String fileContents = new String(Files.readAllBytes(file.toPath()));
-        builder.addInput(new SourceCode(file.getName(), fileContents));
-
-        return builder.getJobDescription();
-    }
-
-    final class CompilerErrorManager extends BasicErrorManager {
-        @Override
-        public void print(String msg) {
+        override fun print(msg: String) {
             // Do nothing to have all errors at the end
         }
 
-        @Override
-        public void report(GssError error) {
-            report.add(new Error(error));
+        override fun report(error: GssError) {
+            report.add(Error(error))
         }
 
-        @Override
-        public void reportWarning(GssError warning) {
-            report.add(new Warning(warning));
+        override fun reportWarning(warning: GssError) {
+            report.add(Warning(warning))
         }
     }
 
-    public class ClosureStylesheetCompiler extends DefaultCommandLineCompiler {
+    inner class ClosureStylesheetCompiler(
+            job: JobDescription?,
+            exitCodeHandler: ExitCodeHandler?,
+            errorManager: ErrorManager?
+    ) : DefaultCommandLineCompiler(job, exitCodeHandler, errorManager) {
 
-        public ClosureStylesheetCompiler(JobDescription job, ExitCodeHandler exitCodeHandler, ErrorManager errorManager) {
-            super(job, exitCodeHandler, errorManager);
-        }
-
-        @Override
-        public String execute(@Nullable File renameFile, @Nullable File sourcemapFile) {
-            return super.execute(renameFile, sourcemapFile);
+        public override fun execute(renameFile: File?, sourcemapFile: File?): String {
+            return super.execute(renameFile, sourcemapFile)
         }
     }
 }

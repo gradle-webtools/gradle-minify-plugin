@@ -1,5 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.10"
+    kotlin("plugin.serialization") version "1.4.10"
     id("com.gradle.plugin-publish") version "0.12.0"
     id("maven-publish")
     id("java-gradle-plugin")
@@ -50,6 +51,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
+
     // https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations
     implementation("com.google.auto.value:auto-value-annotations:1.7.4")
 

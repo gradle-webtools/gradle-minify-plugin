@@ -1,14 +1,9 @@
-package org.padler.gradle.minify.minifier.result;
+package org.padler.gradle.minify.minifier.result
 
-import com.google.common.css.compiler.ast.GssError;
-import com.google.javascript.jscomp.JSError;
+import com.google.common.css.compiler.ast.GssError
+import com.google.javascript.jscomp.JSError
 
-public class Warning extends Event {
-    public Warning(GssError error) {
-        super(error);
-    }
-
-    public Warning(JSError error) {
-        super(error);
-    }
+class Warning : Event {
+    constructor(error: GssError) : super(error) {}
+    constructor(error: JSError) : super(error) {}
 }

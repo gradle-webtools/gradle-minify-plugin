@@ -59,7 +59,7 @@ class JsMinifierTest {
     @Test
     void minifyFileWithSourceMaps() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
-        jsMinifier.getMinifierOptions().setCreateSoureMaps(true);
+        jsMinifier.getMinifierOptions().setCreateSourceMaps(true);
         File dst = new File(testProjectDir, "dst");
         dst.mkdir();
 
@@ -84,7 +84,7 @@ class JsMinifierTest {
     @Test
     void minifyFileWithError() throws Exception {
         JsMinifier jsMinifier = new JsMinifier();
-        jsMinifier.getMinifierOptions().setCreateSoureMaps(true);
+        jsMinifier.getMinifierOptions().setCreateSourceMaps(true);
         File dst = new File(testProjectDir, "dst");
         dst.mkdir();
 
@@ -93,8 +93,8 @@ class JsMinifierTest {
 
         List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
         assertThat(files.size()).isEqualTo(1);
-        assertThat(jsMinifier.report.getErrors().size()).isEqualTo(1);
-        assertThat(jsMinifier.report.getWarnings()).isEmpty();
+        assertThat(jsMinifier.getReport().getErrors().size()).isEqualTo(1);
+        assertThat(jsMinifier.getReport().getWarnings()).isEmpty();
     }
 
     @Test

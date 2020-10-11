@@ -29,7 +29,10 @@ class MinifyTaskTest {
         cssFile.createNewFile();
         Files.write(jsFile.toPath(), "alert('Hello, world!');".getBytes());
         String plugin = "plugins { id 'org.padler.gradle.minify' version '1.6.0' }";
-        String config = "minification{cssDstDir=\"$buildDir/dist/css\"\ncssSrcDir=\"${rootDir}/css\"\njsDstDir=\"$buildDir/dist/js\"\njsSrcDir=\"${rootDir}/js\"}";
+        String config = "tasks.register(\"minify\", org.padler.gradle.minify.JsMinifyTask) { \n" +
+                "srcDir = file(\"js\")\n"+
+                "dstDir = file(\"build/js\")"+
+                "}";
         writeFile(plugin + "\n" + config, buildFile);
     }
 

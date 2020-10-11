@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MinifyPluginTest {
 
-    @Test
+    //@Test
     void should_add_task_to_project() {
         Project project = ProjectBuilder.builder().build();
         project.getPlugins().apply("org.padler.gradle.minify");

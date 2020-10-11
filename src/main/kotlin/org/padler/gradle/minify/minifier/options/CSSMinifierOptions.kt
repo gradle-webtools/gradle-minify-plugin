@@ -1,39 +1,34 @@
-package org.padler.gradle.minify.minifier.options;
+package org.padler.gradle.minify.minifier.options
 
-import com.google.common.collect.Lists;
-import com.google.common.css.JobDescription;
-import com.google.common.css.OutputRenamingMapFormat;
-import com.google.common.css.Vendor;
-import lombok.Getter;
-import lombok.Setter;
+import com.google.common.collect.Lists
+import com.google.common.css.JobDescription.*
+import com.google.common.css.OutputRenamingMapFormat
+import com.google.common.css.Vendor
+import kotlinx.serialization.Serializable
+import java.util.*
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-@Getter
-@Setter
-public class CSSMinifierOptions extends MinifierOptions {
-    private JobDescription.InputOrientation inputOrientation = JobDescription.InputOrientation.LTR;
-    private JobDescription.OutputOrientation outputOrientation = JobDescription.OutputOrientation.LTR;
-    private JobDescription.OutputFormat outputFormat = JobDescription.OutputFormat.COMPRESSED;
-    private String copyrightNotice = null;
-    private List<String> trueConditionNames = Lists.newArrayList();
-    private Boolean allowDefPropagation = true;
-    private Boolean allowUnrecognizedFunctions = true;
-    private List<String> allowedNonStandardFunctions = Lists.newArrayList();
-    private List<String> allowedUnrecognizedProperties = Lists.newArrayList();
-    private Boolean allowUnrecognizedProperties = true;
-    private Vendor vendor = null;
-    private Boolean allowKeyframes = true;
-    private Boolean allowWebkitKeyframes = true;
-    private Boolean processDependencies = true;
-    private List<String> excludedClassesFromRenaming = Lists.newArrayList();
-    private Boolean simplifyCss = true;
-    private Boolean eliminateDeadStyles = false;
-    private String cssRenamingPrefix = "";
-    private Boolean preserveComments = false;
-    private OutputRenamingMapFormat outputRenamingMapFormat = OutputRenamingMapFormat.JSON;
-    private Map<String, Integer> compileConstants = new HashMap<>();
-    private JobDescription.SourceMapDetailLevel sourceMapLevel = JobDescription.SourceMapDetailLevel.DEFAULT;
-}
+@Serializable
+data class CSSMinifierOptions(
+        var inputOrientation: InputOrientation = InputOrientation.LTR,
+        var outputOrientation: OutputOrientation = OutputOrientation.LTR,
+        var outputFormat: OutputFormat = OutputFormat.COMPRESSED,
+        var copyrightNotice: String? = null,
+        var trueConditionNames: List<String> = Lists.newArrayList(),
+        var allowDefPropagation: Boolean = true,
+        var allowUnrecognizedFunctions: Boolean = true,
+        var allowedNonStandardFunctions: List<String> = Lists.newArrayList(),
+        var allowedUnrecognizedProperties: List<String> = Lists.newArrayList(),
+        var allowUnrecognizedProperties: Boolean = true,
+        var vendor: Vendor? = null,
+        var allowKeyframes: Boolean = true,
+        var allowWebkitKeyframes: Boolean = true,
+        var processDependencies: Boolean = true,
+        var excludedClassesFromRenaming: List<String> = Lists.newArrayList(),
+        var simplifyCss: Boolean = true,
+        var eliminateDeadStyles: Boolean = false,
+        var cssRenamingPrefix: String = "",
+        var preserveComments: Boolean = false,
+        var outputRenamingMapFormat: OutputRenamingMapFormat = OutputRenamingMapFormat.JSON,
+        var compileConstants: Map<String, Int> = HashMap(),
+        var sourceMapLevel: SourceMapDetailLevel = SourceMapDetailLevel.DEFAULT
+) : MinifierOptions()

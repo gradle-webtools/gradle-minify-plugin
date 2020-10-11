@@ -1,36 +1,30 @@
-package org.padler.gradle.minify.minifier.result;
+package org.padler.gradle.minify.minifier.result
 
-import com.google.common.css.compiler.ast.GssError;
-import com.google.javascript.jscomp.JSError;
+import com.google.common.css.compiler.ast.GssError
+import com.google.javascript.jscomp.JSError
 
-public class Event {
-    private int charNo;
-    private int lineNo;
-    private String message;
-    private String sourceFileName;
+open class Event {
 
-    public Event(GssError error) {
-        charNo = error.getLocation().getBeginCharacterIndex();
-        lineNo = error.getLocation().getLineNumber();
-        message = error.getMessage();
-        sourceFileName = error.getLocation().getSourceCode().getFileName();
+    private var charNo: Int
+    private var lineNo: Int
+    private var message: String
+    private var sourceFileName: String
+
+    constructor(error: GssError) {
+        charNo = error.location.beginCharacterIndex
+        lineNo = error.location.lineNumber
+        message = error.message
+        sourceFileName = error.location.sourceCode.fileName
     }
 
-    public Event(JSError error) {
-        charNo = error.getCharno();
-        lineNo = error.getLineNumber();
-        message = error.getDescription();
-        sourceFileName = error.getSourceName();
+    constructor(error: JSError) {
+        charNo = error.charno
+        lineNo = error.lineNumber
+        message = error.description
+        sourceFileName = error.sourceName
     }
 
-    @Override
-    public final String toString() {
-        return message
-                + " at "
-                + sourceFileName
-                + " line "
-                + lineNo
-                + " : "
-                + charNo;
+    override fun toString(): String {
+        return "$message at $sourceFileName line $lineNo : $charNo"
     }
 }
