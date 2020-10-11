@@ -4,8 +4,6 @@ plugins {
     id("com.gradle.plugin-publish") version "0.12.0"
     id("maven-publish")
     id("java-gradle-plugin")
-    id("groovy")
-    id("io.freefair.lombok") version "5.2.1"
     id("jacoco")
     id("org.sonarqube") version "3.0"
 }
