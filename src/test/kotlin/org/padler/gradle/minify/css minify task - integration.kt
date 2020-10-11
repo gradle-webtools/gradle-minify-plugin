@@ -9,7 +9,7 @@ import org.gradle.util.GFileUtils
 import java.io.File
 import java.nio.file.Files
 
-class `js minify task - integration` : AnnotationSpec() {
+class `css minify task - integration` : AnnotationSpec() {
 
     override fun isolationMode() = IsolationMode.InstancePerTest
 
@@ -21,18 +21,19 @@ class `js minify task - integration` : AnnotationSpec() {
 
     private fun setUpTestProject() {
         val buildFile = File(testProjectDir, "build.gradle.kts")
-        val jsDir = File(testProjectDir, "js")
-        jsDir.mkdir()
-        val jsFile = File(jsDir, "js.js")
+        val cssDir = File(testProjectDir, "css")
+        cssDir.mkdir()
+        val cssFile = File(cssDir, "css.css")
+        cssFile.createNewFile()
         Files.write(
-                jsFile.toPath(),
-                "alert('Hello, world!');\n\nalert('Hello, world!');\n\nalert('Hello, world!');\n\nalert('Hello, world!');\n\n".toByteArray()
+                cssFile.toPath(),
+                "body {\n  color: black;\n}".toByteArray()
         )
         val plugin = "plugins { id (\"org.padler.gradle.minify\") version \"1.6.0\" }"
         val config = """
-            tasks.create<org.padler.gradle.minify.JsMinifyTask>("minify") { 
-                srcDir = project.file("js")
-                dstDir = project.file("build/js")
+            tasks.create<org.padler.gradle.minify.CssMinifyTask>("minify") { 
+                srcDir = project.file("css")
+                dstDir = project.file("build/css")
             }
             """.trimIndent()
         GFileUtils.writeFile("$plugin\n$config", buildFile)
@@ -47,7 +48,6 @@ class `js minify task - integration` : AnnotationSpec() {
                 .withArguments("minify", "--stacktrace")
                 .build()
         result.task(":minify")!!.outcome shouldBe TaskOutcome.SUCCESS
-        File(testProjectDir, "build/js/js.min.js").readText() shouldBe "'use strict';alert(\"Hello, world!\");alert" +
-                "(\"Hello, world!\");alert(\"Hello, world!\");alert(\"Hello, world!\");"
+        File(testProjectDir, "build/css/css.min.css").readText() shouldBe "body{color:black}"
     }
 }

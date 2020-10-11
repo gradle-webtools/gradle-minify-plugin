@@ -30,7 +30,7 @@ class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOpt
                 val sourceMapContent = StringBuilder()
                 result.sourceMap.appendTo(sourceMapContent, dstFile.name)
                 writeToFile(sourcemapFile!!, sourceMapContent.toString())
-                source += "\n//# sourceMappingURL=${sourcemapFile.name}".trimIndent()
+                source += "\n//# sourceMappingURL=${sourcemapFile.name}"
             }
             writeToFile(dstFile, source!!)
         } else {
@@ -51,7 +51,7 @@ class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOpt
         minifierOptions.warningLevel.setOptionsForWarningLevel(options)
         options.setExtraAnnotationNames(minifierOptions.extraAnnotationNames)
         options.setStrictModeInput(minifierOptions.strictModeInput)
-        if (java.lang.Boolean.TRUE == minifierOptions.debug) minifierOptions.compilationLevel
+        if (minifierOptions.debug) minifierOptions.compilationLevel
                 .setDebugOptionsForCompilationLevel(options)
         options.setExportLocalPropertyDefinitions(minifierOptions.exportLocalPropertyDefinitions)
         for (formattingOption in minifierOptions.formatting) {

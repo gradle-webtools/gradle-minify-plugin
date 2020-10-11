@@ -1,77 +1,70 @@
-package org.padler.gradle.minify.minifier;
+package org.padler.gradle.minify.minifier
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import io.kotest.core.spec.IsolationMode
+import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.util.stream.Collectors
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
+class `CssMinifier - class` : AnnotationSpec() {
 
-import static org.assertj.core.api.Assertions.assertThat;
+    override fun isolationMode() = IsolationMode.InstancePerTest
 
-class CssMinifierTest {
-
-    @TempDir
-    public File testProjectDir;
-
-    @Test
-    void minifyFile() throws Exception {
-        CssMinifier cssMinifier = new CssMinifier();
-        File dst = new File(testProjectDir, "dst");
-        dst.mkdir();
-
-        cssMinifier.minify("src/test/resources/css", dst.getAbsolutePath());
-
-        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size()).isEqualTo(3);
-
-        Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
-        List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size()).isEqualTo(2);
+    var testProjectDir: File = Files.createTempDirectory("test_gradle_project_dir").toFile().apply {
+        afterSpec {
+            deleteRecursively()
+        }
     }
 
     @Test
-    void minifyFileWithSourceMaps() throws Exception {
-        CssMinifier cssMinifier = new CssMinifier();
-        cssMinifier.getMinifierOptions().setCreateSourceMaps(true);
-        File dst = new File(testProjectDir, "dst");
-        dst.mkdir();
-
-        cssMinifier.minify("src/test/resources/css", dst.getAbsolutePath());
-
-        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size()).isEqualTo(4);
-
-        List<Path> minifiedCss = files.stream()
-                .filter((path) -> path.toFile().getName().endsWith(".min.css"))
-                .collect(Collectors.toList());
-        assertThat(minifiedCss).hasSize(1);
-        Path path = minifiedCss.get(0);
-        List<String> lines = new BufferedReader(new FileReader(path.toFile())).lines().collect(Collectors.toList());
-        assertThat(lines.get(lines.size() - 1)).isEqualTo("/*# sourceMappingURL=" + path.getFileName() + ".map */");
-
-        Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
-        List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size()).isEqualTo(3);
+    fun minifyFile() {
+        val cssMinifier = CssMinifier()
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        cssMinifier.minify("src/test/resources/css", dst.absolutePath)
+        val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
+        files shouldHaveSize 2
+        val subDir = files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("sub") }.findFirst().orElse(null)
+        val subFiles = Files.list(subDir).collect(Collectors.toList())
+        subFiles shouldHaveSize 1
     }
 
     @Test
-    void minifyFileWithError() throws Exception {
-        CssMinifier cssMinifier = new CssMinifier();
-        File dst = new File(testProjectDir, "dst");
-        dst.mkdir();
+    fun minifyFileWithSourceMaps() {
+        val cssMinifier = CssMinifier()
+        cssMinifier.minifierOptions.createSourceMaps = true
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        cssMinifier.minify("src/test/resources/css", dst.absolutePath)
+        val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
+        files shouldHaveSize 3
+        val minifiedCss = files.stream()
+                .filter { path: Path? -> path!!.toFile().name.endsWith(".min.css") }
+                .collect(Collectors.toList())
+        minifiedCss shouldHaveSize 1
+        val path = minifiedCss[0]
+        val lines = BufferedReader(FileReader(path!!.toFile())).lines().collect(Collectors.toList())
+        lines[lines.size - 1] shouldBe "//# sourceMappingURL=" + path.fileName + ".map"
+        val subDir = files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("sub") }.findFirst().orElse(null)
+        val subFiles = Files.list(subDir).collect(Collectors.toList())
+        subFiles shouldHaveSize 2
+    }
 
-        cssMinifier.minify("src/test/resources/errors/css", dst.getAbsolutePath());
-
-        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size()).isEqualTo(2);
-
-        assertThat(cssMinifier.getReport().getErrors()).isEmpty();
-        assertThat(cssMinifier.getReport().getWarnings().size()).isEqualTo(1);
+    @Test
+    fun minifyFileWithError() {
+        val cssMinifier = CssMinifier()
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        cssMinifier.minify("src/test/resources/errors/css", dst.absolutePath)
+        val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
+        files shouldHaveSize 1
+        cssMinifier.report.errors shouldHaveSize 0
+        cssMinifier.report.warnings shouldHaveSize 1
     }
 }

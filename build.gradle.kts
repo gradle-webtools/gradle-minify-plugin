@@ -52,20 +52,14 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
-
-    // https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations
-    implementation("com.google.auto.value:auto-value-annotations:1.7.4")
-
-    // https://mvnrepository.com/artifact/com.google.javascript/closure-compiler
     implementation("com.google.javascript:closure-compiler:v20200920")
-
     implementation("org.padler:closure-stylesheets:1.6.0")
+    testImplementation("io.kotest:kotest-runner-junit5:4.3.0")
+    testImplementation("io.kotest:kotest-assertions-core:4.3.0")
+}
 
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
-
-    // https://mvnrepository.com/artifact/org.assertj/assertj-core
-    testImplementation("org.assertj:assertj-core:3.17.2")
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 gradlePlugin {

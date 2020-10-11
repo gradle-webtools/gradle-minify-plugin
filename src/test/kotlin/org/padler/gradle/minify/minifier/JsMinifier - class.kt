@@ -1,115 +1,103 @@
-package org.padler.gradle.minify.minifier;
+package org.padler.gradle.minify.minifier
 
-import org.gradle.api.GradleException;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import io.kotest.core.spec.IsolationMode
+import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
+import org.gradle.api.GradleException
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.util.stream.Collectors
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
+class `JsMinifier - class` : AnnotationSpec() {
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+    override fun isolationMode() = IsolationMode.InstancePerTest
 
-class JsMinifierTest {
-
-    @TempDir
-    public File testProjectDir;
-
-    @Test
-    void minifyFile() throws Exception {
-        JsMinifier jsMinifier = new JsMinifier();
-        File dst = new File(testProjectDir, "dst");
-        dst.mkdir();
-
-        jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
-
-        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size()).isEqualTo(3);
-
-        Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
-        List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size()).isEqualTo(2);
+    var testProjectDir: File = Files.createTempDirectory("test_gradle_project_dir").toFile().apply {
+        afterSpec {
+            deleteRecursively()
+        }
     }
 
     @Test
-    void minifyFileWithoutRenaming() throws Exception {
-        JsMinifier jsMinifier = new JsMinifier();
-        jsMinifier.getMinifierOptions().setOriginalFileNames(true);
-        File dst = new File(testProjectDir, "dst");
-        dst.mkdir();
-
-        jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
-
-        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size()).isEqualTo(2);
-        Path jsFile = files.stream().filter(path -> path.toFile().isFile()).findFirst().orElse(null);
-        assertThat(jsFile.toFile().getAbsolutePath()).doesNotContain("min.js");
-
-        Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
-        List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size()).isEqualTo(1);
+    fun minifyFile() {
+        val jsMinifier = JsMinifier()
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        jsMinifier.minify("src/test/resources/js", dst.absolutePath)
+        val files = dst.walk().toList().filterNot { it.path.endsWith("dst") }
+        files shouldHaveSize 3
+        val subDir = File(dst, "sub")
+        val subFiles = subDir.walk().toList().filterNot { it.path.endsWith("sub") }
+        subFiles shouldHaveSize 1
     }
 
     @Test
-    void minifyFileWithSourceMaps() throws Exception {
-        JsMinifier jsMinifier = new JsMinifier();
-        jsMinifier.getMinifierOptions().setCreateSourceMaps(true);
-        File dst = new File(testProjectDir, "dst");
-        dst.mkdir();
-
-        jsMinifier.minify("src/test/resources/js", dst.getAbsolutePath());
-
-        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size()).isEqualTo(4);
-
-        List<Path> minifiedJs = files.stream()
-                .filter((path) -> path.toFile().getName().endsWith(".min.js"))
-                .collect(Collectors.toList());
-        assertThat(minifiedJs).hasSize(1);
-        Path path = minifiedJs.get(0);
-        List<String> lines = new BufferedReader(new FileReader(path.toFile())).lines().collect(Collectors.toList());
-        assertThat(lines.get(lines.size() - 1)).isEqualTo("//# sourceMappingURL=" + path.getFileName() + ".map");
-
-        Path subDir = files.stream().filter(p -> p.toFile().getName().endsWith("sub")).findFirst().orElse(null);
-        List<Path> subFiles = Files.list(subDir).collect(Collectors.toList());
-        assertThat(subFiles.size()).isEqualTo(3);
+    fun minifyFileWithoutRenaming() {
+        val jsMinifier = JsMinifier()
+        jsMinifier.minifierOptions.originalFileNames = true
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        jsMinifier.minify("src/test/resources/js", dst.absolutePath)
+        val files = dst.walk().toList().filter { it.path.endsWith("dst/js.min.js") }
+        files shouldHaveSize 0
     }
 
     @Test
-    void minifyFileWithError() throws Exception {
-        JsMinifier jsMinifier = new JsMinifier();
-        jsMinifier.getMinifierOptions().setCreateSourceMaps(true);
-        File dst = new File(testProjectDir, "dst");
-        dst.mkdir();
-
-        String dstPath = dst.getAbsolutePath();
-        assertThrows(GradleException.class, () -> jsMinifier.minify("src/test/resources/errors/js", dstPath));
-
-        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size()).isEqualTo(1);
-        assertThat(jsMinifier.getReport().getErrors().size()).isEqualTo(1);
-        assertThat(jsMinifier.getReport().getWarnings()).isEmpty();
+    fun minifyFileWithSourceMaps() {
+        val jsMinifier = JsMinifier()
+        jsMinifier.minifierOptions.createSourceMaps = true
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        jsMinifier.minify("src/test/resources/js", dst.absolutePath)
+        val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
+        files shouldHaveSize 3
+        val minifiedJs = files.stream()
+                .filter { path: Path? -> path!!.toFile().name.endsWith(".min.js") }
+                .collect(Collectors.toList())
+        minifiedJs shouldHaveSize 1
+        val path = minifiedJs[0]
+        val lines = BufferedReader(FileReader(path!!.toFile())).lines().collect(Collectors.toList())
+        lines[lines.size - 1] shouldBe "//# sourceMappingURL=" + path.fileName + ".map"
+        val subDir = files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("sub") }.findFirst().orElse(null)
+        val subFiles = Files.list(subDir).collect(Collectors.toList())
+        subFiles shouldHaveSize 2
     }
 
     @Test
-    void minifyEmptyFile() throws Exception {
-        JsMinifier jsMinifier = new JsMinifier();
-        File src = new File(testProjectDir, "empty");
-        src.mkdir();
-        File empty = new File(src, "empty.js");
-        empty.createNewFile();
-        File dst = new File(testProjectDir, "dst");
-        dst.mkdir();
+    fun minifyFileWithError() {
+        val jsMinifier = JsMinifier()
+        jsMinifier.minifierOptions.createSourceMaps = true
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        val dstPath = dst.absolutePath
+        org.junit.jupiter.api.Assertions.assertThrows(GradleException::class.java) {
+            jsMinifier.minify(
+                    "src/test/resources/errors/js",
+                    dstPath
+            )
+        }
+        val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
+        files shouldHaveSize 0
+        jsMinifier.report.errors shouldHaveSize 1
+        jsMinifier.report.warnings shouldHaveSize 0
+    }
 
-        jsMinifier.minify(src.getAbsolutePath(), dst.getAbsolutePath());
-
-        List<Path> files = Files.list(Paths.get(dst.getAbsolutePath() + "/")).collect(Collectors.toList());
-        assertThat(files.size()).isEqualTo(2);
+    @Test
+    fun minifyEmptyFile() {
+        val jsMinifier = JsMinifier()
+        val src = File(testProjectDir, "empty")
+        src.mkdir()
+        val empty = File(src, "empty.js")
+        empty.createNewFile()
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        jsMinifier.minify(src.absolutePath, dst.absolutePath)
+        val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
+        files shouldHaveSize 1
     }
 }

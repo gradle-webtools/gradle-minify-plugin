@@ -33,7 +33,7 @@ class CssMinifier(override var minifierOptions: CSSMinifierOptions = CSSMinifier
             }
             var compilerOutput = compiler.execute(null, sourcemapFile)
             if (sourcemapFile != null) {
-                compilerOutput += "\n/*# sourceMappingURL=${sourcemapFile.name} */"
+                compilerOutput += "\n//# sourceMappingURL=${sourcemapFile.name}"
             }
             writeToFile(dstFile, compilerOutput)
         } catch (e: IOException) {
@@ -71,13 +71,12 @@ class CssMinifier(override var minifierOptions: CSSMinifierOptions = CSSMinifier
         builder.setExcludedClassesFromRenaming(minifierOptions.excludedClassesFromRenaming)
         builder.setSimplifyCss(minifierOptions.simplifyCss)
         builder.setEliminateDeadStyles(minifierOptions.eliminateDeadStyles)
-        builder.setCssSubstitutionMapProvider(SubstitutionMapProvider { IdentitySubstitutionMap() })
+        builder.setCssSubstitutionMapProvider { IdentitySubstitutionMap() }
         builder.setCssRenamingPrefix(minifierOptions.cssRenamingPrefix)
         builder.setPreserveComments(minifierOptions.preserveComments)
         builder.setOutputRenamingMapFormat(minifierOptions.outputRenamingMapFormat)
         builder.setCompileConstants(minifierOptions.compileConstants)
-        val gssFunMapProv: GssFunctionMapProvider = DefaultGssFunctionMapProvider()
-        builder.setGssFunctionMapProvider(gssFunMapProv)
+        builder.setGssFunctionMapProvider(DefaultGssFunctionMapProvider())
         builder.setSourceMapLevel(minifierOptions.sourceMapLevel)
         builder.setCreateSourceMap(minifierOptions.createSourceMaps)
         val fileContents = String(Files.readAllBytes(file.toPath()))

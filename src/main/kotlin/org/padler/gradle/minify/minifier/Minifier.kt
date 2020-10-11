@@ -16,6 +16,7 @@ abstract class Minifier {
     val report = Report()
 
     companion object {
+
         private val LOGGER = LoggerFactory.getLogger(Minifier::class.java)
     }
 
@@ -39,13 +40,15 @@ abstract class Minifier {
                                 val dst = Paths.get(dstDir)
                                 var fileName = f.fileName.toString()
                                 val copy = File(dst.toString(), fileName)
-                                if (minifierOptions.originalFileNames) {
+                                if (!minifierOptions.originalFileNames) {
                                     fileName = rename(fileName)
                                 }
                                 val dstFile = File(dst.toString(), fileName)
                                 dstFile.parentFile.mkdirs()
                                 if (fileTypeMatches(f)) {
-                                    Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                                    if (minifierOptions.copyOriginalFile) {
+                                        Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                                    }
                                     minifyFileSave(f.toFile(), dstFile)
                                 }
                             } else if (f.toFile().isDirectory) {
@@ -105,6 +108,7 @@ abstract class Minifier {
                 .map { f: String -> f.substring(filename.lastIndexOf('.') + 1) }
                 .orElse("")
     }
+
     protected abstract fun fileTypeMatches(f: Path): Boolean
     abstract val minifierOptions: MinifierOptions
     protected abstract val minifierName: String
