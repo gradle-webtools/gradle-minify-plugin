@@ -21,7 +21,10 @@ class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOpt
         if (minifierOptions.createSourceMaps) {
             sourcemapFile = File(dstFile.absolutePath + ".map")
             options.setSourceMapOutputPath(sourcemapFile.absolutePath)
-            options.setSourceMapLocationMappings(listOf(RelativePathLocationMapping()))
+            options.setSourceMapLocationMappings(listOf(SourceMap.LocationMapping { location ->
+                val index = location.lastIndexOf('/')
+                if (index != -1) location.substring(index + 1) else null
+            }))
         }
         val result = compiler.compile(externals, ImmutableList.of(sourceFile), options)
         if (result.success) {
