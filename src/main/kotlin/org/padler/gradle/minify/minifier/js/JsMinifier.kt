@@ -1,8 +1,8 @@
-package org.padler.gradle.minify.minifier
+package org.padler.gradle.minify.minifier.js
 
 import com.google.common.collect.ImmutableList
 import com.google.javascript.jscomp.*
-import org.padler.gradle.minify.minifier.options.JSMinifierOptions
+import org.padler.gradle.minify.minifier.Minifier
 import org.padler.gradle.minify.minifier.result.Error
 import org.padler.gradle.minify.minifier.result.Warning
 import java.io.File

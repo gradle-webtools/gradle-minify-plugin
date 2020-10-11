@@ -1,4 +1,4 @@
-package org.padler.gradle.minify.minifier
+package org.padler.gradle.minify.minifier.css
 
 import com.google.common.css.*
 import com.google.common.css.compiler.ast.BasicErrorManager
@@ -6,7 +6,7 @@ import com.google.common.css.compiler.ast.ErrorManager
 import com.google.common.css.compiler.ast.GssError
 import com.google.common.css.compiler.commandline.DefaultCommandLineCompiler
 import com.google.common.css.compiler.gssfunctions.DefaultGssFunctionMapProvider
-import org.padler.gradle.minify.minifier.options.CSSMinifierOptions
+import org.padler.gradle.minify.minifier.Minifier
 import org.padler.gradle.minify.minifier.result.Error
 import org.padler.gradle.minify.minifier.result.Warning
 import java.io.File

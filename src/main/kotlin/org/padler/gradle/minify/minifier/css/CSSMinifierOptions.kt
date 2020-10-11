@@ -1,10 +1,11 @@
-package org.padler.gradle.minify.minifier.options
+package org.padler.gradle.minify.minifier.css
 
 import com.google.common.collect.Lists
 import com.google.common.css.JobDescription.*
 import com.google.common.css.OutputRenamingMapFormat
 import com.google.common.css.Vendor
 import kotlinx.serialization.Serializable
+import org.padler.gradle.minify.minifier.MinifierOptions
 import java.util.*
 
 @Serializable

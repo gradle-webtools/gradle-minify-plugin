@@ -1,7 +1,6 @@
 package org.padler.gradle.minify.minifier
 
 import org.gradle.api.GradleException
-import org.padler.gradle.minify.minifier.options.MinifierOptions
 import org.padler.gradle.minify.minifier.result.Report
 import org.slf4j.LoggerFactory
 import java.io.File

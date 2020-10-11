@@ -1,4 +1,4 @@
-package org.padler.gradle.minify.minifier.options
+package org.padler.gradle.minify.minifier
 
 import kotlinx.serialization.Serializable
 

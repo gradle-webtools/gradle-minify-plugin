@@ -3,8 +3,8 @@ package org.padler.gradle.minify
 import kotlinx.serialization.json.Json
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
-import org.padler.gradle.minify.minifier.JsMinifier
-import org.padler.gradle.minify.minifier.options.JSMinifierOptions
+import org.padler.gradle.minify.minifier.js.JSMinifierOptions
+import org.padler.gradle.minify.minifier.js.JsMinifier
 
 open class JsMinifyTask : MinifyTask() {
 

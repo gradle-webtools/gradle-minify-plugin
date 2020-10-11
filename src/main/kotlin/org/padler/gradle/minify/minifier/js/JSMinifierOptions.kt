@@ -1,4 +1,4 @@
-package org.padler.gradle.minify.minifier.options
+package org.padler.gradle.minify.minifier.js
 
 import com.google.javascript.jscomp.CommandLineRunner
 import com.google.javascript.jscomp.CompilationLevel
@@ -12,6 +12,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import org.padler.gradle.minify.minifier.MinifierOptions
 import java.nio.charset.Charset
 import java.util.*
 

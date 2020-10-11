@@ -1,4 +1,4 @@
-package org.padler.gradle.minify.minifier
+package org.padler.gradle.minify.minifier.css
 
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.AnnotationSpec
