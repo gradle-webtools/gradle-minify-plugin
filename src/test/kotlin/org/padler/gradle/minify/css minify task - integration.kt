@@ -29,7 +29,7 @@ class `css minify task - integration` : AnnotationSpec() {
                 cssFile.toPath(),
                 "body {\n  color: black;\n}".toByteArray()
         )
-        val plugin = "plugins { id (\"org.padler.gradle.minify\") version \"1.6.0\" }"
+        val plugin = "plugins { id (\"org.padler.gradle.minify\") }"
         val config = """
             tasks.create<org.padler.gradle.minify.CssMinifyTask>("minify") { 
                 srcDir = project.file("css")

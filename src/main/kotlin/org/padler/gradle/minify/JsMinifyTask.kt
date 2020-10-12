@@ -8,13 +8,11 @@ import org.padler.gradle.minify.minifier.js.JsMinifier
 
 open class JsMinifyTask : MinifyTask() {
 
-    private var options = JSMinifierOptions()
+    var options = JSMinifierOptions()
         set(value) {
             field = value
             inputOptions = Json.encodeToString(JSMinifierOptions.serializer(), value)
         }
-
-    fun options(block: JSMinifierOptions.() -> Unit) = options.apply(block).also { options = options }
 
     @Input
     protected var inputOptions = Json.encodeToString(JSMinifierOptions.serializer(), options)
@@ -25,4 +23,6 @@ open class JsMinifyTask : MinifyTask() {
             JsMinifier(options).minify(srcDir!!, dstDir!!)
         }
     }
+
+    fun options(block: JSMinifierOptions.() -> Unit) = options.copy().apply(block).apply { options = this }
 }

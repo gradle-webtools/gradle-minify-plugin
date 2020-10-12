@@ -17,7 +17,6 @@ import java.nio.charset.Charset
 import java.util.*
 
 object CharsetSerializer : KSerializer<Charset> {
-
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Charset", PrimitiveKind.STRING)
     override fun serialize(encoder: Encoder, value: Charset) = encoder.encodeString(value.name())
     override fun deserialize(decoder: Decoder) = charset(decoder.decodeString())
