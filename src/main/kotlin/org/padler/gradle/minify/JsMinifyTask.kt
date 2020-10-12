@@ -2,12 +2,14 @@ package org.padler.gradle.minify
 
 import kotlinx.serialization.json.Json
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.padler.gradle.minify.minifier.js.JSMinifierOptions
 import org.padler.gradle.minify.minifier.js.JsMinifier
 
 open class JsMinifyTask : MinifyTask() {
 
+    @Internal
     var options = JSMinifierOptions()
         set(value) {
             field = value
