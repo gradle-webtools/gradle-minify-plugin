@@ -27,7 +27,7 @@ class `CssMinifier - class` : AnnotationSpec() {
         val cssMinifier = CssMinifier()
         val dst = File(testProjectDir, "dst")
         dst.mkdir()
-        cssMinifier.minify("src/test/resources/css", dst.absolutePath)
+        cssMinifier.minify(File("src/test/resources/css"), dst)
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
         files shouldHaveSize 2
         val subDir = files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("sub") }.findFirst().orElse(null)
@@ -41,7 +41,7 @@ class `CssMinifier - class` : AnnotationSpec() {
         cssMinifier.minifierOptions.createSourceMaps = true
         val dst = File(testProjectDir, "dst")
         dst.mkdir()
-        cssMinifier.minify("src/test/resources/css", dst.absolutePath)
+        cssMinifier.minify(File("src/test/resources/css"), dst)
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
         files shouldHaveSize 3
         val minifiedCss = files.stream()
@@ -61,7 +61,7 @@ class `CssMinifier - class` : AnnotationSpec() {
         val cssMinifier = CssMinifier()
         val dst = File(testProjectDir, "dst")
         dst.mkdir()
-        cssMinifier.minify("src/test/resources/errors/css", dst.absolutePath)
+        cssMinifier.minify(File("src/test/resources/errors/css"), dst)
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
         files shouldHaveSize 1
         cssMinifier.report.errors shouldHaveSize 0

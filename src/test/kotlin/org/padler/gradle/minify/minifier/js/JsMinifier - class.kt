@@ -1,5 +1,6 @@
 package org.padler.gradle.minify.minifier.js
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.collections.shouldHaveSize
@@ -28,7 +29,7 @@ class `JsMinifier - class` : AnnotationSpec() {
         val jsMinifier = JsMinifier()
         val dst = File(testProjectDir, "dst")
         dst.mkdir()
-        jsMinifier.minify("src/test/resources/js", dst.absolutePath)
+        jsMinifier.minify(File("src/test/resources/js"), dst)
         val files = dst.walk().toList().filterNot { it.path.endsWith("dst") }
         files shouldHaveSize 3
         val subDir = File(dst, "sub")
@@ -42,7 +43,7 @@ class `JsMinifier - class` : AnnotationSpec() {
         jsMinifier.minifierOptions.originalFileNames = true
         val dst = File(testProjectDir, "dst")
         dst.mkdir()
-        jsMinifier.minify("src/test/resources/js", dst.absolutePath)
+        jsMinifier.minify(File("src/test/resources/js"), dst)
         val files = dst.walk().toList().filter { it.path.endsWith("dst/js.min.js") }
         files shouldHaveSize 0
     }
@@ -53,7 +54,7 @@ class `JsMinifier - class` : AnnotationSpec() {
         jsMinifier.minifierOptions.createSourceMaps = true
         val dst = File(testProjectDir, "dst")
         dst.mkdir()
-        jsMinifier.minify("src/test/resources/js", dst.absolutePath)
+        jsMinifier.minify(File("src/test/resources/js"), dst)
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
         files shouldHaveSize 3
         val minifiedJs = files.stream()
@@ -75,11 +76,8 @@ class `JsMinifier - class` : AnnotationSpec() {
         val dst = File(testProjectDir, "dst")
         dst.mkdir()
         val dstPath = dst.absolutePath
-        org.junit.jupiter.api.Assertions.assertThrows(GradleException::class.java) {
-            jsMinifier.minify(
-                    "src/test/resources/errors/js",
-                    dstPath
-            )
+        shouldThrow<GradleException> {
+            jsMinifier.minify(File("src/test/resources/errors/js"), dst)
         }
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
         files shouldHaveSize 0
@@ -96,7 +94,7 @@ class `JsMinifier - class` : AnnotationSpec() {
         empty.createNewFile()
         val dst = File(testProjectDir, "dst")
         dst.mkdir()
-        jsMinifier.minify(src.absolutePath, dst.absolutePath)
+        jsMinifier.minify(src, dst)
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
         files shouldHaveSize 1
     }

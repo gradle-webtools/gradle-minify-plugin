@@ -19,9 +19,7 @@ abstract class Minifier {
         private val LOGGER = LoggerFactory.getLogger(Minifier::class.java)
     }
 
-    fun minify(srcDir: File, dstDir: File): Unit = minify(srcDir.path, dstDir.path)
-
-    fun minify(srcDir: String, dstDir: String) {
+    fun minify(srcDir: File, dstDir: File) {
         minifyInternal(srcDir, dstDir)
         if (LOGGER.isErrorEnabled) {
             LOGGER.error(createReport())
@@ -29,33 +27,30 @@ abstract class Minifier {
         if (report.errors.isNotEmpty()) throw GradleException(report.errors.toString() + " Errors in " + minifierName)
     }
 
-    private fun minifyInternal(srcDir: String, dstDir: String) {
+    private fun minifyInternal(srcDir: File, dstDir: File) {
         try {
-            Files.list(Paths.get(srcDir)).filter { f: Path -> f.toString() != srcDir }
-                    .use { filesStream ->
-                        val files = filesStream.collect(Collectors.toList())
-                        for (f in files) {
-                            if (f.toFile().isFile) {
-                                val dst = Paths.get(dstDir)
-                                var fileName = f.fileName.toString()
-                                val copy = File(dst.toString(), fileName)
-                                if (!minifierOptions.originalFileNames) {
-                                    fileName = rename(fileName)
-                                }
-                                val dstFile = File(dst.toString(), fileName)
-                                dstFile.parentFile.mkdirs()
-                                if (fileTypeMatches(f)) {
-                                    if (minifierOptions.copyOriginalFile) {
-                                        Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                                    }
-                                    minifyFileSave(f.toFile(), dstFile)
-                                }
-                            } else if (f.toFile().isDirectory) {
-                                val newDstDir = dstDir + "/" + f.fileName.toString()
-                                minifyInternal(f.toString(), newDstDir)
-                            }
-                        }
+            val files = srcDir.listFiles()
+            files.forEach {
+                val f = it.toPath()
+                if (it.isFile) {
+                    val dst = dstDir.toPath()
+                    var fileName = f.fileName.toString()
+                    val copy = File(dst.toString(), fileName)
+                    if (!minifierOptions.originalFileNames) {
+                        fileName = rename(fileName)
                     }
+                    val dstFile = File(dst.toString(), fileName)
+                    dstFile.parentFile.mkdirs()
+                    if (fileTypeMatches(f)) {
+                        if (minifierOptions.copyOriginalFile) {
+                            Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                        }
+                        minifyFileSave(f.toFile(), dstFile)
+                    }
+                } else if (it.isDirectory) {
+                    minifyInternal(it, File(dstDir, f.fileName.toString()))
+                }
+            }
         } catch (e: IOException) {
             throw UncheckedIOException(e)
         }
