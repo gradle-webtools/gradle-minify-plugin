@@ -42,7 +42,7 @@ abstract class Minifier {
                     val dstFile = File(dst.toString(), fileName)
                     dstFile.parentFile.mkdirs()
                     if (fileTypeMatches(f)) {
-                        if (minifierOptions.copyOriginalFile) {
+                        if (minifierOptions.copyOriginalFile && !minifierOptions.originalFileNames) {
                             Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
                         }
                         minifyFileSave(f.toFile(), dstFile)
