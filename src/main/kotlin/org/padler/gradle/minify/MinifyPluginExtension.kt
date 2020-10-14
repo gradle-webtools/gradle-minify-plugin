@@ -6,17 +6,20 @@ import java.io.File
 
 open class MinifyPluginExtension {
 
-    internal var defaultJsMinifyTaskContext: DefaultJsMinifyTaskContext? = null
-        private set
-    internal var defaultCssMinifyTaskContext: DefaultCssMinifyTaskContext? = null
-        private set
+    var addDefaultJsMinifyTask = false
+    var addDefaultCssMinifyTask = false
+
+    internal val defaultJsMinifyTaskContext = DefaultJsMinifyTaskContext()
+    internal val defaultCssMinifyTaskContext = DefaultCssMinifyTaskContext()
 
     fun js(block: DefaultJsMinifyTaskContext.() -> Unit) {
-        defaultJsMinifyTaskContext = defaultJsMinifyTaskContext ?: DefaultJsMinifyTaskContext().apply(block)
+        defaultJsMinifyTaskContext.apply(block)
+        addDefaultJsMinifyTask = true
     }
 
     fun css(block: DefaultCssMinifyTaskContext.() -> Unit) {
-        defaultCssMinifyTaskContext = defaultCssMinifyTaskContext ?: DefaultCssMinifyTaskContext().apply(block)
+        defaultCssMinifyTaskContext.apply(block)
+        addDefaultCssMinifyTask = true
     }
 
     class DefaultJsMinifyTaskContext internal constructor() {

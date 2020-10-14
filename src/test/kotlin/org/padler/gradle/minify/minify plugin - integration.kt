@@ -3,12 +3,14 @@ package org.padler.gradle.minify
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
+import org.gradle.util.GFileUtils
 import java.io.File
 import java.nio.file.Files
 
-class `js minify task - integration` : AnnotationSpec() {
+class `minify plugin - integration` : AnnotationSpec() {
 
     override fun isolationMode() = IsolationMode.InstancePerTest
 
@@ -20,19 +22,33 @@ class `js minify task - integration` : AnnotationSpec() {
 
     private fun setUpTestProject() {
         val buildFile = File(testProjectDir, "build.gradle.kts")
+        val config = """
+            plugins { 
+                id ("org.padler.gradle.minify")
+            }
+            minification {
+                js {
+                    srcDir = project.file("js")
+                    dstDir = project.file("build/js")
+                }
+                css {
+                    srcDir = project.file("css")
+                    dstDir = project.file("build/css")
+                }
+            }
+            """.trimIndent()
+        buildFile.writeText(config)
+
         val jsDir = File(testProjectDir, "js")
         jsDir.mkdir()
         val jsFile = File(jsDir, "js.js")
         jsFile.writeText("alert('Hello, world!');\n\nalert('Hello, world!');\n\n" +
                          "alert('Hello, world!');\n\nalert('Hello, world!');\n\n")
-        val config = """
-            plugins { id ("org.padler.gradle.minify") }
-            tasks.create<org.padler.gradle.minify.JsMinifyTask>("minify") { 
-                srcDir = project.file("js")
-                dstDir = project.file("build/js")
-            }
-            """.trimIndent()
-        buildFile.writeText(config)
+
+        val cssDir = File(testProjectDir, "css")
+        cssDir.mkdir()
+        val cssFile = File(cssDir, "css.css")
+        cssFile.writeText("body {\n  color: black;\n}")
     }
 
     @Test
@@ -41,10 +57,11 @@ class `js minify task - integration` : AnnotationSpec() {
         val result = GradleRunner.create()
                 .withProjectDir(testProjectDir)
                 .withPluginClasspath()
-                .withArguments("minify", "--stacktrace")
+                .withArguments("jsMinify", "cssMinify", "--stacktrace")
                 .build()
-        result.task(":minify")!!.outcome shouldBe TaskOutcome.SUCCESS
-        File(testProjectDir, "build/js/js.min.js").readText() shouldBe "'use strict';alert(\"Hello, world!\");" +
-                "alert(\"Hello, world!\");alert(\"Hello, world!\");alert(\"Hello, world!\");"
+        result.task(":jsMinify") shouldNotBe null
+        result.task(":jsMinify")!!.outcome shouldBe TaskOutcome.SUCCESS
+        result.task(":cssMinify") shouldNotBe null
+        result.task(":cssMinify")!!.outcome shouldBe TaskOutcome.SUCCESS
     }
 }
