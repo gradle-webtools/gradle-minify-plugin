@@ -44,8 +44,8 @@ minification {
 
 | option | effect           | values      | default     |
 | ------ | ---------------- | ----------- | ----------- |
-| css    | Sets CSS options | [css](#css) | [css](#css) |
 | js     | Sets JS options  | [js](#js)   | [js](#js)   |
+| css    | Sets CSS options | [css](#css) | [css](#css) |
 
 ### Js
 
