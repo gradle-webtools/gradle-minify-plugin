@@ -8,7 +8,6 @@ import java.io.IOException
 import java.io.UncheckedIOException
 import java.nio.file.*
 import java.util.*
-import java.util.stream.Collectors
 
 abstract class Minifier {
 
@@ -44,7 +43,7 @@ abstract class Minifier {
                         if (minifierOptions.copyOriginalFile && !minifierOptions.originalFileNames) {
                             Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
                         }
-                        minifyFileSave(f.toFile(), dstFile)
+                        minifyFileInternal(f.toFile(), dstFile)
                     }
                 } else if (it.isDirectory) {
                     minifyInternal(it, File(dstDir, f.fileName.toString()))
@@ -55,7 +54,7 @@ abstract class Minifier {
         }
     }
 
-    private fun minifyFileSave(srcFile: File, dstFile: File) {
+    private fun minifyFileInternal(srcFile: File, dstFile: File) {
         try {
             minifyFile(srcFile, dstFile)
         } catch (e: IOException) {
