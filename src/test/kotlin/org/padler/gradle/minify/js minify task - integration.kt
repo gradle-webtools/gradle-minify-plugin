@@ -26,7 +26,7 @@ class `js minify task - integration` : AnnotationSpec() {
         jsFile.writeText("alert('Hello, world!');\n\nalert('Hello, world!');\n\n" +
                          "alert('Hello, world!');\n\nalert('Hello, world!');\n\n")
         val config = """
-            plugins { id ("org.padler.gradle.minify") }
+            plugins { id("org.padler.gradle.minify") }
             tasks.create<org.padler.gradle.minify.JsMinifyTask>("minify") { 
                 srcDir = project.file("js")
                 dstDir = project.file("build/js")

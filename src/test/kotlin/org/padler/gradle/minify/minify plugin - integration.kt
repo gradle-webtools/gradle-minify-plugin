@@ -24,7 +24,7 @@ class `minify plugin - integration` : AnnotationSpec() {
         val buildFile = File(testProjectDir, "build.gradle.kts")
         val config = """
             plugins { 
-                id ("org.padler.gradle.minify")
+                id("org.padler.gradle.minify")
             }
             minification {
                 js {

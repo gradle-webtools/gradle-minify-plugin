@@ -10,6 +10,10 @@ import java.nio.file.Path
 
 class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOptions()) : Minifier() {
 
+    override val minifierName = "JS Minifier"
+
+    override val acceptedFileExtensions: List<String> = listOf("js")
+
     private val options = CompilerOptions()
 
     override fun minifyFile(srcFile: File, dstFile: File) {
@@ -81,12 +85,6 @@ class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOpt
         if (minifierOptions.browserFeaturesetYear != null) options.browserFeaturesetYear = minifierOptions
                 .browserFeaturesetYear
     }
-
-    override fun fileTypeMatches(f: Path): Boolean {
-        return "js" == getExtension(f.toString())
-    }
-
-    override val minifierName = "JS Minifier"
 
     override fun rename(oldName: String): String {
         return oldName.replace(".js", ".min.js")

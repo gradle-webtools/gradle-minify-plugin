@@ -26,7 +26,7 @@ class `css minify task - integration` : AnnotationSpec() {
         val cssFile = File(cssDir, "css.css")
         cssFile.writeText("body {\n  color: black;\n}")
         val config = """
-            plugins { id ("org.padler.gradle.minify") }
+            plugins { id("org.padler.gradle.minify") }
             tasks.create<org.padler.gradle.minify.CssMinifyTask>("minify") { 
                 srcDir = project.file("css")
                 dstDir = project.file("build/css")

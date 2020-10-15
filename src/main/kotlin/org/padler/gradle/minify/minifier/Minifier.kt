@@ -11,6 +11,10 @@ import java.util.*
 
 abstract class Minifier {
 
+    abstract val acceptedFileExtensions: List<String>
+    abstract val minifierName: String
+    abstract val minifierOptions: MinifierOptions
+
     val report = Report()
 
     companion object {
@@ -39,7 +43,7 @@ abstract class Minifier {
                     }
                     val dstFile = File(dst.toString(), fileName)
                     dstFile.parentFile.mkdirs()
-                    if (fileTypeMatches(f)) {
+                    if (acceptedFileExtensions.find { ext -> ext == it.extension } != null) {
                         if (minifierOptions.copyOriginalFile && !minifierOptions.originalFileNames) {
                             Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
                         }
@@ -94,17 +98,6 @@ abstract class Minifier {
         }
     }
 
-    protected fun getExtension(filename: String): String {
-        return Optional.ofNullable(filename)
-                .filter { f: String -> f.contains(".") }
-                .map { f: String -> f.substring(filename.lastIndexOf('.') + 1) }
-                .orElse("")
-    }
-
-    protected abstract fun fileTypeMatches(f: Path): Boolean
-    abstract val minifierOptions: MinifierOptions
-    protected abstract val minifierName: String
     protected abstract fun minifyFile(srcFile: File, dstFile: File)
-
     protected abstract fun rename(oldName: String): String
 }

@@ -21,6 +21,10 @@ import java.nio.file.Path
  */
 class CssMinifier(override var minifierOptions: CSSMinifierOptions = CSSMinifierOptions()) : Minifier() {
 
+    override val minifierName = "CSS Minifier"
+
+    override val acceptedFileExtensions: List<String> = listOf("css")
+
     override fun minifyFile(srcFile: File, dstFile: File) {
         try {
             val job = createJobDescription(srcFile)
@@ -40,12 +44,6 @@ class CssMinifier(override var minifierOptions: CSSMinifierOptions = CSSMinifier
             throw UncheckedIOException(e)
         }
     }
-
-    override fun fileTypeMatches(f: Path): Boolean {
-        return "css" == getExtension(f.toString())
-    }
-
-    override val minifierName = "CSS Minifier"
 
     override fun rename(oldName: String): String {
         return oldName.replace(".css", ".min.css")
