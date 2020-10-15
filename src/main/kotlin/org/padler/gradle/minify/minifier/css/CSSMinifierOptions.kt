@@ -14,23 +14,23 @@ data class CSSMinifierOptions(
         var outputOrientation: OutputOrientation = OutputOrientation.LTR,
         var outputFormat: OutputFormat = OutputFormat.COMPRESSED,
         var copyrightNotice: String? = null,
-        var trueConditionNames: List<String> = Lists.newArrayList(),
+        var trueConditionNames: List<String> = listOf(),
         var allowDefPropagation: Boolean = true,
         var allowUnrecognizedFunctions: Boolean = true,
-        var allowedNonStandardFunctions: List<String> = Lists.newArrayList(),
-        var allowedUnrecognizedProperties: List<String> = Lists.newArrayList(),
+        var allowedNonStandardFunctions: List<String> = listOf(),
+        var allowedUnrecognizedProperties: List<String> = listOf(),
         var allowUnrecognizedProperties: Boolean = true,
         var vendor: Vendor? = null,
         var allowKeyframes: Boolean = true,
         var allowWebkitKeyframes: Boolean = true,
         var processDependencies: Boolean = true,
-        var excludedClassesFromRenaming: List<String> = Lists.newArrayList(),
+        var excludedClassesFromRenaming: List<String> = listOf(),
         var simplifyCss: Boolean = true,
         var eliminateDeadStyles: Boolean = false,
         var cssRenamingPrefix: String = "",
         var preserveComments: Boolean = false,
         var outputRenamingMapFormat: OutputRenamingMapFormat = OutputRenamingMapFormat.JSON,
-        var compileConstants: Map<String, Int> = HashMap(),
+        var compileConstants: Map<String, Int> = mapOf(),
         var sourceMapLevel: SourceMapDetailLevel = SourceMapDetailLevel.DEFAULT
 ) : MinifierOptions() {
 
@@ -39,26 +39,27 @@ data class CSSMinifierOptions(
             outputOrientation: OutputOrientation = OutputOrientation.LTR,
             outputFormat: OutputFormat = OutputFormat.COMPRESSED,
             copyrightNotice: String? = null,
-            trueConditionNames: List<String> = Lists.newArrayList(),
+            trueConditionNames: List<String> = listOf(),
             allowDefPropagation: Boolean = true,
             allowUnrecognizedFunctions: Boolean = true,
-            allowedNonStandardFunctions: List<String> = Lists.newArrayList(),
-            allowedUnrecognizedProperties: List<String> = Lists.newArrayList(),
+            allowedNonStandardFunctions: List<String> = listOf(),
+            allowedUnrecognizedProperties: List<String> = listOf(),
             allowUnrecognizedProperties: Boolean = true,
             vendor: Vendor? = null,
             allowKeyframes: Boolean = true,
             allowWebkitKeyframes: Boolean = true,
             processDependencies: Boolean = true,
-            excludedClassesFromRenaming: List<String> = Lists.newArrayList(),
+            excludedClassesFromRenaming: List<String> = listOf(),
             simplifyCss: Boolean = true,
             eliminateDeadStyles: Boolean = false,
             cssRenamingPrefix: String = "",
             preserveComments: Boolean = false,
             outputRenamingMapFormat: OutputRenamingMapFormat = OutputRenamingMapFormat.JSON,
-            compileConstants: Map<String, Int> = HashMap(),
+            compileConstants: Map<String, Int> = mapOf(),
             sourceMapLevel: SourceMapDetailLevel = SourceMapDetailLevel.DEFAULT,
             createSourceMaps: Boolean? = null,
-            originalFileNames: Boolean? = null
+            originalFileNames: Boolean? = null,
+            copyOriginalFile: Boolean? = null
     ) : this(
             inputOrientation,
             outputOrientation,
@@ -85,5 +86,6 @@ data class CSSMinifierOptions(
     ) {
         if (createSourceMaps != null) this.createSourceMaps = createSourceMaps
         if (originalFileNames != null) this.originalFileNames = originalFileNames
+        if (copyOriginalFile != null) this.copyOriginalFile = copyOriginalFile
     }
 }

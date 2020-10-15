@@ -29,20 +29,20 @@ data class JSMinifierOptions(
         var languageIn: CompilerOptions.LanguageMode? = null,
         var languageOut: CompilerOptions.LanguageMode? = null,
         var warningLevel: WarningLevel = WarningLevel.QUIET,
-        var extraAnnotationNames: List<String> = ArrayList(),
+        var extraAnnotationNames: List<String> = listOf(),
         var strictModeInput: Boolean = false,
         var debug: Boolean = false,
         var exportLocalPropertyDefinitions: Boolean = false,
-        var formatting: List<CommandLineRunner.FormattingOption> = ArrayList(),
+        var formatting: List<CommandLineRunner.FormattingOption> = listOf(),
         var generateExports: Boolean = false,
         var renamePrefixNamespace: String? = null,
         var renameVariablePrefix: String? = null,
         var moduleResolution: ModuleLoader.ResolutionMode = ModuleLoader.ResolutionMode.BROWSER,
         var processCommonJsModules: Boolean = false,
-        var packageJsonEntryNames: List<String> = ArrayList(),
+        var packageJsonEntryNames: List<String> = listOf(),
         var angularPass: Boolean = false,
         var dartPass: Boolean = false,
-        var forceInjectLibrary: List<String> = ArrayList(),
+        var forceInjectLibrary: List<String> = listOf(),
         var polymerVersion: Int? = null,
         var rewritePolyfills: Boolean = false,
         @Serializable(with = CharsetSerializer::class)
@@ -57,27 +57,28 @@ data class JSMinifierOptions(
             languageIn: CompilerOptions.LanguageMode? = null,
             languageOut: CompilerOptions.LanguageMode? = null,
             warningLevel: WarningLevel = WarningLevel.QUIET,
-            extraAnnotationNames: List<String> = ArrayList(),
+            extraAnnotationNames: List<String> = listOf(),
             strictModeInput: Boolean = false,
             debug: Boolean = false,
             exportLocalPropertyDefinitions: Boolean = false,
-            formatting: List<CommandLineRunner.FormattingOption> = ArrayList(),
+            formatting: List<CommandLineRunner.FormattingOption> = listOf(),
             generateExports: Boolean = false,
             renamePrefixNamespace: String? = null,
             renameVariablePrefix: String? = null,
             moduleResolution: ModuleLoader.ResolutionMode = ModuleLoader.ResolutionMode.BROWSER,
             processCommonJsModules: Boolean = false,
-            packageJsonEntryNames: List<String> = ArrayList(),
+            packageJsonEntryNames: List<String> = listOf(),
             angularPass: Boolean = false,
             dartPass: Boolean = false,
-            forceInjectLibrary: List<String> = ArrayList(),
+            forceInjectLibrary: List<String> = listOf(),
             polymerVersion: Int? = null,
             rewritePolyfills: Boolean = false,
             charset: Charset = Charsets.UTF_8,
             checksOnly: Boolean = false,
             browserFeaturesetYear: Int? = null,
             createSourceMaps: Boolean? = null,
-            originalFileNames: Boolean? = null
+            originalFileNames: Boolean? = null,
+            copyOriginalFile: Boolean? = null
     ) : this(
             compilationLevel,
             env,
@@ -106,5 +107,6 @@ data class JSMinifierOptions(
     ) {
         if (createSourceMaps != null) this.createSourceMaps = createSourceMaps
         if (originalFileNames != null) this.originalFileNames = originalFileNames
+        if (copyOriginalFile != null) this.copyOriginalFile = copyOriginalFile
     }
 }

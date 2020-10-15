@@ -27,6 +27,8 @@ plugins {
 
 ### Default Task Configuration
 
+#### Minimal Configuration
+
 ```kotlin
 minification {
     js {
@@ -36,6 +38,77 @@ minification {
     css {
         srcDir = project.file("css")
         dstDir = project.file("build/css")
+    }
+}
+```
+
+#### Configuration with all options
+
+```kotlin
+minification {
+    js {
+        srcDir = project.file("js")
+        dstDir = project.file("build/js")
+        options {
+            compilationLevel: CompilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
+            env: CompilerOptions.Environment = CompilerOptions.Environment.BROWSER
+            languageIn = null
+            languageOut = null
+            warningLevel = WarningLevel.QUIET
+            extraAnnotationNames = listOf()
+            strictModeInput = false
+            debug = false
+            exportLocalPropertyDefinitions = false
+            formatting = listOf()
+            generateExports = false
+            renamePrefixNamespace = null
+            renameVariablePrefix = null
+            moduleResolution = ModuleLoader.ResolutionMode.BROWSER
+            processCommonJsModules = false
+            packageJsonEntryNames = listOf()
+            angularPass = false
+            dartPass = false
+            forceInjectLibrary = listOf()
+            polymerVersion = null
+            rewritePolyfills = false
+            charset = Charsets.UTF_8
+            checksOnly = false
+            browserFeaturesetYear = null
+            createSourceMaps = false
+            originalFileNames = false
+            copyOriginalFile = false
+        }
+    }
+    css {
+        srcDir = project.file("css")
+        dstDir = project.file("build/css")
+        options {
+            inputOrientation = InputOrientation.LTR
+            outputOrientation = OutputOrientation.LTR
+            outputFormat = OutputFormat.COMPRESSED
+            copyrightNotice = null
+            trueConditionNames = listOf()
+            allowDefPropagation = true
+            allowUnrecognizedFunctions = true
+            allowedNonStandardFunctions = listOf()
+            allowedUnrecognizedProperties = listOf()
+            allowUnrecognizedProperties = true
+            vendor = null
+            allowKeyframes = true
+            allowWebkitKeyframes = true
+            processDependencies = true
+            excludedClassesFromRenaming = listOf()
+            simplifyCss = true
+            eliminateDeadStyles = false
+            cssRenamingPrefix = ""
+            preserveComments = false
+            outputRenamingMapFormat = OutputRenamingMapFormat.JSON
+            compileConstants = mapOf()
+            sourceMapLevel = SourceMapDetailLevel.DEFAULT
+            createSourceMaps = false
+            originalFileNames = false
+            copyOriginalFile = false
+        }
     }
 }
 ```
