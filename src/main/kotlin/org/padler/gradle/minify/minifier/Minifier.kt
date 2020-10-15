@@ -29,8 +29,7 @@ abstract class Minifier {
 
     private fun minifyInternal(srcDir: File, dstDir: File) {
         try {
-            val files = srcDir.listFiles()
-            files.forEach {
+            srcDir.listFiles()?.forEach {
                 val f = it.toPath()
                 if (it.isFile) {
                     val dst = dstDir.toPath()
