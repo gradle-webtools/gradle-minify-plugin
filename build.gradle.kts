@@ -8,8 +8,8 @@ plugins {
     id("org.sonarqube") version "3.0"
 }
 
-group = "org.padler.gradle.minify"
-version = "2.0.0-dev"
+group = "org.gradle-webtools.minify"
+version = "1.0.0"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
@@ -70,8 +70,8 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = "https://github.com/616slayer616/gradle-minify-plugin"
-    vcsUrl = "https://github.com/616slayer616/gradle-minify-plugin"
+    website = "https://github.com/gradle-webtools/gradle-minify-plugin"
+    vcsUrl = "https://github.com/gradle-webtools/gradle-minify-plugin"
     description = "A simple gradle plugin to minify CSS and JavaScript files"
     tags = listOf("css", "javascript", "js", "minify", "minification")
 }
@@ -79,7 +79,7 @@ pluginBundle {
 sonarqube {
     properties {
         property("sonar.projectName", "Gradle Minify Plugin")
-        property("sonar.projectKey", "616slayer616_gradle-minify-plugin")
+        property("sonar.projectKey", "gradle-minify-plugin")
         property("sonar.coverage.exclusions", "**/*MinifyTask*,**/*Extension*")
         property("sonar.cpd.exclusions", "**/*Extension*,**/*Options*")
     }
