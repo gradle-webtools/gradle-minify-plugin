@@ -13,11 +13,11 @@ A simple gradle plugin to minify CSS and JavaScript files.
 Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and [Google Closure Stylesheets
 ](https://github.com/google/closure-stylesheets) for minification.
 
-# Getting started
+## Getting started
 
-## Configuration
+### Configuration
 
-### Plugin
+#### Plugin
 
 ```kottin
 plugins {
@@ -25,9 +25,9 @@ plugins {
 }
 ```
 
-### Default Task Configuration
+#### Default Task Configuration
 
-#### Minimal Configuration
+##### Minimal Configuration
 
 ```kotlin
 minification {
@@ -42,7 +42,7 @@ minification {
 }
 ```
 
-#### Configuration with all options
+##### Configuration with all options
 
 ```kotlin
 minification {
@@ -50,8 +50,8 @@ minification {
         srcDir = project.file("js")
         dstDir = project.file("build/js")
         options {
-            compilationLevel: CompilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
-            env: CompilerOptions.Environment = CompilerOptions.Environment.BROWSER
+            compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
+            env = CompilerOptions.Environment.BROWSER
             languageIn = null
             languageOut = null
             warningLevel = WarningLevel.QUIET
@@ -113,14 +113,14 @@ minification {
 }
 ```
 
-## Options
+### Options
 
 | option | effect           | values      | default     |
 | ------ | ---------------- | ----------- | ----------- |
 | js     | Sets JS options  | [js](#js)   | [js](#js)   |
 | css    | Sets CSS options | [css](#css) | [css](#css) |
 
-### Js
+#### Js
 
 | option  | effect                     | values                    | default                   |
 | ------- | -------------------------- | ------------------------- | ------------------------- |
@@ -128,7 +128,7 @@ minification {
 | dstDir  | Sets destination directory | `File?`                   | `null`                    |
 | options | Sets JS minifier options   | [js options](#js-options) | [js options](#js-options) |
 
-#### JS options
+##### JS options
 
 | option                         | effect                                                                                                                     | values                                                                                                                                                                                      | default                                                  |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
@@ -159,7 +159,7 @@ minification {
 
 See [Google Closure Compiler](https://github.com/google/closure-compiler/wiki/Flags-and-Options) for more information
 
-### Css
+#### Css
 
 | option  | effect                     | values                      | default                     |
 | ------- | -------------------------- | --------------------------- | --------------------------- |
@@ -167,7 +167,7 @@ See [Google Closure Compiler](https://github.com/google/closure-compiler/wiki/Fl
 | dstDir  | Sets destination directory | `File?`                     | `null`                      |
 | options | Sets CSS minifier options  | [css options](#css-options) | [css options](#css-options) |
 
-#### CSS options
+##### CSS options
 
 | option                        | effect                        | values                              | default      |
 | ----------------------------- | ----------------------------- | ----------------------------------- | ------------ |
