@@ -6,8 +6,10 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
 import java.io.UncheckedIOException
-import java.nio.file.*
-import java.util.*
+import java.nio.file.Files
+import java.nio.file.OpenOption
+import java.nio.file.StandardCopyOption
+import java.nio.file.StandardOpenOption
 
 abstract class Minifier {
 
@@ -66,25 +68,14 @@ abstract class Minifier {
         }
     }
 
-    private fun createReport(): String {
-        val reportStr = StringBuilder()
-        for (error in report.errors) {
-            reportStr.append("Error: ")
-            reportStr.append(error)
-            reportStr.append("\n")
+    private fun createReport() = buildString {
+        report.errors.forEach {
+            appendln("Error: $it")
         }
-        for (warning in report.warnings) {
-            reportStr.append("Warning: ")
-            reportStr.append(warning)
-            reportStr.append("\n")
+        report.warnings.forEach {
+            appendln("Warning: $it")
         }
-        reportStr.append(minifierName)
-                .append(": ")
-                .append(report.errors.size)
-                .append(" error(s), ")
-                .append(report.warnings.size)
-                .append(" warning(s)\n")
-        return reportStr.toString()
+        appendln("$minifierName: ${report.errors.size} error(s), ${report.warnings.size} warning(s)")
     }
 
     protected fun writeToFile(dstFile: File, string: String) {

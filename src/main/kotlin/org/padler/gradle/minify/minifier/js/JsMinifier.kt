@@ -6,7 +6,6 @@ import org.padler.gradle.minify.minifier.Minifier
 import org.padler.gradle.minify.minifier.result.Error
 import org.padler.gradle.minify.minifier.result.Warning
 import java.io.File
-import java.nio.file.Path
 
 class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOptions()) : Minifier() {
 
@@ -21,31 +20,28 @@ class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOpt
         setOptions()
         val externals = AbstractCommandLineRunner.getBuiltinExterns(CompilerOptions().environment)
         val sourceFile = SourceFile.fromFile(srcFile.absolutePath)
-        var sourcemapFile: File? = null
+        val sourcemapFile = File(dstFile.absolutePath + ".map")
         if (minifierOptions.createSourceMaps) {
-            sourcemapFile = File(dstFile.absolutePath + ".map")
             options.setSourceMapOutputPath(sourcemapFile.absolutePath)
-            options.setSourceMapLocationMappings(listOf(SourceMap.LocationMapping { location ->
-                val index = location.lastIndexOf('/')
-                if (index != -1) location.substring(index + 1) else null
+            options.setSourceMapLocationMappings(listOf(SourceMap.LocationMapping {
+                val index = it.lastIndexOf('/')
+                if (index != -1) it.substring(index + 1) else null
             }))
         }
         val result = compiler.compile(externals, ImmutableList.of(sourceFile), options)
         if (result.success) {
             var source = compiler.toSource()
             if (minifierOptions.createSourceMaps) {
-                val sourceMapContent = StringBuilder()
-                result.sourceMap.appendTo(sourceMapContent, dstFile.name)
-                writeToFile(sourcemapFile!!, sourceMapContent.toString())
+                writeToFile(sourcemapFile, buildString { result.sourceMap.appendTo(this, dstFile.name) })
                 source += "\n//# sourceMappingURL=${sourcemapFile.name}"
             }
             writeToFile(dstFile, source!!)
         } else {
-            for (error in result.errors) {
-                report.add(Error(error))
+            result.errors.forEach {
+                report.add(Error(it))
             }
-            for (warning in result.warnings) {
-                report.add(Warning(warning))
+            result.warnings.forEach {
+                report.add(Warning(it))
             }
         }
     }
@@ -61,8 +57,8 @@ class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOpt
         if (minifierOptions.debug) minifierOptions.compilationLevel
                 .setDebugOptionsForCompilationLevel(options)
         options.setExportLocalPropertyDefinitions(minifierOptions.exportLocalPropertyDefinitions)
-        for (formattingOption in minifierOptions.formatting) {
-            when (formattingOption) {
+        minifierOptions.formatting.forEach {
+            when (it) {
                 CommandLineRunner.FormattingOption.PRETTY_PRINT -> options.isPrettyPrint = true
                 CommandLineRunner.FormattingOption.PRINT_INPUT_DELIMITER -> options.printInputDelimiter = true
                 CommandLineRunner.FormattingOption.SINGLE_QUOTES -> options.setPreferSingleQuotes(true)
