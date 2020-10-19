@@ -15,9 +15,7 @@ Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and [
 
 ## Getting started
 
-### Configuration
-
-#### Plugin
+### Add Plugin
 
 ```kottin
 plugins {
@@ -25,110 +23,92 @@ plugins {
 }
 ```
 
-#### Default Task Configuration
+### Default Task Configuration
 
-##### Minimal Configuration
+#### Minimal Configuration
 
 ```kotlin
 minification {
-    js {
+    js { //this: JsMinifyTask
         srcDir = project.file("js")
         dstDir = project.file("build/js")
     }
-    css {
+    css { //this: CssMinifyTask
         srcDir = project.file("css")
         dstDir = project.file("build/css")
     }
 }
 ```
 
-##### Configuration with all options
+### Tasks
+
+If you need more than one minification task's you should add them manually. Therefore, this plugin provides the task types `JsMinifyTask` and `CssMinifyTask`.
+
+#### Creating additional JsMinifyTask
 
 ```kotlin
-minification {
-    js {
-        srcDir = project.file("js")
-        dstDir = project.file("build/js")
-        options {
-            compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
-            env = CompilerOptions.Environment.BROWSER
-            languageIn = null
-            languageOut = null
-            warningLevel = WarningLevel.QUIET
-            extraAnnotationNames = listOf()
-            strictModeInput = false
-            debug = false
-            exportLocalPropertyDefinitions = false
-            formatting = listOf()
-            generateExports = false
-            renamePrefixNamespace = null
-            renameVariablePrefix = null
-            moduleResolution = ModuleLoader.ResolutionMode.BROWSER
-            processCommonJsModules = false
-            packageJsonEntryNames = listOf()
-            angularPass = false
-            dartPass = false
-            forceInjectLibrary = listOf()
-            polymerVersion = null
-            rewritePolyfills = false
-            charset = Charsets.UTF_8
-            checksOnly = false
-            browserFeaturesetYear = null
-            createSourceMaps = false
-            originalFileNames = false
-            copyOriginalFile = false
-        }
-    }
-    css {
-        srcDir = project.file("css")
-        dstDir = project.file("build/css")
-        options {
-            inputOrientation = InputOrientation.LTR
-            outputOrientation = OutputOrientation.LTR
-            outputFormat = OutputFormat.COMPRESSED
-            copyrightNotice = null
-            trueConditionNames = listOf()
-            allowDefPropagation = true
-            allowUnrecognizedFunctions = true
-            allowedNonStandardFunctions = listOf()
-            allowedUnrecognizedProperties = listOf()
-            allowUnrecognizedProperties = true
-            vendor = null
-            allowKeyframes = true
-            allowWebkitKeyframes = true
-            processDependencies = true
-            excludedClassesFromRenaming = listOf()
-            simplifyCss = true
-            eliminateDeadStyles = false
-            cssRenamingPrefix = ""
-            preserveComments = false
-            outputRenamingMapFormat = OutputRenamingMapFormat.JSON
-            compileConstants = mapOf()
-            sourceMapLevel = SourceMapDetailLevel.DEFAULT
-            createSourceMaps = false
-            originalFileNames = false
-            copyOriginalFile = false
-        }
-    }
+tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
+    srcDir = project.file("js")
+    dstDir = project.file("build/js")
 }
 ```
 
-### Options
+#### Creating additional CssMinifyTask
 
-| option | effect           | values      | default     |
-| ------ | ---------------- | ----------- | ----------- |
-| js     | Sets JS options  | [js](#js)   | [js](#js)   |
-| css    | Sets CSS options | [css](#css) | [css](#css) |
+```kotlin
+tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
+    srcDir = project.file("css")
+    dstDir = project.file("build/css")
+}
+```
 
-#### Js
+#### Options
+
+##### JsMinifyTask
+
+```kotlin
+tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
+    srcDir = project.file("js")
+    dstDir = project.file("build/js")
+    options {
+        compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
+        env = CompilerOptions.Environment.BROWSER
+        languageIn = null
+        languageOut = null
+        warningLevel = WarningLevel.QUIET
+        extraAnnotationNames = listOf()
+        strictModeInput = false
+        debug = false
+        exportLocalPropertyDefinitions = false
+        formatting = listOf()
+        generateExports = false
+        renamePrefixNamespace = null
+        renameVariablePrefix = null
+        moduleResolution = ModuleLoader.ResolutionMode.BROWSER
+        processCommonJsModules = false
+        packageJsonEntryNames = listOf()
+        angularPass = false
+        dartPass = false
+        forceInjectLibrary = listOf()
+        polymerVersion = null
+        rewritePolyfills = false
+        charset = Charsets.UTF_8
+        checksOnly = false
+        browserFeaturesetYear = null
+        createSourceMaps = false
+        originalFileNames = false
+        copyOriginalFile = false
+    }
+}
+```
 
 | option  | effect                     | values                    | default                   |
 | ------- | -------------------------- | ------------------------- | ------------------------- |
-| srcDir  | Sets source directory      | `File?`                   | `null`                    |
-| dstDir  | Sets destination directory | `File?`                   | `null`                    |
-| options | Sets JS minifier options   | [js options](#js-options) | [js options](#js-options) |
+| srcDir  | Sets source directory      | File?                     | null                      |
+| dstDir  | Sets destination directory | File?                     | null                      |
+| options | Sets JS minifier options   | [js options](#jsminifytask-options) | [js options](#jsminifytask-options) |
 
-##### JS options
+##### JsMinifyTask options
 
 | option                         | effect                                                                                                                     | values                                                                                                                                                                                      | default                                                  |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
@@ -159,15 +139,49 @@ minification {
 
 See [Google Closure Compiler](https://github.com/google/closure-compiler/wiki/Flags-and-Options) for more information
 
-#### Css
+##### CssMinifyTask
+
+```kotlin
+tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
+    srcDir = project.file("css")
+    dstDir = project.file("build/css")
+    options {
+        inputOrientation = InputOrientation.LTR
+        outputOrientation = OutputOrientation.LTR
+        outputFormat = OutputFormat.COMPRESSED
+        copyrightNotice = null
+        trueConditionNames = listOf()
+        allowDefPropagation = true
+        allowUnrecognizedFunctions = true
+        allowedNonStandardFunctions = listOf()
+        allowedUnrecognizedProperties = listOf()
+        allowUnrecognizedProperties = true
+        vendor = null
+        allowKeyframes = true
+        allowWebkitKeyframes = true
+        processDependencies = true
+        excludedClassesFromRenaming = listOf()
+        simplifyCss = true
+        eliminateDeadStyles = false
+        cssRenamingPrefix = ""
+        preserveComments = false
+        outputRenamingMapFormat = OutputRenamingMapFormat.JSON
+        compileConstants = mapOf()
+        sourceMapLevel = SourceMapDetailLevel.DEFAULT
+        createSourceMaps = false
+        originalFileNames = false
+        copyOriginalFile = false
+    }
+}
+```
 
 | option  | effect                     | values                      | default                     |
 | ------- | -------------------------- | --------------------------- | --------------------------- |
 | srcDir  | Sets source directory      | `File?`                     | `null`                      |
 | dstDir  | Sets destination directory | `File?`                     | `null`                      |
-| options | Sets CSS minifier options  | [css options](#css-options) | [css options](#css-options) |
+| options | Sets CSS minifier options  | [css options](#cssminifytask-options) | [css options](#cssminifytask-options) |
 
-##### CSS options
+##### CSSMinifyTask options
 
 | option                        | effect                        | values                              | default      |
 | ----------------------------- | ----------------------------- | ----------------------------------- | ------------ |
