@@ -62,8 +62,8 @@ tasks.withType<Test> {
 gradlePlugin {
     plugins {
         create("minifyPlugin") {
-            id = "org.padler.gradle.minify"
-            implementationClass = "org.padler.gradle.minify.MinifyPlugin"
+            id = "org.gradlewebtools.minify"
+            implementationClass = "org.gradlewebtools.minify.MinifyPlugin"
             displayName = "Gradle Minify Plugin"
         }
     }
