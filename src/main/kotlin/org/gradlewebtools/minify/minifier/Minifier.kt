@@ -7,7 +7,6 @@ import java.io.File
 import java.io.IOException
 import java.io.UncheckedIOException
 import java.nio.file.Files
-import java.nio.file.OpenOption
 import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 
@@ -79,11 +78,13 @@ abstract class Minifier {
     }
 
     protected fun writeToFile(dstFile: File, string: String) {
-        val create: OpenOption = StandardOpenOption.CREATE
-        val write: OpenOption = StandardOpenOption.WRITE
-        val truncateExisting: OpenOption = StandardOpenOption.TRUNCATE_EXISTING
         try {
-            Files.write(dstFile.toPath(), string.toByteArray(), create, write, truncateExisting)
+            val options = arrayOf(
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING
+            )
+            Files.write(dstFile.toPath(), string.toByteArray(), *options)
         } catch (e: IOException) {
             throw UncheckedIOException(e)
         }
