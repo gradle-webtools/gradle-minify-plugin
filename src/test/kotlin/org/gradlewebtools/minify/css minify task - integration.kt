@@ -23,14 +23,19 @@ class `css minify task - integration` : AnnotationSpec() {
         val cssDir = File(testProjectDir, "css")
         cssDir.mkdir()
         val cssFile = File(cssDir, "css.css")
-        cssFile.writeText("body {\n  color: black;\n}")
+        val cssFileContent = """
+                body {
+                    color: black;
+                }
+                """.trimIndent()
+        cssFile.writeText(cssFileContent)
         val config = """
-            plugins { id("org.gradlewebtools.minify") }
-            tasks.create<org.gradlewebtools.minify.CssMinifyTask>("minify") { 
-                srcDir = project.file("css")
-                dstDir = project.file("build/css")
-            }
-            """.trimIndent()
+                plugins { id("org.gradlewebtools.minify") }
+                tasks.create<org.gradlewebtools.minify.CssMinifyTask>("minify") { 
+                    srcDir = project.file("css")
+                    dstDir = project.file("build/css")
+                }
+                """.trimIndent()
         buildFile.writeText(config)
     }
 

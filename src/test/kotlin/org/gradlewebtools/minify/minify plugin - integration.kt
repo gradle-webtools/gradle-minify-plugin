@@ -22,42 +22,53 @@ class `minify plugin - integration` : AnnotationSpec() {
     private fun setUpTestProject() {
         val buildFile = File(testProjectDir, "build.gradle.kts")
         val config = """
-            plugins { 
-                id("org.gradlewebtools.minify")
-            }
-            minification {
-                js {
-                    srcDir = project.file("js")
-                    dstDir = project.file("build/js")
+                plugins { 
+                    id("org.gradlewebtools.minify")
                 }
-                css {
-                    srcDir = project.file("css")
-                    dstDir = project.file("build/css")
+                minification {
+                    js {
+                        srcDir = project.file("js")
+                        dstDir = project.file("build/js")
+                    }
+                    css {
+                        srcDir = project.file("css")
+                        dstDir = project.file("build/css")
+                    }
                 }
-            }
-            """.trimIndent()
+                """.trimIndent()
         buildFile.writeText(config)
-
         val jsDir = File(testProjectDir, "js")
         jsDir.mkdir()
         val jsFile = File(jsDir, "js.js")
-        jsFile.writeText("alert('Hello, world!');\n\nalert('Hello, world!');\n\n" +
-                         "alert('Hello, world!');\n\nalert('Hello, world!');\n\n")
-
+        val jsFileContent = """
+                alert('Hello, world!');
+                        
+                alert('Hello, world!');
+        
+                alert('Hello, world!');
+        
+                alert('Hello, world!');
+                """.trimIndent()
+        jsFile.writeText(jsFileContent)
         val cssDir = File(testProjectDir, "css")
         cssDir.mkdir()
         val cssFile = File(cssDir, "css.css")
-        cssFile.writeText("body {\n  color: black;\n}")
+        val cssFileContent = """
+                body {
+                    color: black;
+                }
+                """.trimIndent()
+        cssFile.writeText(cssFileContent)
     }
 
     @Test
     fun test() {
         setUpTestProject()
-        val result = GradleRunner.create()
-                .withProjectDir(testProjectDir)
-                .withPluginClasspath()
-                .withArguments("jsMinify", "cssMinify", "--stacktrace")
-                .build()
+        val result = GradleRunner.create().apply {
+            withProjectDir(testProjectDir)
+            withPluginClasspath()
+            withArguments("jsMinify", "cssMinify", "--stacktrace")
+        }.build()
         result.task(":jsMinify") shouldNotBe null
         result.task(":jsMinify")!!.outcome shouldBe TaskOutcome.SUCCESS
         result.task(":cssMinify") shouldNotBe null

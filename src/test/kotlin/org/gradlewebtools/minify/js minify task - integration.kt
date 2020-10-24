@@ -23,26 +23,34 @@ class `js minify task - integration` : AnnotationSpec() {
         val jsDir = File(testProjectDir, "js")
         jsDir.mkdir()
         val jsFile = File(jsDir, "js.js")
-        jsFile.writeText("alert('Hello, world!');\n\nalert('Hello, world!');\n\n" +
-                         "alert('Hello, world!');\n\nalert('Hello, world!');\n\n")
+        val jsFileContent = """
+                alert('Hello, world!');
+                        
+                alert('Hello, world!');
+        
+                alert('Hello, world!');
+        
+                alert('Hello, world!');
+                """.trimIndent()
+        jsFile.writeText(jsFileContent)
         val config = """
-            plugins { id("org.gradlewebtools.minify") }
-            tasks.create<org.gradlewebtools.minify.JsMinifyTask>("minify") { 
-                srcDir = project.file("js")
-                dstDir = project.file("build/js")
-            }
-            """.trimIndent()
+                plugins { id("org.gradlewebtools.minify") }
+                tasks.create<org.gradlewebtools.minify.JsMinifyTask>("minify") { 
+                    srcDir = project.file("js")
+                    dstDir = project.file("build/js")
+                }
+                """.trimIndent()
         buildFile.writeText(config)
     }
 
     @Test
     fun test() {
         setUpTestProject()
-        val result = GradleRunner.create()
-                .withProjectDir(testProjectDir)
-                .withPluginClasspath()
-                .withArguments("minify", "--stacktrace")
-                .build()
+        val result = GradleRunner.create().apply {
+            withProjectDir(testProjectDir)
+            withPluginClasspath()
+            withArguments("minify", "--stacktrace")
+        }.build()
         result.task(":minify")!!.outcome shouldBe TaskOutcome.SUCCESS
         File(testProjectDir, "build/js/js.min.js").readText() shouldBe "'use strict';alert(\"Hello, world!\");" +
                 "alert(\"Hello, world!\");alert(\"Hello, world!\");alert(\"Hello, world!\");"
