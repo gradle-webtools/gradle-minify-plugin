@@ -19,7 +19,6 @@ class `js minify task - integration` : AnnotationSpec() {
     }
 
     private fun setUpTestProject() {
-        val buildFile = File(testProjectDir, "build.gradle.kts")
         val jsDir = File(testProjectDir, "js")
         jsDir.mkdir()
         val jsFile = File(jsDir, "js.js")
@@ -33,6 +32,7 @@ class `js minify task - integration` : AnnotationSpec() {
                 alert('Hello, world!');
                 """.trimIndent()
         jsFile.writeText(jsFileContent)
+        val buildFile = File(testProjectDir, "build.gradle.kts")
         val config = """
                 plugins { id("org.gradlewebtools.minify") }
                 tasks.create<org.gradlewebtools.minify.JsMinifyTask>("minify") { 

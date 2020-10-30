@@ -19,7 +19,6 @@ class `css minify task - integration` : AnnotationSpec() {
     }
 
     private fun setUpTestProject() {
-        val buildFile = File(testProjectDir, "build.gradle.kts")
         val cssDir = File(testProjectDir, "css")
         cssDir.mkdir()
         val cssFile = File(cssDir, "css.css")
@@ -29,6 +28,7 @@ class `css minify task - integration` : AnnotationSpec() {
                 }
                 """.trimIndent()
         cssFile.writeText(cssFileContent)
+        val buildFile = File(testProjectDir, "build.gradle.kts")
         val config = """
                 plugins { id("org.gradlewebtools.minify") }
                 tasks.create<org.gradlewebtools.minify.CssMinifyTask>("minify") { 
