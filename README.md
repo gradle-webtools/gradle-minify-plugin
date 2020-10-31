@@ -1,102 +1,117 @@
 # Gradle Minify Plugin!
-[![Build Status](https://travis-ci.com/616slayer616/gradle-minify-plugin.svg?branch=master)](https://travis-ci.com/616slayer616/gradle-minify-plugin)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=616slayer616_gradle-minify-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=616slayer616_gradle-minify-plugin)
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=616slayer616_gradle-minify-plugin&metric=bugs)](https://sonarcloud.io/dashboard?id=616slayer616_gradle-minify-plugin)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=616slayer616_gradle-minify-plugin&metric=code_smells)](https://sonarcloud.io/dashboard?id=616slayer616_gradle-minify-plugin)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=616slayer616_gradle-minify-plugin&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=616slayer616_gradle-minify-plugin)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=616slayer616_gradle-minify-plugin&metric=coverage)](https://sonarcloud.io/dashboard?id=616slayer616_gradle-minify-plugin)
+[![Build Status](https://travis-ci.com/gradle-webtools/gradle-minify-plugin.svg?branch=master)](https://travis-ci.com/gradle-webtools/gradle-minify-plugin)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gradle-webtools_gradle-minify-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=gradle-webtools_gradle-minify-plugin)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=gradle-webtools_gradle-minify-plugin&metric=bugs)](https://sonarcloud.io/dashboard?id=gradle-webtools_gradle-minify-plugin)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gradle-webtools_gradle-minify-plugin&metric=code_smells)](https://sonarcloud.io/dashboard?id=gradle-webtools_gradle-minify-plugin)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=gradle-webtools_gradle-minify-plugin&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=gradle-webtools_gradle-minify-plugin)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gradle-webtools_gradle-minify-plugin&metric=coverage)](https://sonarcloud.io/dashboard?id=gradle-webtools_gradle-minify-plugin)
 
 A simple gradle plugin to minify CSS and JavaScript files.
 
 Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and [Google Closure Stylesheets
 ](https://github.com/google/closure-stylesheets) for minification.
 
-# Getting started
+## Getting started
 
-### Gradle
-```groovy
+### Add Plugin
+
+```kottin
 plugins {
-  id "org.padler.gradle.minify" version "1.7.0"
+  id("org.gradle-webtools.minify") version "<version>"
 }
 ```
 
-#### Legacy plugin application
-```groovy
-buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
-  dependencies {
-    classpath "gradle.plugin.org.padler.gradle.minify:gradle-minify-plugin:1.7.0"
-  }
-}
+### Default Task Configuration
 
-apply plugin: "org.padler.gradle.minify"
-```
+#### Minimal Configuration
 
-### Configuration
-````groovy
+```kotlin
 minification {
-    cssDstDir = "$buildDir/dist/css"
-    cssSrcDir = "${rootDir}/src/main/resources/static/css"
-    jsDstDir = "$buildDir/dist/js"
-    jsSrcDir = "${rootDir}/src/main/resources/static/js"
-
-    createCssSourceMaps = true
-    createJsSourceMaps = true
-
-    css {
-        cssRenamingPrefix = ""
+    js { //this: JsMinifyTask
+        srcDir = project.file("js")
+        dstDir = project.file("build/js")
     }
-
-    js {
-        compilationLevel = "SIMPLE"
-    }   
+    css { //this: CssMinifyTask
+        srcDir = project.file("css")
+        dstDir = project.file("build/css")
+    }
 }
-````
+```
 
-## Options
-| option                      | effect                                                     | values                           | default                      |
-| --------------------------- | :--------------------------------------------------------: | -------------------------------: | ---------------------------: |
-| createCssSourceMaps         | Creates CSS source maps                                    | true, false                      | false                        |
-| createJsSourceMaps          | Creates JS source maps                                     | true, false                      | false                        |
-| originalFileNames           | Preserves filenames instead of renaming to .min.           | true, false                      | false                        |
-| css                         | Sets CSS minifier options                                  | [css options](#css-options)      | [css options](#css-options)  |
-| js                          | Sets JS minifier options                                   | [js options](#js-options)        | [js options](#js-options)    |
+### Tasks
 
-### CSS options
-| option                        | effect                                                     | values                              | default                 |
-| ---------------------------   | :--------------------------------------------------------: | -------------------------------:    | ----------------------: |
-| inputOrientation              | inputOrientation                                           | JobDescription.InputOrientation     | LTR                     |
-| outputOrientation             | outputOrientation                                          | JobDescription.OutputOrientation    | LTR                     |
-| outputFormat                  | outputFormat                                               | JobDescription.OutputFormat         | COMPRESSED              |
-| copyrightNotice               | copyrightNotice                                            | String                              | null                    |
-| trueConditionNames            | trueConditionNames                                         | list of strings                     | empty list              |
-| allowDefPropagation           | allowDefPropagation                                        | true, false                         | true                    |
-| allowUnrecognizedFunctions    | allowUnrecognizedFunctions                                 | true, false                         | true                    |
-| allowedNonStandardFunctions   | allowedNonStandardFunctions                                | list of strings                     | empty list              |
-| allowedUnrecognizedProperties | allowedUnrecognizedProperties                              | list of strings                     | empty list              |
-| allowUnrecognizedProperties   | allowUnrecognizedProperties                                | true, false                         | true                    |
-| vendor                        | vendor                                                     | Vendor                              | null                    |
-| allowKeyframes                | allowKeyframes                                             | true, false                         | true                    |
-| allowWebkitKeyframes          | allowWebkitKeyframes                                       | true, false                         | true                    |
-| processDependencies           | processDependencies                                        | true, false                         | true                    |
-| excludedClassesFromRenaming   | excludedClassesFromRenaming                                | list of strings                     | empty list              |
-| simplifyCss                   | simplifyCss                                                | true, false                         | true                    |
-| eliminateDeadStyles           | eliminateDeadStyles                                        | true, false                         | false                   |
-| cssRenamingPrefix             | CSS renaming prefix                                        | String                              | empty string            |
-| preserveComments              | preserveComments                                           | true, false                         | false                   |
-| outputRenamingMapFormat       | outputRenamingMapFormat                                    | OutputRenamingMapFormat             | JSON                    |
-| compileConstants              | compileConstants                                           | map                                 | empty map               |
-| sourceMapLevel                | sourceMapLevel                                             | JobDescription.SourceMapDetailLevel | DEFAULT                 |
+If you need more than one minification task's you should add them manually. Therefore, this plugin provides the task types `JsMinifyTask` and `CssMinifyTask`.
 
-### JS options
-See [Google Closure Compiler](https://github.com/google/closure-compiler/wiki/Flags-and-Options) for more information
+#### Creating additional JsMinifyTask
+
+```kotlin
+tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
+    srcDir = project.file("js")
+    dstDir = project.file("build/js")
+}
+```
+
+#### Creating additional CssMinifyTask
+
+```kotlin
+tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
+    srcDir = project.file("css")
+    dstDir = project.file("build/css")
+}
+```
+
+#### Options
+
+##### JsMinifyTask
+
+```kotlin
+tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
+    srcDir = project.file("js")
+    dstDir = project.file("build/js")
+    options {
+        compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
+        env = CompilerOptions.Environment.BROWSER
+        languageIn = null
+        languageOut = null
+        warningLevel = WarningLevel.QUIET
+        extraAnnotationNames = listOf()
+        strictModeInput = false
+        debug = false
+        exportLocalPropertyDefinitions = false
+        formatting = listOf()
+        generateExports = false
+        renamePrefixNamespace = null
+        renameVariablePrefix = null
+        moduleResolution = ModuleLoader.ResolutionMode.BROWSER
+        processCommonJsModules = false
+        packageJsonEntryNames = listOf()
+        angularPass = false
+        dartPass = false
+        forceInjectLibrary = listOf()
+        polymerVersion = null
+        rewritePolyfills = false
+        charset = Charsets.UTF_8
+        checksOnly = false
+        browserFeaturesetYear = null
+        createSourceMaps = false
+        originalFileNames = false
+        copyOriginalFile = false
+    }
+}
+```
+
+| option  | effect                     | values                    | default                   |
+| ------- | -------------------------- | ------------------------- | ------------------------- |
+| srcDir  | Sets source directory      | File?                     | null                      |
+| dstDir  | Sets destination directory | File?                     | null                      |
+| options | Sets JS minifier options   | [js options](#jsminifytask-options) | [js options](#jsminifytask-options) |
+
+##### JsMinifyTask options
+
 | option                         | effect                                                                                                                     | values                                                                                                                                                                                      | default                                                  |
-| ---------------------------    | :--------------------------------------------------------:                                                                 | -------------------------------:                                                                                                                                                            | ----------------------:                                  |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | compilationLevel               | Specifies the compilation level to use                                                                                     | BUNDLE, WHITESPACE_ONLY, SIMPLE, ADVANCED                                                                                                                                                   | SIMPLE                                                   |
 | env                            | Determines the set of builtin externs to load                                                                              | BROWSER, CUSTOM                                                                                                                                                                             | BROWSER                                                  |
 | languageIn                     | Sets the language spec to which input sources should conform                                                               | CMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT, ECMASCRIPT6_TYPED (experimental), ECMASCRIPT_2015, ECMASCRIPT_2016, ECMASCRIPT_2017, ECMASCRIPT_2018, ECMASCRIPT_2019, STABLE, ECMASCRIPT_NEXT |                                                          |
@@ -113,7 +128,7 @@ See [Google Closure Compiler](https://github.com/google/closure-compiler/wiki/Fl
 | moduleResolution               | Specifies how the compiler locates modules                                                                                 | BROWSER, BROWSER_WITH_TRANSFORMED_PREFIXES , NODE , WEBPACK                                                                                                                                 | BROWSER                                                  |
 | processCommonJsModules         | Process CommonJS modules to a concatenable form                                                                            | true, false                                                                                                                                                                                 | false                                                    |
 | packageJsonEntryNames          | Ordered list of entries to look for in package.json files when processing modules with the NODE module resolution strategy | list of strings                                                                                                                                                                             | ["browser", "module", "main"]                            |
-| angularPass                    | Generate $inject properties for AngularJS for functions annotated with @ngInject                                           | true, false                                                                                                                                                                                 | false                                                    |
+| angularPass                    | Generate \$inject properties for AngularJS for functions annotated with @ngInject                                          | true, false                                                                                                                                                                                 | false                                                    |
 | dartPass                       | Rewrite Dart Dev Compiler output to be compiler-friendly                                                                   | true, false                                                                                                                                                                                 | false                                                    |
 | forceInjectLibrary             | Force injection of named runtime libraries. The format is <name> where <name> is the name of a runtime library             | base, es6_runtime, runtime_type_check                                                                                                                                                       | empty list                                               |
 | polymerVersion                 | Which version of Polymer is being used                                                                                     | 1, 2                                                                                                                                                                                        | null                                                     |
@@ -122,7 +137,73 @@ See [Google Closure Compiler](https://github.com/google/closure-compiler/wiki/Fl
 | checksOnly                     | Don't generate output. Run checks, but no optimization passes                                                              | true, false                                                                                                                                                                                 | false                                                    |
 | browserFeaturesetYear          | Browser feature set year                                                                                                   | 2012, 2019, 2020                                                                                                                                                                            | 0                                                        |
 
-## See Also
-The [Gradle CSS Plugin](https://github.com/eriwen/gradle-css-plugin)!
+See [Google Closure Compiler](https://github.com/google/closure-compiler/wiki/Flags-and-Options) for more information
 
-The [Gradle JS Plugin](https://github.com/eriwen/gradle-js-plugin)!
+##### CssMinifyTask
+
+```kotlin
+tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
+    srcDir = project.file("css")
+    dstDir = project.file("build/css")
+    options {
+        inputOrientation = InputOrientation.LTR
+        outputOrientation = OutputOrientation.LTR
+        outputFormat = OutputFormat.COMPRESSED
+        copyrightNotice = null
+        trueConditionNames = listOf()
+        allowDefPropagation = true
+        allowUnrecognizedFunctions = true
+        allowedNonStandardFunctions = listOf()
+        allowedUnrecognizedProperties = listOf()
+        allowUnrecognizedProperties = true
+        vendor = null
+        allowKeyframes = true
+        allowWebkitKeyframes = true
+        processDependencies = true
+        excludedClassesFromRenaming = listOf()
+        simplifyCss = true
+        eliminateDeadStyles = false
+        cssRenamingPrefix = ""
+        preserveComments = false
+        outputRenamingMapFormat = OutputRenamingMapFormat.JSON
+        compileConstants = mapOf()
+        sourceMapLevel = SourceMapDetailLevel.DEFAULT
+        createSourceMaps = false
+        originalFileNames = false
+        copyOriginalFile = false
+    }
+}
+```
+
+| option  | effect                     | values                      | default                     |
+| ------- | -------------------------- | --------------------------- | --------------------------- |
+| srcDir  | Sets source directory      | `File?`                     | `null`                      |
+| dstDir  | Sets destination directory | `File?`                     | `null`                      |
+| options | Sets CSS minifier options  | [css options](#cssminifytask-options) | [css options](#cssminifytask-options) |
+
+##### CSSMinifyTask options
+
+| option                        | effect                        | values                              | default      |
+| ----------------------------- | ----------------------------- | ----------------------------------- | ------------ |
+| inputOrientation              | inputOrientation              | JobDescription.InputOrientation     | LTR          |
+| outputOrientation             | outputOrientation             | JobDescription.OutputOrientation    | LTR          |
+| outputFormat                  | outputFormat                  | JobDescription.OutputFormat         | COMPRESSED   |
+| copyrightNotice               | copyrightNotice               | String                              | null         |
+| trueConditionNames            | trueConditionNames            | list of strings                     | empty list   |
+| allowDefPropagation           | allowDefPropagation           | true, false                         | true         |
+| allowUnrecognizedFunctions    | allowUnrecognizedFunctions    | true, false                         | true         |
+| allowedNonStandardFunctions   | allowedNonStandardFunctions   | list of strings                     | empty list   |
+| allowedUnrecognizedProperties | allowedUnrecognizedProperties | list of strings                     | empty list   |
+| allowUnrecognizedProperties   | allowUnrecognizedProperties   | true, false                         | true         |
+| vendor                        | vendor                        | Vendor                              | null         |
+| allowKeyframes                | allowKeyframes                | true, false                         | true         |
+| allowWebkitKeyframes          | allowWebkitKeyframes          | true, false                         | true         |
+| processDependencies           | processDependencies           | true, false                         | true         |
+| excludedClassesFromRenaming   | excludedClassesFromRenaming   | list of strings                     | empty list   |
+| simplifyCss                   | simplifyCss                   | true, false                         | true         |
+| eliminateDeadStyles           | eliminateDeadStyles           | true, false                         | false        |
+| cssRenamingPrefix             | CSS renaming prefix           | String                              | empty string |
+| preserveComments              | preserveComments              | true, false                         | false        |
+| outputRenamingMapFormat       | outputRenamingMapFormat       | OutputRenamingMapFormat             | JSON         |
+| compileConstants              | compileConstants              | map                                 | empty map    |
+| sourceMapLevel                | sourceMapLevel                | JobDescription.SourceMapDetailLevel | DEFAULT      |
