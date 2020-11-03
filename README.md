@@ -18,7 +18,7 @@ Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and [
 
 ```kottin
 plugins {
-  id("org.gradle-webtools.minify") version "<version>"
+  id("org.gradlewebtools.minify") version "<version>"
 }
 ```
 
