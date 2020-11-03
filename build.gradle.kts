@@ -49,10 +49,10 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
-    implementation("com.google.javascript:closure-compiler:v20200920")
+    implementation("com.google.javascript:closure-compiler:v20201006")
     implementation("org.padler:closure-stylesheets:1.6.0")
-    testImplementation("io.kotest:kotest-runner-junit5:4.3.0")
-    testImplementation("io.kotest:kotest-assertions-core:4.3.0")
+    testImplementation("io.kotest:kotest-runner-junit5:4.3.1")
+    testImplementation("io.kotest:kotest-assertions-core:4.3.1")
 }
 
 tasks.withType<Test> {
