@@ -69,12 +69,12 @@ abstract class Minifier {
 
     private fun createReport() = buildString {
         report.errors.forEach {
-            appendln("Error: $it")
+            appendLine("Error: $it")
         }
         report.warnings.forEach {
-            appendln("Warning: $it")
+            appendLine("Warning: $it")
         }
-        appendln("$minifierName: ${report.errors.size} error(s), ${report.warnings.size} warning(s)")
+        appendLine("$minifierName: ${report.errors.size} error(s), ${report.warnings.size} warning(s)")
     }
 
     protected fun writeToFile(dstFile: File, string: String) {
