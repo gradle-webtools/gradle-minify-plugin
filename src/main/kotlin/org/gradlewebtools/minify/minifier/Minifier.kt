@@ -7,6 +7,7 @@ import java.io.File
 import java.io.IOException
 import java.io.UncheckedIOException
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 
@@ -36,26 +37,37 @@ abstract class Minifier {
             srcDir.listFiles()?.forEach {
                 val f = it.toPath()
                 if (it.isFile) {
-                    val dst = dstDir.toPath()
-                    var fileName = f.fileName.toString()
-                    val copy = File(dst.toString(), fileName)
-                    if (!minifierOptions.originalFileNames) {
-                        fileName = rename(fileName)
-                    }
-                    val dstFile = File(dst.toString(), fileName)
-                    dstFile.parentFile.mkdirs()
-                    if (acceptedFileExtensions.find { ext -> ext == it.extension } != null) {
-                        if (minifierOptions.copyOriginalFile && !minifierOptions.originalFileNames) {
-                            Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                        }
-                        minifyFileInternal(f.toFile(), dstFile)
-                    }
+                    handleFile(f, dstDir, it)
                 } else if (it.isDirectory) {
                     minifyInternal(it, File(dstDir, f.fileName.toString()))
                 }
             }
         } catch (e: IOException) {
             throw UncheckedIOException(e)
+        }
+    }
+
+    private fun shouldMinify(f: Path): Boolean {
+        return !minifierOptions.ignoreMinFiles || !f.fileName.toString().contains(".min.");
+    }
+
+    private fun handleFile(f: Path, dstDir: File, it: File) {
+        val dst = dstDir.toPath()
+        var fileName = f.fileName.toString()
+        val copy = File(dst.toString(), fileName)
+        if (!minifierOptions.originalFileNames) {
+            fileName = rename(fileName)
+        }
+        val dstFile = File(dst.toString(), fileName)
+        dstFile.parentFile.mkdirs()
+        if (acceptedFileExtensions.find { ext -> ext == it.extension } != null) {
+            if ((minifierOptions.copyOriginalFile && !minifierOptions.originalFileNames) ||
+                    !shouldMinify(f)) {
+                Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)
+            }
+            if (shouldMinify(f)) {
+                minifyFileInternal(f.toFile(), dstFile)
+            }
         }
     }
 
