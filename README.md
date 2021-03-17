@@ -41,7 +41,8 @@ minification {
 
 ### Tasks
 
-If you need more than one minification task's you should add them manually. Therefore, this plugin provides the task types `JsMinifyTask` and `CssMinifyTask`.
+If you need more than one minification task's you should add them manually. Therefore, this plugin provides the task
+types `JsMinifyTask` and `CssMinifyTask`.
 
 #### Creating additional JsMinifyTask
 
@@ -70,6 +71,7 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
     srcDir = project.file("js")
     dstDir = project.file("build/js")
     options {
+        ignoreMinFiles = false
         compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
         env = CompilerOptions.Environment.BROWSER
         languageIn = null
@@ -111,6 +113,7 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
 
 | option                         | effect                                                                                                                     | values                                                                                                                                                                                      | default                                                  |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| ignoreMinFiles                 | ignore files named ".min."                                                                                                 | true, false                                                                                                                                                                                 | false                                                    |
 | compilationLevel               | Specifies the compilation level to use                                                                                     | BUNDLE, WHITESPACE_ONLY, SIMPLE, ADVANCED                                                                                                                                                   | SIMPLE                                                   |
 | env                            | Determines the set of builtin externs to load                                                                              | BROWSER, CUSTOM                                                                                                                                                                             | BROWSER                                                  |
 | languageIn                     | Sets the language spec to which input sources should conform                                                               | CMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT, ECMASCRIPT6_TYPED (experimental), ECMASCRIPT_2015, ECMASCRIPT_2016, ECMASCRIPT_2017, ECMASCRIPT_2018, ECMASCRIPT_2019, STABLE, ECMASCRIPT_NEXT |                                                          |
@@ -145,6 +148,7 @@ tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
     srcDir = project.file("css")
     dstDir = project.file("build/css")
     options {
+        ignoreMinFiles = false
         inputOrientation = InputOrientation.LTR
         outputOrientation = OutputOrientation.LTR
         outputFormat = OutputFormat.COMPRESSED
@@ -184,6 +188,7 @@ tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
 
 | option                        | effect                        | values                              | default      |
 | ----------------------------- | ----------------------------- | ----------------------------------- | ------------ |
+| ignoreMinFiles                | ignore files named ".min."    | true, false                         | false        |
 | inputOrientation              | inputOrientation              | JobDescription.InputOrientation     | LTR          |
 | outputOrientation             | outputOrientation             | JobDescription.OutputOrientation    | LTR          |
 | outputFormat                  | outputFormat                  | JobDescription.OutputFormat         | COMPRESSED   |

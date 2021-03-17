@@ -29,10 +29,25 @@ class `CssMinifier - class` : AnnotationSpec() {
         dst.mkdir()
         cssMinifier.minify(File("src/test/resources/css"), dst)
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
-        files shouldHaveSize 2
+        files shouldHaveSize 3
         val subDir = files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("sub") }.findFirst().orElse(null)
         val subFiles = Files.list(subDir).collect(Collectors.toList())
         subFiles shouldHaveSize 1
+    }
+
+    @Test
+    fun minifyFileIgnoreMin() {
+        val cssMinifier = CssMinifier()
+        cssMinifier.minifierOptions.copyOriginalFile = true
+        cssMinifier.minifierOptions.ignoreMinFiles = true
+        val dst = File(testProjectDir, "dst")
+        dst.mkdir()
+        cssMinifier.minify(File("src/test/resources/css"), dst)
+        val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
+        files shouldHaveSize 4
+        val subDir = files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("sub") }.findFirst().orElse(null)
+        val subFiles = Files.list(subDir).collect(Collectors.toList())
+        subFiles shouldHaveSize 2
     }
 
     @Test
@@ -43,11 +58,11 @@ class `CssMinifier - class` : AnnotationSpec() {
         dst.mkdir()
         cssMinifier.minify(File("src/test/resources/css"), dst)
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
-        files shouldHaveSize 3
+        files shouldHaveSize 5
         val minifiedCss = files.stream()
                 .filter { path: Path? -> path!!.toFile().name.endsWith(".min.css") }
                 .collect(Collectors.toList())
-        minifiedCss shouldHaveSize 1
+        minifiedCss shouldHaveSize 2
         val path = minifiedCss[0]
         val lines = BufferedReader(FileReader(path!!.toFile())).lines().collect(Collectors.toList())
         lines[lines.size - 1] shouldBe "//# sourceMappingURL=" + path.fileName + ".map"
