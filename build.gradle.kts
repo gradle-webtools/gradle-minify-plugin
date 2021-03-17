@@ -1,15 +1,15 @@
 plugins {
-    kotlin("jvm") version "1.4.10"
-    kotlin("plugin.serialization") version "1.4.10"
+    kotlin("jvm") version "1.4.30"
+    kotlin("plugin.serialization") version "1.4.30"
     id("com.gradle.plugin-publish") version "0.12.0"
     id("maven-publish")
     id("java-gradle-plugin")
     id("jacoco")
-    id("org.sonarqube") version "3.0"
+    id("org.sonarqube") version "3.1.1"
 }
 
 group = "org.gradle-webtools.minify"
-version = "1.0.0"
+version = "1.1.0"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
@@ -49,10 +49,10 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0")
-    implementation("com.google.javascript:closure-compiler:v20201006")
+    implementation("com.google.javascript:closure-compiler:v20210106")
     implementation("org.padler:closure-stylesheets:1.6.0")
-    testImplementation("io.kotest:kotest-runner-junit5:4.3.1")
-    testImplementation("io.kotest:kotest-assertions-core:4.3.1")
+    testImplementation("io.kotest:kotest-runner-junit5:4.4.0")
+    testImplementation("io.kotest:kotest-assertions-core:4.4.0")
 }
 
 tasks.withType<Test> {

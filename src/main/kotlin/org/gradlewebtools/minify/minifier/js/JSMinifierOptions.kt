@@ -51,6 +51,7 @@ data class JSMinifierOptions(
 ) : MinifierOptions() {
 
     constructor(
+            ignoreMinFiles: Boolean? = null,
             compilationLevel: CompilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS,
             env: CompilerOptions.Environment = CompilerOptions.Environment.BROWSER,
             languageIn: CompilerOptions.LanguageMode? = null,
@@ -104,6 +105,7 @@ data class JSMinifierOptions(
             checksOnly,
             browserFeaturesetYear
     ) {
+        if (ignoreMinFiles != null) this.ignoreMinFiles = ignoreMinFiles
         if (createSourceMaps != null) this.createSourceMaps = createSourceMaps
         if (originalFileNames != null) this.originalFileNames = originalFileNames
         if (copyOriginalFile != null) this.copyOriginalFile = copyOriginalFile

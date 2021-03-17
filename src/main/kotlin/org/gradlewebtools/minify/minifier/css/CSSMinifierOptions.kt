@@ -33,6 +33,7 @@ data class CSSMinifierOptions(
 ) : MinifierOptions() {
 
     constructor(
+            ignoreMinFiles: Boolean? = null,
             inputOrientation: InputOrientation = InputOrientation.LTR,
             outputOrientation: OutputOrientation = OutputOrientation.LTR,
             outputFormat: OutputFormat = OutputFormat.COMPRESSED,
@@ -82,6 +83,7 @@ data class CSSMinifierOptions(
             compileConstants,
             sourceMapLevel
     ) {
+        if (ignoreMinFiles != null) this.ignoreMinFiles = ignoreMinFiles
         if (createSourceMaps != null) this.createSourceMaps = createSourceMaps
         if (originalFileNames != null) this.originalFileNames = originalFileNames
         if (copyOriginalFile != null) this.copyOriginalFile = copyOriginalFile
