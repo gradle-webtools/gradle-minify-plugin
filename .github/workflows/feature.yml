@@ -1,0 +1,28 @@
+name: 'Feature'
+
+on:
+  push:
+    branches-ignore:
+      - 'develop'
+      - 'master'
+
+jobs:
+  build-feature:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: build
+        run: ./gradlew clean assemble
+
+      - name: test
+        run: ./gradlew check
+
+      - name: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonarqube
