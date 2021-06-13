@@ -1,6 +1,6 @@
 # Gradle Minify Plugin!
 
-[![Build Status](https://travis-ci.com/gradle-webtools/gradle-minify-plugin.svg?branch=master)](https://travis-ci.com/gradle-webtools/gradle-minify-plugin)
+[![Build Status](https://github.com/gradle-webtools/gradle-minify-plugin/actions/workflows/master.yml/badge.svg)](https://github.com/gradle-webtools/gradle-minify-plugin/actions/workflows/master.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=bugs)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
