@@ -7,9 +7,11 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=code_smells)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=coverage)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
+
 A simple gradle plugin to minify CSS and JavaScript files.
 
-Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and [Google Closure Stylesheets
+Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and [custom
+](https://github.com/616slayer616/closure-stylesheets) [Google Closure Stylesheets
 ](https://github.com/google/closure-stylesheets) for minification.
 
 ## Getting started
