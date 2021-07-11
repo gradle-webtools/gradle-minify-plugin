@@ -72,7 +72,6 @@ class JsMinifier(override var minifierOptions: JsMinifierOptions = JsMinifierOpt
         options.processCommonJSModules = minifierOptions.processCommonJsModules
         options.packageJsonEntryNames = minifierOptions.packageJsonEntryNames
         options.setAngularPass(minifierOptions.angularPass)
-        options.setDartPass(minifierOptions.dartPass)
         options.setForceLibraryInjection(minifierOptions.forceInjectLibrary)
         options.setPolymerVersion(minifierOptions.polymerVersion)
         options.rewritePolyfills = minifierOptions.rewritePolyfills
