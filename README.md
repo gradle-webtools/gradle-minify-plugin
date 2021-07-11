@@ -107,7 +107,6 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
         processCommonJsModules = false
         packageJsonEntryNames = listOf()
         angularPass = false
-        dartPass = false
         forceInjectLibrary = listOf()
         polymerVersion = null
         rewritePolyfills = false
