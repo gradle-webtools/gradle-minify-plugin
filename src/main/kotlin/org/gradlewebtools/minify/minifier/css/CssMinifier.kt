@@ -1,10 +1,12 @@
 package org.gradlewebtools.minify.minifier.css
 
-import com.google.common.css.*
+import com.google.common.css.IdentitySubstitutionMap
+import com.google.common.css.JobDescription
+import com.google.common.css.JobDescriptionBuilder
+import com.google.common.css.SourceCode
+import com.google.common.css.compiler.ClosureStylesheetCompiler
 import com.google.common.css.compiler.ast.BasicErrorManager
-import com.google.common.css.compiler.ast.ErrorManager
 import com.google.common.css.compiler.ast.GssError
-import com.google.common.css.compiler.commandline.DefaultCommandLineCompiler
 import com.google.common.css.compiler.gssfunctions.DefaultGssFunctionMapProvider
 import org.gradlewebtools.minify.minifier.Minifier
 import org.gradlewebtools.minify.minifier.result.Error
@@ -27,9 +29,8 @@ class CssMinifier(override var minifierOptions: CssMinifierOptions = CssMinifier
     override fun minifyFile(srcFile: File, dstFile: File) {
         try {
             val job = createJobDescription(srcFile)
-            val exitCodeHandler = DefaultExitCodeHandler()
             val errorManager = CompilerErrorManager()
-            val compiler = ClosureStylesheetCompiler(job, exitCodeHandler, errorManager)
+            val compiler = ClosureStylesheetCompiler(job, errorManager)
             var sourcemapFile: File? = null
             if (minifierOptions.createSourceMaps) {
                 sourcemapFile = File(dstFile.absolutePath + ".map")
@@ -93,17 +94,6 @@ class CssMinifier(override var minifierOptions: CssMinifierOptions = CssMinifier
 
         override fun reportWarning(warning: GssError) {
             report.add(Warning(warning))
-        }
-    }
-
-    inner class ClosureStylesheetCompiler(
-            job: JobDescription?,
-            exitCodeHandler: ExitCodeHandler?,
-            errorManager: ErrorManager?
-    ) : DefaultCommandLineCompiler(job, exitCodeHandler, errorManager) {
-
-        public override fun execute(renameFile: File?, sourcemapFile: File?): String {
-            return super.execute(renameFile, sourcemapFile)
         }
     }
 }

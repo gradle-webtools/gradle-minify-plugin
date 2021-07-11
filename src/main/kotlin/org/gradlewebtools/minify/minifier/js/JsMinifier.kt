@@ -77,7 +77,7 @@ class JsMinifier(override var minifierOptions: JsMinifierOptions = JsMinifierOpt
         options.rewritePolyfills = minifierOptions.rewritePolyfills
         options.setOutputCharset(minifierOptions.charset)
         options.setChecksOnly(minifierOptions.checksOnly)
-        if (minifierOptions.browserFeaturesetYear != null) options.browserFeaturesetYear = minifierOptions.browserFeaturesetYear
+        if (minifierOptions.browserFeaturesetYear != null) options.browserFeaturesetYear = minifierOptions.browserFeaturesetYear!!
         options.setEmitUseStrict(minifierOptions.emitUseStrict)
     }
 
