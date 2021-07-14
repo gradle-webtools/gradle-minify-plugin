@@ -44,13 +44,14 @@ tasks.jacocoTestReport {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
     implementation("com.google.javascript:closure-compiler:v20210106")
-    implementation("org.padler:closure-stylesheets:1.6.1")
+    implementation("org.padler:closure-stylesheets:1.6.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.20")
 
     testImplementation("io.kotest:kotest-runner-junit5:4.6.0")
