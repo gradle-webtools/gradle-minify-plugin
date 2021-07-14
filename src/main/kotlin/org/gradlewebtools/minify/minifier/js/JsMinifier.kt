@@ -1,11 +1,11 @@
 package org.gradlewebtools.minify.minifier.js
 
-import com.google.common.collect.ImmutableList
 import com.google.javascript.jscomp.*
 import org.gradlewebtools.minify.minifier.Minifier
 import org.gradlewebtools.minify.minifier.result.Error
 import org.gradlewebtools.minify.minifier.result.Warning
 import java.io.File
+import java.util.*
 
 class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOptions()) : Minifier() {
 
@@ -27,7 +27,7 @@ class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOpt
                 it.substringAfterLast("/").takeIf { it.isNotEmpty() }
             }))
         }
-        val result = compiler.compile(externals, ImmutableList.of(sourceFile), options)
+        val result = compiler.compile(externals, Collections.singletonList(sourceFile), options)
         if (result.success) {
             var source = compiler.toSource()
             if (minifierOptions.createSourceMaps) {
