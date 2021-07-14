@@ -4,6 +4,7 @@ import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -33,6 +34,11 @@ class `CssMinifier - class` : AnnotationSpec() {
         val subDir = files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("sub") }.findFirst().orElse(null)
         val subFiles = Files.list(subDir).collect(Collectors.toList())
         subFiles shouldHaveSize 1
+
+        val cssFile =
+            files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("css.min.css") }.findFirst().orElse(null)
+        cssFile.toFile().readText() shouldContain "@font-face{font-family:Gentium}"
+        cssFile.toFile().readText() shouldContain "@charset\"UTF-8\";"
     }
 
     @Test
@@ -60,8 +66,8 @@ class `CssMinifier - class` : AnnotationSpec() {
         val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
         files shouldHaveSize 5
         val minifiedCss = files.stream()
-                .filter { path: Path? -> path!!.toFile().name.endsWith(".min.css") }
-                .collect(Collectors.toList())
+            .filter { path: Path? -> path!!.toFile().name.endsWith(".min.css") }
+            .collect(Collectors.toList())
         minifiedCss shouldHaveSize 2
         val path = minifiedCss[0]
         val lines = BufferedReader(FileReader(path!!.toFile())).lines().collect(Collectors.toList())
