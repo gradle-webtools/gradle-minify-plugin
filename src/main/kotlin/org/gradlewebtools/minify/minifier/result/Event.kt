@@ -21,10 +21,10 @@ open class Event {
         charNo = error.charno
         lineNo = error.lineNumber
         message = error.description
-        sourceFileName = error.sourceName
+        sourceFileName = error.sourceName ?: ""
     }
 
     override fun toString(): String {
-        return "$message at $sourceFileName line $lineNo : $charNo"
+        return "$message at $sourceFileName line $lineNo:$charNo"
     }
 }
