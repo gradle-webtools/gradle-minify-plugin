@@ -84,7 +84,7 @@ sonarqube {
         property("sonar.projectKey", "gradle-minify-plugin")
         property("sonar.organization", "gradle-webtools")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.exclusions", "**/*MinifyTask*,**/*Extension*")
+        property("sonar.coverage.exclusions", "**/*MinifyTask*,**/*Extension*,**/*MinifierOptions*")
         property("sonar.cpd.exclusions", "**/*Extension*,**/*Options*")
     }
 }
