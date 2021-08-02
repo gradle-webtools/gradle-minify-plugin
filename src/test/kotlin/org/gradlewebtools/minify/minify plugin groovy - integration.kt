@@ -29,14 +29,18 @@ class `minify plugin groovy - integration` : AnnotationSpec() {
                     js {
                         srcDir = file("js")
                         dstDir = file("build/js")
-                        options.ignoreMinFiles = false
-                        options.debug = false
+                        options {
+                            ignoreMinFiles = false
+                            debug = false
+                        }
                     }
                     css {
                         srcDir = file("css")
                         dstDir = file("build/css")
-                        options.ignoreMinFiles = false
-                        options.eliminateDeadStyles = false
+                        options {
+                            ignoreMinFiles = false
+                            eliminateDeadStyles = false
+                        }
                     }
                 }
                 """.trimIndent()
