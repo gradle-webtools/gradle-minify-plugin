@@ -23,16 +23,16 @@ class `minify plugin groovy - integration` : AnnotationSpec() {
         val buildFile = File(testProjectDir, "build.gradle")
         val config = """
                 plugins { 
-                    id("org.gradlewebtools.minify")
+                    id 'org.gradlewebtools.minify'
                 }
                 minification {
                     js {
-                        srcDir = project.file("js")
-                        dstDir = project.file("build/js")
+                        srcDir = file("js")
+                        dstDir = file("build/js")
                     }
                     css {
-                        srcDir = project.file("css")
-                        dstDir = project.file("build/css")
+                        srcDir = file("css")
+                        dstDir = file("build/css")
                     }
                 }
                 """.trimIndent()
