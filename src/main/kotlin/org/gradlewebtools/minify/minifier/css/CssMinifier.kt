@@ -18,7 +18,7 @@ import java.nio.file.Files
  * Uses closure stylesheets.
  * Implemented with help from https://github.com/marcodelpercio https://github.com/google/closure-stylesheets/issues/101
  */
-class CssMinifier(override var minifierOptions: CSSMinifierOptions = CSSMinifierOptions()) : Minifier() {
+class CssMinifier(override var minifierOptions: CssMinifierOptions = CssMinifierOptions()) : Minifier() {
 
     override val minifierName = "CSS Minifier"
 

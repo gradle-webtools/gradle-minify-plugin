@@ -15,14 +15,14 @@ import kotlinx.serialization.encoding.Encoder
 import org.gradlewebtools.minify.minifier.MinifierOptions
 import java.nio.charset.Charset
 
-object CharsetSerializer : KSerializer<Charset> {
+internal object CharsetSerializer : KSerializer<Charset> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Charset", PrimitiveKind.STRING)
     override fun serialize(encoder: Encoder, value: Charset) = encoder.encodeString(value.name())
     override fun deserialize(decoder: Decoder) = charset(decoder.decodeString())
 }
 
 @Serializable
-data class JSMinifierOptions(
+data class JsMinifierOptions(
         var compilationLevel: CompilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS,
         var env: CompilerOptions.Environment = CompilerOptions.Environment.BROWSER,
         var languageIn: CompilerOptions.LanguageMode? = null,
