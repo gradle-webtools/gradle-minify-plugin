@@ -1,8 +1,8 @@
 package org.gradlewebtools.minify
 
 import org.gradle.api.Action
-import org.gradlewebtools.minify.minifier.css.CSSMinifierOptions
-import org.gradlewebtools.minify.minifier.js.JSMinifierOptions
+import org.gradlewebtools.minify.minifier.css.CssMinifierOptions
+import org.gradlewebtools.minify.minifier.js.JsMinifierOptions
 import java.io.File
 
 open class MinifyPluginExtension {
@@ -27,14 +27,18 @@ open class MinifyPluginExtension {
         addDefaultCssMinifyTask = true
     }
 
-    class DefaultJsMinifyTaskContext internal constructor() {
+    open class DefaultJsMinifyTaskContext {
 
         var srcDir: File? = null
         var dstDir: File? = null
 
-        var options = JSMinifierOptions()
+        var options = JsMinifierOptions()
 
-        fun options(block: JSMinifierOptions.() -> Unit) = options.copy().apply(block).apply { options = this }
+        fun options(action: Action<JsMinifierOptions>) = options { action.execute(this) }
+
+        fun options(block: JsMinifierOptions.() -> Unit) {
+            options.copy().apply(block).apply { options = this }
+        }
 
         internal fun applyOn(task: JsMinifyTask) {
             task.srcDir = srcDir
@@ -43,14 +47,18 @@ open class MinifyPluginExtension {
         }
     }
 
-    class DefaultCssMinifyTaskContext {
+    open class DefaultCssMinifyTaskContext {
 
         var srcDir: File? = null
         var dstDir: File? = null
 
-        var options = CSSMinifierOptions()
+        var options = CssMinifierOptions()
 
-        fun options(block: CSSMinifierOptions.() -> Unit) = options.copy().apply(block).apply { options = this }
+        fun options(action: Action<CssMinifierOptions>) = options { action.execute(this) }
+
+        fun options(block: CssMinifierOptions.() -> Unit) {
+            options.copy().apply(block).apply { options = this }
+        }
 
         internal fun applyOn(task: CssMinifyTask) {
             task.srcDir = srcDir
