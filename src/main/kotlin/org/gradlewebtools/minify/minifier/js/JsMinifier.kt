@@ -7,7 +7,7 @@ import org.gradlewebtools.minify.minifier.result.Warning
 import java.io.File
 import java.util.*
 
-class JsMinifier(override var minifierOptions: JSMinifierOptions = JSMinifierOptions()) : Minifier() {
+class JsMinifier(override var minifierOptions: JsMinifierOptions = JsMinifierOptions()) : Minifier() {
 
     override val minifierName = "JS Minifier"
 

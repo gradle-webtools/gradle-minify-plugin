@@ -29,10 +29,18 @@ class `minify plugin - integration` : AnnotationSpec() {
                     js {
                         srcDir = project.file("js")
                         dstDir = project.file("build/js")
+                        options {
+                            ignoreMinFiles = false
+                            debug = false
+                        }
                     }
                     css {
                         srcDir = project.file("css")
                         dstDir = project.file("build/css")
+                        options {
+                            ignoreMinFiles = false
+                            eliminateDeadStyles = false
+                        }
                     }
                 }
                 """.trimIndent()

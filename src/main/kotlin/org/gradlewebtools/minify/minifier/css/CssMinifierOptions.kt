@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 import org.gradlewebtools.minify.minifier.MinifierOptions
 
 @Serializable
-data class CSSMinifierOptions(
+data class CssMinifierOptions(
         var inputOrientation: InputOrientation = InputOrientation.LTR,
         var outputOrientation: OutputOrientation = OutputOrientation.LTR,
         var outputFormat: OutputFormat = OutputFormat.COMPRESSED,
