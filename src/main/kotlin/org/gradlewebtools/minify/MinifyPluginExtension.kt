@@ -1,5 +1,6 @@
 package org.gradlewebtools.minify
 
+import org.gradle.api.Action
 import org.gradlewebtools.minify.minifier.css.CSSMinifierOptions
 import org.gradlewebtools.minify.minifier.js.JSMinifierOptions
 import java.io.File
@@ -12,10 +13,14 @@ open class MinifyPluginExtension {
     internal val defaultJsMinifyTaskContext = DefaultJsMinifyTaskContext()
     internal val defaultCssMinifyTaskContext = DefaultCssMinifyTaskContext()
 
+    fun js(action: Action<DefaultJsMinifyTaskContext>) = js { action.execute(this) }
+
     fun js(block: DefaultJsMinifyTaskContext.() -> Unit) {
         defaultJsMinifyTaskContext.apply(block)
         addDefaultJsMinifyTask = true
     }
+
+    fun css(action: Action<DefaultCssMinifyTaskContext>) = css { action.execute(this) }
 
     fun css(block: DefaultCssMinifyTaskContext.() -> Unit) {
         defaultCssMinifyTaskContext.apply(block)
