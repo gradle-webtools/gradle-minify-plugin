@@ -55,10 +55,24 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
 }
 ```
 
+```groovy
+task additionalJsMinify(type: org.gradlewebtools.minify.JsMinifyTask) {
+    srcDir = project.file("js")
+    dstDir = project.file("build/js")
+}
+```
+
 #### Creating additional CssMinifyTask
 
 ```kotlin
 tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
+    srcDir = project.file("css")
+    dstDir = project.file("build/css")
+}
+```
+
+```groovy
+task cssMinify(type: org.gradlewebtools.minify.CssMinifyTask) {
     srcDir = project.file("css")
     dstDir = project.file("build/css")
 }
@@ -102,6 +116,41 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
         originalFileNames = false
         copyOriginalFile = false
     }
+}
+```
+
+```groovy
+task additionalJsMinify(type: org.gradlewebtools.minify.JsMinifyTask) {
+    srcDir = project.file("js")
+    dstDir = project.file("build/js")
+    options.ignoreMinFiles = false
+    options.compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
+    options.env = CompilerOptions.Environment.BROWSER
+    options.languageIn = null
+    options.languageOut = null
+    options.warningLevel = WarningLevel.QUIET
+    options.extraAnnotationNames = listOf()
+    options.strictModeInput = false
+    options.debug = false
+    options.exportLocalPropertyDefinitions = false
+    options.formatting = listOf()
+    options.generateExports = false
+    options.renamePrefixNamespace = null
+    options.renameVariablePrefix = null
+    options.moduleResolution = ModuleLoader.ResolutionMode.BROWSER
+    options.processCommonJsModules = false
+    options.packageJsonEntryNames = listOf()
+    options.angularPass = false
+    options.dartPass = false
+    options.forceInjectLibrary = listOf()
+    options.polymerVersion = null
+    options.rewritePolyfills = false
+    options.charset = Charsets.UTF_8
+    options.checksOnly = false
+    options.browserFeaturesetYear = null
+    options.createSourceMaps = false
+    options.originalFileNames = false
+    options.copyOriginalFile = false
 }
 ```
 
@@ -177,6 +226,39 @@ tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
         originalFileNames = false
         copyOriginalFile = false
     }
+}
+```
+
+```groovy
+task cssMinify(type: org.gradlewebtools.minify.CssMinifyTask) {
+    srcDir = project.file("css")
+    dstDir = project.file("build/css")
+    options.ignoreMinFiles = false
+    options.inputOrientation = InputOrientation.LTR
+    options.outputOrientation = OutputOrientation.LTR
+    options.outputFormat = OutputFormat.COMPRESSED
+    options.copyrightNotice = null
+    options.trueConditionNames = listOf()
+    options.allowDefPropagation = true
+    options.allowUnrecognizedFunctions = true
+    options.allowedNonStandardFunctions = listOf()
+    options.allowedUnrecognizedProperties = listOf()
+    options.allowUnrecognizedProperties = true
+    options.vendor = null
+    options.allowKeyframes = true
+    options.allowWebkitKeyframes = true
+    options.processDependencies = true
+    options.excludedClassesFromRenaming = listOf()
+    options.simplifyCss = true
+    options.eliminateDeadStyles = false
+    options.cssRenamingPrefix = ""
+    options.preserveComments = false
+    options.outputRenamingMapFormat = OutputRenamingMapFormat.JSON
+    options.compileConstants = mapOf()
+    options.sourceMapLevel = SourceMapDetailLevel.DEFAULT
+    options.createSourceMaps = false
+    options.originalFileNames = false
+    options.copyOriginalFile = false
 }
 ```
 
