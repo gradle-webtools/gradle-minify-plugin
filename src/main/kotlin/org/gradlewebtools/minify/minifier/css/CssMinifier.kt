@@ -20,7 +20,7 @@ import java.nio.file.Files
  */
 class CssMinifier(override var minifierOptions: CssMinifierOptions = CssMinifierOptions()) : Minifier() {
 
-    override val minifierName = "CSS Minifier"
+    override val minifierName = "Css Minifier"
 
     override val acceptedFileExtensions: List<String> = listOf("css")
 

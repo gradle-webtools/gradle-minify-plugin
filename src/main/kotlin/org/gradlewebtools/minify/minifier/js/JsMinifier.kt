@@ -9,7 +9,7 @@ import java.util.*
 
 class JsMinifier(override var minifierOptions: JsMinifierOptions = JsMinifierOptions()) : Minifier() {
 
-    override val minifierName = "JS Minifier"
+    override val minifierName = "Js Minifier"
 
     override val acceptedFileExtensions: List<String> = listOf("js")
 
