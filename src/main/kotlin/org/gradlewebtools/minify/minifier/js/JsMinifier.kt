@@ -53,6 +53,7 @@ class JsMinifier(override var minifierOptions: JsMinifierOptions = JsMinifierOpt
         minifierOptions.warningLevel.setOptionsForWarningLevel(options)
         options.setExtraAnnotationNames(minifierOptions.extraAnnotationNames)
         options.setStrictModeInput(minifierOptions.strictModeInput)
+        options.setStrictModeInput(minifierOptions.strictModeInput)
         if (minifierOptions.debug) minifierOptions.compilationLevel
                 .setDebugOptionsForCompilationLevel(options)
         options.setExportLocalPropertyDefinitions(minifierOptions.exportLocalPropertyDefinitions)
@@ -61,7 +62,7 @@ class JsMinifier(override var minifierOptions: JsMinifierOptions = JsMinifierOpt
                 CommandLineRunner.FormattingOption.PRETTY_PRINT -> options.isPrettyPrint = true
                 CommandLineRunner.FormattingOption.PRINT_INPUT_DELIMITER -> options.printInputDelimiter = true
                 CommandLineRunner.FormattingOption.SINGLE_QUOTES -> options.setPreferSingleQuotes(true)
-                else                                                     -> throw IllegalStateException("Unknown formatting option: $this")
+                else -> throw IllegalStateException("Unknown formatting option: $this")
             }
         }
         options.setGenerateExports(minifierOptions.generateExports)
@@ -77,8 +78,8 @@ class JsMinifier(override var minifierOptions: JsMinifierOptions = JsMinifierOpt
         options.rewritePolyfills = minifierOptions.rewritePolyfills
         options.setOutputCharset(minifierOptions.charset)
         options.setChecksOnly(minifierOptions.checksOnly)
-        if (minifierOptions.browserFeaturesetYear != null) options.browserFeaturesetYear = minifierOptions
-                .browserFeaturesetYear
+        if (minifierOptions.browserFeaturesetYear != null) options.browserFeaturesetYear = minifierOptions.browserFeaturesetYear
+        options.setEmitUseStrict(minifierOptions.emitUseStrict)
     }
 
     override fun rename(oldName: String): String {

@@ -47,7 +47,8 @@ data class JsMinifierOptions(
         @Serializable(with = CharsetSerializer::class)
         var charset: Charset = Charsets.UTF_8,
         var checksOnly: Boolean = false,
-        var browserFeaturesetYear: Int? = null
+        var browserFeaturesetYear: Int? = null,
+        var emitUseStrict: Boolean = true
 ) : MinifierOptions() {
 
     constructor(
@@ -78,7 +79,8 @@ data class JsMinifierOptions(
             browserFeaturesetYear: Int? = null,
             createSourceMaps: Boolean? = null,
             originalFileNames: Boolean? = null,
-            copyOriginalFile: Boolean? = null
+            copyOriginalFile: Boolean? = null,
+            emitUseStrict: Boolean = true
     ) : this(
             compilationLevel,
             env,
@@ -103,7 +105,8 @@ data class JsMinifierOptions(
             rewritePolyfills,
             charset,
             checksOnly,
-            browserFeaturesetYear
+            browserFeaturesetYear,
+            emitUseStrict
     ) {
         if (ignoreMinFiles != null) this.ignoreMinFiles = ignoreMinFiles
         if (createSourceMaps != null) this.createSourceMaps = createSourceMaps

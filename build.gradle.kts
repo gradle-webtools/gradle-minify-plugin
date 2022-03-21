@@ -51,7 +51,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
     implementation("com.google.javascript:closure-compiler:v20210106")
-    implementation("org.padler:closure-stylesheets:1.6.2")
+    implementation("org.padler:closure-stylesheets:1.6.3")
 
     testImplementation("io.kotest:kotest-runner-junit5:4.6.1")
     testImplementation("io.kotest:kotest-assertions-core:4.6.1")
