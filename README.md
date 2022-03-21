@@ -80,6 +80,8 @@ task cssMinify(type: org.gradlewebtools.minify.CssMinifyTask) {
 
 #### Options
 
+Note: Enum properties must be specified by their fully qualified classname.
+
 ##### JsMinifyTask
 
 ```kotlin
@@ -88,11 +90,11 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
     dstDir = project.file("build/js")
     options {
         ignoreMinFiles = false
-        compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
-        env = CompilerOptions.Environment.BROWSER
+        compilationLevel = com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS
+        env = com.google.javascript.jscomp.CompilerOptions.Environment.BROWSER
         languageIn = null
         languageOut = null
-        warningLevel = WarningLevel.QUIET
+        warningLevel = com.google.javascript.jscomp.WarningLevel.QUIET
         extraAnnotationNames = listOf()
         strictModeInput = false
         debug = false
@@ -101,7 +103,7 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
         generateExports = false
         renamePrefixNamespace = null
         renameVariablePrefix = null
-        moduleResolution = ModuleLoader.ResolutionMode.BROWSER
+        moduleResolution = com.google.javascript.jscomp.deps.ModuleLoader.ResolutionMode.BROWSER
         processCommonJsModules = false
         packageJsonEntryNames = listOf()
         angularPass = false
@@ -109,7 +111,7 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
         forceInjectLibrary = listOf()
         polymerVersion = null
         rewritePolyfills = false
-        charset = Charsets.UTF_8
+        charset = kotlin.textCharsets.UTF_8
         checksOnly = false
         browserFeaturesetYear = null
         createSourceMaps = false
@@ -124,11 +126,11 @@ task additionalJsMinify(type: org.gradlewebtools.minify.JsMinifyTask) {
     srcDir = project.file("js")
     dstDir = project.file("build/js")
     options.ignoreMinFiles = false
-    options.compilationLevel = CompilationLevel.SIMPLE_OPTIMIZATIONS
-    options.env = CompilerOptions.Environment.BROWSER
+    options.compilationLevel = com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS
+    env = com.google.javascript.jscomp.CompilerOptions.Environment.BROWSER
     options.languageIn = null
     options.languageOut = null
-    options.warningLevel = WarningLevel.QUIET
+    warningLevel = com.google.javascript.jscomp.WarningLevel.QUIET
     options.extraAnnotationNames = listOf()
     options.strictModeInput = false
     options.debug = false
@@ -137,7 +139,7 @@ task additionalJsMinify(type: org.gradlewebtools.minify.JsMinifyTask) {
     options.generateExports = false
     options.renamePrefixNamespace = null
     options.renameVariablePrefix = null
-    options.moduleResolution = ModuleLoader.ResolutionMode.BROWSER
+    moduleResolution = com.google.javascript.jscomp.deps.ModuleLoader.ResolutionMode.BROWSER
     options.processCommonJsModules = false
     options.packageJsonEntryNames = listOf()
     options.angularPass = false
@@ -145,7 +147,7 @@ task additionalJsMinify(type: org.gradlewebtools.minify.JsMinifyTask) {
     options.forceInjectLibrary = listOf()
     options.polymerVersion = null
     options.rewritePolyfills = false
-    options.charset = Charsets.UTF_8
+    charset = kotlin.textCharsets.UTF_8
     options.checksOnly = false
     options.browserFeaturesetYear = null
     options.createSourceMaps = false
@@ -154,42 +156,42 @@ task additionalJsMinify(type: org.gradlewebtools.minify.JsMinifyTask) {
 }
 ```
 
-| option  | effect                     | values                    | default                   |
-| ------- | -------------------------- | ------------------------- | ------------------------- |
-| srcDir  | Sets source directory      | File?                     | null                      |
-| dstDir  | Sets destination directory | File?                     | null                      |
+| option  | effect                     | values                              | default                             |
+|---------|----------------------------|-------------------------------------|-------------------------------------|
+| srcDir  | Sets source directory      | File?                               | null                                |
+| dstDir  | Sets destination directory | File?                               | null                                |
 | options | Sets JS minifier options   | [js options](#jsminifytask-options) | [js options](#jsminifytask-options) |
 
 ##### JsMinifyTask options
 
-| option                         | effect                                                                                                                     | values                                                                                                                                                                                      | default                                                  |
-|--------------------------------|----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| ignoreMinFiles                 | ignore files named ".min."                                                                                                 | true, false                                                                                                                                                                                 | false                                                    |
-| compilationLevel               | Specifies the compilation level to use                                                                                     | BUNDLE, WHITESPACE_ONLY, SIMPLE, ADVANCED                                                                                                                                                   | SIMPLE                                                   |
-| env                            | Determines the set of builtin externs to load                                                                              | BROWSER, CUSTOM                                                                                                                                                                             | BROWSER                                                  |
-| languageIn                     | Sets the language spec to which input sources should conform                                                               | CMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT, ECMASCRIPT6_TYPED (experimental), ECMASCRIPT_2015, ECMASCRIPT_2016, ECMASCRIPT_2017, ECMASCRIPT_2018, ECMASCRIPT_2019, STABLE, ECMASCRIPT_NEXT |                                                          |
-| languageOut                    | Sets the language spec to which output should conform                                                                      | CMASCRIPT3, ECMASCRIPT5, ECMASCRIPT5_STRICT, ECMASCRIPT6_TYPED (experimental), ECMASCRIPT_2015, ECMASCRIPT_2016, ECMASCRIPT_2017, ECMASCRIPT_2018, ECMASCRIPT_2019, STABLE, ECMASCRIPT_NEXT |                                                          |
-| warningLevel                   | Specifies the warning level to use                                                                                         | QUIET, DEFAULT, VERBOSE                                                                                                                                                                     | QUIET                                                    |
-| extraAnnotationName            | A whitelist of tag names in JSDoc                                                                                          | list of strings                                                                                                                                                                             | null                                                     |
-| strictModeInput                | Assume input sources are to run in strict mode.                                                                            | true, false                                                                                                                                                                                 | false                                                    |
-| debug                          | Enable debugging options                                                                                                   | true, false                                                                                                                                                                                 | false                                                    |
-| exportLocalPropertyDefinitions | Generates export code for local properties marked with @export                                                             | true, false                                                                                                                                                                                 | false                                                    |
-| formatting                     | Specifies which formatting options, if any, should be applied to the output JS                                             | PRETTY_PRINT, PRINT_INPUT_DELIMITER, SINGLE_QUOTES                                                                                                                                          | null                                                     |
-| generateExports                | Generates export code for those marked with @export                                                                        | true, false                                                                                                                                                                                 | false                                                    |
-| renamePrefixNamespace          | Specifies the name of an object that will be used to store all non-extern globals                                          | string                                                                                                                                                                                      | null                                                     |
-| renameVariablePrefix           | Specifies a prefix that will be prepended to all variables                                                                 | string                                                                                                                                                                                      | null                                                     |
-| moduleResolution               | Specifies how the compiler locates modules                                                                                 | BROWSER, BROWSER_WITH_TRANSFORMED_PREFIXES , NODE , WEBPACK                                                                                                                                 | BROWSER                                                  |
-| processCommonJsModules         | Process CommonJS modules to a concatenable form                                                                            | true, false                                                                                                                                                                                 | false                                                    |
-| packageJsonEntryNames          | Ordered list of entries to look for in package.json files when processing modules with the NODE module resolution strategy | list of strings                                                                                                                                                                             | ["browser", "module", "main"]                            |
-| angularPass                    | Generate \$inject properties for AngularJS for functions annotated with @ngInject                                          | true, false                                                                                                                                                                                 | false                                                    |
-| dartPass                       | Rewrite Dart Dev Compiler output to be compiler-friendly                                                                   | true, false                                                                                                                                                                                 | false                                                    |
-| forceInjectLibrary             | Force injection of named runtime libraries. The format is <name> where <name> is the name of a runtime library             | base, es6_runtime, runtime_type_check                                                                                                                                                       | empty list                                               |
-| polymerVersion                 | Which version of Polymer is being used                                                                                     | 1, 2                                                                                                                                                                                        | null                                                     |
-| rewritePolyfills               | Rewrite ES6 library calls to use polyfills provided by the compiler's runtime                                              | true, false                                                                                                                                                                                 | false                                                    |
-| charset                        | Input and output charset for all files                                                                                     | charset                                                                                                                                                                                     | By default, we accept UTF-8 as input and output US_ASCII |
-| checksOnly                     | Don't generate output. Run checks, but no optimization passes                                                              | true, false                                                                                                                                                                                 | false                                                    |
-| browserFeaturesetYear          | Browser feature set year                                                                                                   | 2012, 2019, 2020                                                                                                                                                                            | 0                                                        |
-| emitUseStrict                  | Whether 'use strict' should be added to the file                                                                           | true, false                                                                                                                                                                                 | true                                                     |
+| option                         |     | effect                                                                                                                     | values                                                          | default                                                               |
+|--------------------------------|:----|----------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|-----------------------------------------------------------------------|
+| ignoreMinFiles                 |     | ignore files named ".min."                                                                                                 | true, false                                                     | false                                                                 |
+| compilationLevel               |     | Specifies the compilation level to use                                                                                     | com.google.javascript.jscomp.CompilationLevel                   | com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS    |
+| env                            |     | Determines the set of builtin externs to load                                                                              | com.google.javascript.jscomp.CompilerOptions.Environment        | com.google.javascript.jscomp.CompilerOptions.Environment.BROWSER      |
+| languageIn                     |     | Sets the language spec to which input sources should conform                                                               | com.google.javascript.jscomp.CompilerOptions.LanguageMode       |                                                                       |
+| languageOut                    |     | Sets the language spec to which output should conform                                                                      | com.google.javascript.jscomp.CompilerOptions.LanguageMode       |                                                                       |
+| warningLevel                   |     | Specifies the warning level to use                                                                                         | com.google.javascript.jscomp.WarningLevel                       | com.google.javascript.jscomp.WarningLevel.QUIET                       |
+| extraAnnotationName            |     | A whitelist of tag names in JSDoc                                                                                          | list of strings                                                 | null                                                                  |
+| strictModeInput                |     | Assume input sources are to run in strict mode.                                                                            | true, false                                                     | false                                                                 |
+| debug                          |     | Enable debugging options                                                                                                   | true, false                                                     | false                                                                 |
+| exportLocalPropertyDefinitions |     | Generates export code for local properties marked with @export                                                             | true, false                                                     | false                                                                 |
+| formatting                     |     | Specifies which formatting options, if any, should be applied to the output JS                                             | com.google.javascript.jscomp.CommandLineRunner.FormattingOption | null                                                                  |
+| generateExports                |     | Generates export code for those marked with @export                                                                        | true, false                                                     | false                                                                 |
+| renamePrefixNamespace          |     | Specifies the name of an object that will be used to store all non-extern globals                                          | string                                                          | null                                                                  |
+| renameVariablePrefix           |     | Specifies a prefix that will be prepended to all variables                                                                 | string                                                          | null                                                                  |
+| moduleResolution               |     | Specifies how the compiler locates modules                                                                                 | com.google.javascript.jscomp.deps.ModuleLoader.ResolutionMode   | com.google.javascript.jscomp.deps.ModuleLoader.ResolutionMode.BROWSER |
+| processCommonJsModules         |     | Process CommonJS modules to a concatenable form                                                                            | true, false                                                     | false                                                                 |
+| packageJsonEntryNames          |     | Ordered list of entries to look for in package.json files when processing modules with the NODE module resolution strategy | list of strings                                                 | ["browser", "module", "main"]                                         |
+| angularPass                    |     | Generate \$inject properties for AngularJS for functions annotated with @ngInject                                          | true, false                                                     | false                                                                 |
+| dartPass                       |     | Rewrite Dart Dev Compiler output to be compiler-friendly                                                                   | true, false                                                     | false                                                                 |
+| forceInjectLibrary             |     | Force injection of named runtime libraries. The format is <name> where <name> is the name of a runtime library             | base, es6_runtime, runtime_type_check                           | empty list                                                            |
+| polymerVersion                 |     | Which version of Polymer is being used                                                                                     | 1, 2                                                            | null                                                                  |
+| rewritePolyfills               |     | Rewrite ES6 library calls to use polyfills provided by the compiler's runtime                                              | true, false                                                     | false                                                                 |
+| charset                        |     | Input and output charset for all files                                                                                     | java.nio.charset.Charset                                        | By default, we accept UTF-8 as input and output US_ASCII              |
+| checksOnly                     |     | Don't generate output. Run checks, but no optimization passes                                                              | true, false                                                     | false                                                                 |
+| browserFeaturesetYear          |     | Browser feature set year                                                                                                   | 2012, 2019, 2020                                                | 0                                                                     |
+| emitUseStrict                  |     | Whether 'use strict' should be added to the file                                                                           | true, false                                                     | true                                                                  |
 
 See [Google Closure Compiler](https://github.com/google/closure-compiler/wiki/Flags-and-Options) for more information
 
@@ -201,9 +203,9 @@ tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
     dstDir = project.file("build/css")
     options {
         ignoreMinFiles = false
-        inputOrientation = InputOrientation.LTR
-        outputOrientation = OutputOrientation.LTR
-        outputFormat = OutputFormat.COMPRESSED
+        inputOrientation = com.google.common.css.JobDescription.InputOrientation.LTR
+        outputOrientation = com.google.common.css.JobDescription.OutputOrientation.LTR
+        outputFormat = com.google.common.css.JobDescription.OutputFormat.COMPRESSED
         copyrightNotice = null
         trueConditionNames = listOf()
         allowDefPropagation = true
@@ -220,9 +222,9 @@ tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
         eliminateDeadStyles = false
         cssRenamingPrefix = ""
         preserveComments = false
-        outputRenamingMapFormat = OutputRenamingMapFormat.JSON
+        outputRenamingMapFormat = com.google.common.css.OutputRenamingMapFormat.JSON
         compileConstants = mapOf()
-        sourceMapLevel = SourceMapDetailLevel.DEFAULT
+        options.sourceMapLevel = com.google.common.css.JobDescription.SourceMapDetailLevel.DEFAULT
         createSourceMaps = false
         originalFileNames = false
         copyOriginalFile = false
@@ -237,7 +239,7 @@ task cssMinify(type: org.gradlewebtools.minify.CssMinifyTask) {
     options.ignoreMinFiles = false
     options.inputOrientation = InputOrientation.LTR
     options.outputOrientation = OutputOrientation.LTR
-    options.outputFormat = OutputFormat.COMPRESSED
+    outputFormat = com.google.common.css.JobDescription.OutputFormat.COMPRESSED
     options.copyrightNotice = null
     options.trueConditionNames = listOf()
     options.allowDefPropagation = true
@@ -254,45 +256,45 @@ task cssMinify(type: org.gradlewebtools.minify.CssMinifyTask) {
     options.eliminateDeadStyles = false
     options.cssRenamingPrefix = ""
     options.preserveComments = false
-    options.outputRenamingMapFormat = OutputRenamingMapFormat.JSON
+    outputRenamingMapFormat = com.google.common.css.OutputRenamingMapFormat.JSON
     options.compileConstants = mapOf()
-    options.sourceMapLevel = SourceMapDetailLevel.DEFAULT
+    options.sourceMapLevel = com.google.common.css.JobDescription.SourceMapDetailLevel.DEFAULT
     options.createSourceMaps = false
     options.originalFileNames = false
     options.copyOriginalFile = false
 }
 ```
 
-| option  | effect                     | values                      | default                     |
-| ------- | -------------------------- | --------------------------- | --------------------------- |
-| srcDir  | Sets source directory      | `File?`                     | `null`                      |
-| dstDir  | Sets destination directory | `File?`                     | `null`                      |
+| option  | effect                     | values                                | default                               |
+|---------|----------------------------|---------------------------------------|---------------------------------------|
+| srcDir  | Sets source directory      | `File?`                               | `null`                                |
+| dstDir  | Sets destination directory | `File?`                               | `null`                                |
 | options | Sets CSS minifier options  | [css options](#cssminifytask-options) | [css options](#cssminifytask-options) |
 
 ##### CSSMinifyTask options
 
-| option                        | effect                        | values                              | default      |
-| ----------------------------- | ----------------------------- | ----------------------------------- | ------------ |
-| ignoreMinFiles                | ignore files named ".min."    | true, false                         | false        |
-| inputOrientation              | inputOrientation              | JobDescription.InputOrientation     | LTR          |
-| outputOrientation             | outputOrientation             | JobDescription.OutputOrientation    | LTR          |
-| outputFormat                  | outputFormat                  | JobDescription.OutputFormat         | COMPRESSED   |
-| copyrightNotice               | copyrightNotice               | String                              | null         |
-| trueConditionNames            | trueConditionNames            | list of strings                     | empty list   |
-| allowDefPropagation           | allowDefPropagation           | true, false                         | true         |
-| allowUnrecognizedFunctions    | allowUnrecognizedFunctions    | true, false                         | true         |
-| allowedNonStandardFunctions   | allowedNonStandardFunctions   | list of strings                     | empty list   |
-| allowedUnrecognizedProperties | allowedUnrecognizedProperties | list of strings                     | empty list   |
-| allowUnrecognizedProperties   | allowUnrecognizedProperties   | true, false                         | true         |
-| vendor                        | vendor                        | Vendor                              | null         |
-| allowKeyframes                | allowKeyframes                | true, false                         | true         |
-| allowWebkitKeyframes          | allowWebkitKeyframes          | true, false                         | true         |
-| processDependencies           | processDependencies           | true, false                         | true         |
-| excludedClassesFromRenaming   | excludedClassesFromRenaming   | list of strings                     | empty list   |
-| simplifyCss                   | simplifyCss                   | true, false                         | true         |
-| eliminateDeadStyles           | eliminateDeadStyles           | true, false                         | false        |
-| cssRenamingPrefix             | CSS renaming prefix           | String                              | empty string |
-| preserveComments              | preserveComments              | true, false                         | false        |
-| outputRenamingMapFormat       | outputRenamingMapFormat       | OutputRenamingMapFormat             | JSON         |
-| compileConstants              | compileConstants              | map                                 | empty map    |
-| sourceMapLevel                | sourceMapLevel                | JobDescription.SourceMapDetailLevel | DEFAULT      |
+| option                        | effect                        | values                                                                   | default                                                                          |
+|-------------------------------|-------------------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| ignoreMinFiles                | ignore files named ".min."    | true, false                                                              | false                                                                            |
+| inputOrientation              | inputOrientation              | com.google.common.css.JobDescription.InputOrientation                    | com.google.common.css.JobDescription.OutputOrientation.LTR                       |
+| outputOrientation             | outputOrientation             | com.google.common.css.JobDescription.OutputOrientation                   | com.google.common.css.JobDescription.OutputOrientation.LTR                       |
+| outputFormat                  | outputFormat                  | com.google.common.css.JobDescription.OutputFormat                        | com.google.common.css.JobDescription.OutputFormat.COMPRESSED                     |
+| copyrightNotice               | copyrightNotice               | String                                                                   | null                                                                             |
+| trueConditionNames            | trueConditionNames            | list of strings                                                          | empty list                                                                       |
+| allowDefPropagation           | allowDefPropagation           | true, false                                                              | true                                                                             |
+| allowUnrecognizedFunctions    | allowUnrecognizedFunctions    | true, false                                                              | true                                                                             |
+| allowedNonStandardFunctions   | allowedNonStandardFunctions   | list of strings                                                          | empty list                                                                       |
+| allowedUnrecognizedProperties | allowedUnrecognizedProperties | list of strings                                                          | empty list                                                                       |
+| allowUnrecognizedProperties   | allowUnrecognizedProperties   | true, false                                                              | true                                                                             |
+| vendor                        | vendor                        | com.google.common.css.Vendor                                             | null                                                                             |
+| allowKeyframes                | allowKeyframes                | true, false                                                              | true                                                                             |
+| allowWebkitKeyframes          | allowWebkitKeyframes          | true, false                                                              | true                                                                             |
+| processDependencies           | processDependencies           | true, false                                                              | true                                                                             |
+| excludedClassesFromRenaming   | excludedClassesFromRenaming   | list of strings                                                          | empty list                                                                       |
+| simplifyCss                   | simplifyCss                   | true, false                                                              | true                                                                             |
+| eliminateDeadStyles           | eliminateDeadStyles           | true, false                                                              | false                                                                            |
+| cssRenamingPrefix             | CSS renaming prefix           | String                                                                   | empty string                                                                     |
+| preserveComments              | preserveComments              | true, false                                                              | false                                                                            |
+| outputRenamingMapFormat       | outputRenamingMapFormat       | com.google.common.cssOutputRenamingMapFormat                             | com.google.common.cssOutputRenamingMapFormat.JSON                                |
+| compileConstants              | compileConstants              | map                                                                      | empty map                                                                        |
+| sourceMapLevel                | sourceMapLevel                | com.google.common.css.JobDescription.JobDescription.SourceMapDetailLevel | com.google.common.css.JobDescription.JobDescription.SourceMapDetailLevel.DEFAULT |
