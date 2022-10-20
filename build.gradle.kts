@@ -1,18 +1,18 @@
 plugins {
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.serialization") version "1.6.10"
-    id("com.gradle.plugin-publish") version "0.20.0"
+    kotlin("jvm") version "1.7.20"
+    kotlin("plugin.serialization") version "1.7.20"
+    id("com.gradle.plugin-publish") version "1.0.0"
     id("maven-publish")
     id("java-gradle-plugin")
     id("jacoco")
-    id("org.sonarqube") version "3.3"
+    id("org.sonarqube") version "3.4.0.2513"
 }
 
 group = "org.gradle-webtools.minify"
-version = "1.3.2"
+version = "2.0.0"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 if (!project.hasProperty("gradle.publish.key"))
@@ -34,7 +34,7 @@ tasks.test {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = "0.8.8"
 }
 
 tasks.jacocoTestReport {
@@ -49,12 +49,12 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("com.google.javascript:closure-compiler:v20210106")
-    implementation("org.padler:closure-stylesheets:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    implementation("com.google.javascript:closure-compiler:v20221004")
+    implementation("org.padler:closure-stylesheets:1.6.5")
 
-    testImplementation("io.kotest:kotest-runner-junit5:4.6.3")
-    testImplementation("io.kotest:kotest-assertions-core:4.6.3")
+    testImplementation("io.kotest:kotest-runner-junit5:5.5.1")
+    testImplementation("io.kotest:kotest-assertions-core:5.5.1")
 }
 
 tasks.withType<Test> {
