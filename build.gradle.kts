@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "org.gradle-webtools.minify"
-version = "1.3.1"
+version = "1.3.2"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
