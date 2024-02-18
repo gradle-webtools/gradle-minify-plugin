@@ -1,12 +1,15 @@
 # Gradle Minify Plugin!
 
-[![Build Status](https://github.com/gradle-webtools/gradle-minify-plugin/actions/workflows/master.yml/badge.svg)](https://github.com/gradle-webtools/gradle-minify-plugin/actions/workflows/master.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
+[![Master](https://github.com/gradle-webtools/gradle-minify-plugin/actions/workflows/master.yml/badge.svg)](https://github.com/gradle-webtools/gradle-minify-plugin/actions/workflows/master.yml)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=gradle-minify-plugin)](https://sonarcloud.io/summary/new_code?id=gradle-minify-plugin)
 
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=bugs)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=code_smells)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=coverage)](https://sonarcloud.io/dashboard?id=gradle-minify-plugin)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=bugs)](https://sonarcloud.io/summary/new_code?id=gradle-minify-plugin)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=gradle-minify-plugin)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=gradle-minify-plugin)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=coverage)](https://sonarcloud.io/summary/new_code?id=gradle-minify-plugin)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=gradle-minify-plugin)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=gradle-minify-plugin)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=gradle-minify-plugin&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=gradle-minify-plugin)
 
 A simple gradle plugin to minify CSS and JavaScript files.
 
