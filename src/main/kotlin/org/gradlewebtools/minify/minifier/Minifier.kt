@@ -60,7 +60,7 @@ abstract class Minifier {
         }
         val dstFile = File(dst.toString(), fileName)
         dstFile.parentFile.mkdirs()
-        if (acceptedFileExtensions.find { ext -> ext == it.extension } != null) {
+        if (acceptedFileExtensions.contains(it.extension)) {
             if ((minifierOptions.copyOriginalFile && !minifierOptions.originalFileNames) ||
                     !shouldMinify(f)) {
                 Files.copy(f, copy.toPath(), StandardCopyOption.REPLACE_EXISTING)

@@ -62,7 +62,7 @@ class JsMinifier(override var minifierOptions: JsMinifierOptions = JsMinifierOpt
                 CommandLineRunner.FormattingOption.PRETTY_PRINT -> options.isPrettyPrint = true
                 CommandLineRunner.FormattingOption.PRINT_INPUT_DELIMITER -> options.printInputDelimiter = true
                 CommandLineRunner.FormattingOption.SINGLE_QUOTES -> options.setPreferSingleQuotes(true)
-                else -> throw IllegalStateException("Unknown formatting option: $this")
+                else -> error("Unknown formatting option: $this")
             }
         }
         options.setGenerateExports(minifierOptions.generateExports)
