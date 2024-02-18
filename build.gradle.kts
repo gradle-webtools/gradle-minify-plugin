@@ -1,18 +1,18 @@
 plugins {
-    kotlin("jvm") version "1.7.20"
-    kotlin("plugin.serialization") version "1.7.20"
-    id("com.gradle.plugin-publish") version "1.0.0"
+    kotlin("jvm") version "1.9.22"
+    kotlin("plugin.serialization") version "1.9.22"
+    id("com.gradle.plugin-publish") version "1.2.1"
     id("maven-publish")
     id("java-gradle-plugin")
     id("jacoco")
-    id("org.sonarqube") version "3.4.0.2513"
+    id("org.sonarqube") version "4.4.1.3373"
 }
 
 group = "org.gradle-webtools.minify"
 version = "2.0.0"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "19"
 }
 
 if (!project.hasProperty("gradle.publish.key"))
@@ -34,7 +34,7 @@ tasks.test {
 }
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion = "0.8.11"
 }
 
 tasks.jacocoTestReport {
@@ -50,11 +50,11 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-    implementation("com.google.javascript:closure-compiler:v20221004")
+    implementation("com.google.javascript:closure-compiler:v20231112")
     implementation("org.padler:closure-stylesheets:1.6.5")
 
-    testImplementation("io.kotest:kotest-runner-junit5:5.5.1")
-    testImplementation("io.kotest:kotest-assertions-core:5.5.1")
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
 }
 
 tasks.withType<Test> {
@@ -62,23 +62,20 @@ tasks.withType<Test> {
 }
 
 gradlePlugin {
+    website.set("https://github.com/gradle-webtools/gradle-minify-plugin")
+    vcsUrl.set("https://github.com/gradle-webtools/gradle-minify-plugin")
     plugins {
         create("minifyPlugin") {
             id = "org.gradlewebtools.minify"
             implementationClass = "org.gradlewebtools.minify.MinifyPlugin"
             displayName = "Gradle Minify Plugin"
+            description = "Gradle plugin to say hello!"
+            tags.set(listOf("css", "javascript", "js", "minify", "minification"))
         }
     }
 }
 
-pluginBundle {
-    website = "https://github.com/gradle-webtools/gradle-minify-plugin"
-    vcsUrl = "https://github.com/gradle-webtools/gradle-minify-plugin"
-    description = "A simple gradle plugin to minify CSS and JavaScript files"
-    tags = listOf("css", "javascript", "js", "minify", "minification")
-}
-
-sonarqube {
+sonar {
     properties {
         property("sonar.projectKey", "gradle-minify-plugin")
         property("sonar.organization", "gradle-webtools")
