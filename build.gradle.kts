@@ -69,7 +69,7 @@ gradlePlugin {
             id = "org.gradlewebtools.minify"
             implementationClass = "org.gradlewebtools.minify.MinifyPlugin"
             displayName = "Gradle Minify Plugin"
-            description = "Gradle plugin to say hello!"
+            description = "A simple gradle plugin to minify CSS and JavaScript files"
             tags.set(listOf("css", "javascript", "js", "minify", "minification"))
         }
     }
