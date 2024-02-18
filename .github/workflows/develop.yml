@@ -16,10 +16,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 19
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '19'
+          java-version: '17'
           distribution: 'adopt'
 
       - name: build
