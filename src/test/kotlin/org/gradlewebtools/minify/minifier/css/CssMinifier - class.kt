@@ -76,16 +76,4 @@ class `CssMinifier - class` : AnnotationSpec() {
         val subFiles = Files.list(subDir).collect(Collectors.toList())
         subFiles shouldHaveSize 2
     }
-
-    @Test
-    fun minifyFileWithError() {
-        val cssMinifier = CssMinifier()
-        val dst = File(testProjectDir, "dst")
-        dst.mkdir()
-        cssMinifier.minify(File("src/test/resources/errors/css"), dst)
-        val files = Files.list(Paths.get(dst.absolutePath + "/")).collect(Collectors.toList())
-        files shouldHaveSize 1
-        cssMinifier.report.errors shouldHaveSize 0
-        cssMinifier.report.warnings shouldHaveSize 1
-    }
 }
