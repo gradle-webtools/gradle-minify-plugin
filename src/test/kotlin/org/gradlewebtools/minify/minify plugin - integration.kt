@@ -39,7 +39,6 @@ class `minify plugin - integration` : AnnotationSpec() {
                         dstDir = project.file("build/css")
                         options {
                             ignoreMinFiles = false
-                            eliminateDeadStyles = false
                         }
                     }
                 }

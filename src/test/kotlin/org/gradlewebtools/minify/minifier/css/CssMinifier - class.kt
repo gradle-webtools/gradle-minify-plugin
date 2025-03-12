@@ -37,8 +37,8 @@ class `CssMinifier - class` : AnnotationSpec() {
 
         val cssFile =
             files.stream().filter { p: Path? -> p!!.toFile().name.endsWith("css.min.css") }.findFirst().orElse(null)
-        cssFile.toFile().readText() shouldContain "@font-face{font-family:Gentium}"
-        cssFile.toFile().readText() shouldContain "@charset\"UTF-8\";"
+        cssFile.toFile().readText() shouldContain "@font-face{font-family:gentium}"
+        cssFile.toFile().readText() shouldContain "@charset \"UTF-8\";"
     }
 
     @Test
@@ -57,6 +57,7 @@ class `CssMinifier - class` : AnnotationSpec() {
     }
 
     @Test
+    @Ignore // There is no source maps support
     fun minifyFileWithSourceMaps() {
         val cssMinifier = CssMinifier()
         cssMinifier.minifierOptions.createSourceMaps = true

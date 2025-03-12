@@ -36,7 +36,6 @@ class `minify plugin groovy - integration` : AnnotationSpec() {
                         srcDir = file("css")
                         dstDir = file("build/css")
                         options.ignoreMinFiles = false
-                        options.eliminateDeadStyles = false
                     }
                 }
                 """.trimIndent()

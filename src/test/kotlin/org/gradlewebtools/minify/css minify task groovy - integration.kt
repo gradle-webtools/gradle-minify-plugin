@@ -38,7 +38,6 @@ class `css minify task groovy - integration` : AnnotationSpec() {
                     dstDir = project.file("build/css")
                     options {
                         ignoreMinFiles = false
-                        eliminateDeadStyles = false
                     }
                 }
                 """.trimIndent()
@@ -54,6 +53,6 @@ class `css minify task groovy - integration` : AnnotationSpec() {
                 .withArguments("minify", "--stacktrace")
                 .build()
         result.task(":minify")!!.outcome shouldBe TaskOutcome.SUCCESS
-        File(testProjectDir, "build/css/css.min.css").readText() shouldBe "body{color:black}"
+        File(testProjectDir, "build/css/css.min.css").readText() shouldBe "body{color:#000}\r\n"
     }
 }

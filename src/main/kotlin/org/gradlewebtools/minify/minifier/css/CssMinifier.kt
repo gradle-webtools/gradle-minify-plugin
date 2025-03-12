@@ -1,20 +1,10 @@
 package org.gradlewebtools.minify.minifier.css
 
-import com.google.common.css.IdentitySubstitutionMap
-import com.google.common.css.JobDescription
-import com.google.common.css.JobDescriptionBuilder
-import com.google.common.css.SourceCode
-import com.google.common.css.compiler.ClosureStylesheetCompiler
-import com.google.common.css.compiler.ast.BasicErrorManager
-import com.google.common.css.compiler.ast.GssError
-import com.google.common.css.compiler.gssfunctions.DefaultGssFunctionMapProvider
+import net.logicsquad.minifier.AbstractMinifier
+import net.logicsquad.minifier.MinificationException
+import net.logicsquad.minifier.css.CSSMinifier
 import org.gradlewebtools.minify.minifier.Minifier
-import org.gradlewebtools.minify.minifier.result.Error
-import org.gradlewebtools.minify.minifier.result.Warning
-import java.io.File
-import java.io.IOException
-import java.io.UncheckedIOException
-import java.nio.file.Files
+import java.io.*
 
 /**
  * Uses closure stylesheets.
@@ -28,72 +18,19 @@ class CssMinifier(override var minifierOptions: CssMinifierOptions = CssMinifier
 
     override fun minifyFile(srcFile: File, dstFile: File) {
         try {
-            val job = createJobDescription(srcFile)
-            val errorManager = CompilerErrorManager()
-            val compiler = ClosureStylesheetCompiler(job, errorManager)
-            var sourcemapFile: File? = null
-            if (minifierOptions.createSourceMaps) {
-                sourcemapFile = File(dstFile.absolutePath + ".map")
-            }
-            var compilerOutput = compiler.execute(null, sourcemapFile)
-            if (sourcemapFile != null) {
-                compilerOutput += "\n//# sourceMappingURL=${sourcemapFile.name}"
-            }
-            writeToFile(dstFile, compilerOutput)
+            val input: Reader = FileReader(srcFile)
+            val output: Writer = FileWriter(dstFile)
+            val min: AbstractMinifier = CSSMinifier(input)
+
+            min.minify(output)
         } catch (e: IOException) {
             throw UncheckedIOException(e)
+        } catch (e: MinificationException) {
+            throw RuntimeException(e)
         }
     }
 
     override fun rename(oldName: String): String {
         return oldName.replace(".css", ".min.css")
-    }
-
-    @Throws(IOException::class)
-    private fun createJobDescription(file: File): JobDescription {
-        val builder = JobDescriptionBuilder()
-        builder.setInputOrientation(minifierOptions.inputOrientation)
-        builder.setOutputOrientation(minifierOptions.outputOrientation)
-        builder.setOutputFormat(minifierOptions.outputFormat)
-        builder.setCopyrightNotice(minifierOptions.copyrightNotice)
-        builder.setTrueConditionNames(minifierOptions.trueConditionNames)
-        builder.setAllowDefPropagation(minifierOptions.allowDefPropagation)
-        builder.setAllowUnrecognizedFunctions(minifierOptions.allowUnrecognizedFunctions)
-        builder.setAllowedNonStandardFunctions(minifierOptions.allowedNonStandardFunctions)
-        builder.setAllowedUnrecognizedProperties(minifierOptions.allowedUnrecognizedProperties)
-        builder.setAllowUnrecognizedProperties(minifierOptions.allowUnrecognizedProperties)
-        builder.setVendor(minifierOptions.vendor)
-        builder.setAllowKeyframes(minifierOptions.allowKeyframes)
-        builder.setAllowWebkitKeyframes(minifierOptions.allowWebkitKeyframes)
-        builder.setProcessDependencies(minifierOptions.processDependencies)
-        builder.setExcludedClassesFromRenaming(minifierOptions.excludedClassesFromRenaming)
-        builder.setSimplifyCss(minifierOptions.simplifyCss)
-        builder.setEliminateDeadStyles(minifierOptions.eliminateDeadStyles)
-        builder.setCssSubstitutionMapProvider { IdentitySubstitutionMap() }
-        builder.setCssRenamingPrefix(minifierOptions.cssRenamingPrefix)
-        builder.setPreserveComments(minifierOptions.preserveComments)
-        builder.setOutputRenamingMapFormat(minifierOptions.outputRenamingMapFormat)
-        builder.setCompileConstants(minifierOptions.compileConstants)
-        builder.setGssFunctionMapProvider(DefaultGssFunctionMapProvider())
-        builder.setSourceMapLevel(minifierOptions.sourceMapLevel)
-        builder.setCreateSourceMap(minifierOptions.createSourceMaps)
-        val fileContents = String(Files.readAllBytes(file.toPath()))
-        builder.addInput(SourceCode(file.name, fileContents))
-        return builder.jobDescription
-    }
-
-    internal inner class CompilerErrorManager : BasicErrorManager() {
-
-        override fun print(msg: String) {
-            // Do nothing to have all errors at the end
-        }
-
-        override fun report(error: GssError) {
-            report.add(Error(error))
-        }
-
-        override fun reportWarning(warning: GssError) {
-            report.add(Warning(warning))
-        }
     }
 }

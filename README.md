@@ -14,9 +14,7 @@
 
 A simple gradle plugin to minify CSS and JavaScript files.
 
-Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and [custom
-](https://github.com/616slayer616/closure-stylesheets) [Google Closure Stylesheets
-](https://github.com/google/closure-stylesheets) for minification.
+Uses [Google Closure Compiler](https://github.com/google/closure-compiler) and (https://github.com/logicsquad/minifier) [Minifier](https://github.com/google/closure-stylesheets) for minification.
 
 ## Getting started
 
@@ -128,34 +126,7 @@ tasks.create<JsMinifyTask>("additionalJsMinify") { //this: JsMinifyTask
 task additionalJsMinify(type: org.gradlewebtools.minify.JsMinifyTask) {
     srcDir = project.file("js")
     dstDir = project.file("build/js")
-    options.ignoreMinFiles = false
-    options.compilationLevel = com.google.javascript.jscomp.CompilationLevel.SIMPLE_OPTIMIZATIONS
-    env = com.google.javascript.jscomp.CompilerOptions.Environment.BROWSER
-    options.languageIn = null
-    options.languageOut = null
-    warningLevel = com.google.javascript.jscomp.WarningLevel.QUIET
-    options.extraAnnotationNames = listOf()
-    options.strictModeInput = false
-    options.debug = false
-    options.exportLocalPropertyDefinitions = false
-    options.formatting = listOf()
-    options.generateExports = false
-    options.renamePrefixNamespace = null
-    options.renameVariablePrefix = null
-    moduleResolution = com.google.javascript.jscomp.deps.ModuleLoader.ResolutionMode.BROWSER
-    options.processCommonJsModules = false
-    options.packageJsonEntryNames = listOf()
-    options.angularPass = false
-    options.dartPass = false
-    options.forceInjectLibrary = listOf()
-    options.polymerVersion = null
-    options.rewritePolyfills = false
-    charset = kotlin.textCharsets.UTF_8
-    options.checksOnly = false
-    options.browserFeaturesetYear = null
-    options.createSourceMaps = false
-    options.originalFileNames = false
-    options.copyOriginalFile = false
+    
 }
 ```
 
@@ -206,31 +177,6 @@ tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
     dstDir = project.file("build/css")
     options {
         ignoreMinFiles = false
-        inputOrientation = com.google.common.css.JobDescription.InputOrientation.LTR
-        outputOrientation = com.google.common.css.JobDescription.OutputOrientation.LTR
-        outputFormat = com.google.common.css.JobDescription.OutputFormat.COMPRESSED
-        copyrightNotice = null
-        trueConditionNames = listOf()
-        allowDefPropagation = true
-        allowUnrecognizedFunctions = true
-        allowedNonStandardFunctions = listOf()
-        allowedUnrecognizedProperties = listOf()
-        allowUnrecognizedProperties = true
-        vendor = null
-        allowKeyframes = true
-        allowWebkitKeyframes = true
-        processDependencies = true
-        excludedClassesFromRenaming = listOf()
-        simplifyCss = true
-        eliminateDeadStyles = false
-        cssRenamingPrefix = ""
-        preserveComments = false
-        outputRenamingMapFormat = com.google.common.css.OutputRenamingMapFormat.JSON
-        compileConstants = mapOf()
-        options.sourceMapLevel = com.google.common.css.JobDescription.SourceMapDetailLevel.DEFAULT
-        createSourceMaps = false
-        originalFileNames = false
-        copyOriginalFile = false
     }
 }
 ```
@@ -239,32 +185,9 @@ tasks.create<CssMinifyTask>("additionalCssMinify") { //this: CssMinifyTask
 task cssMinify(type: org.gradlewebtools.minify.CssMinifyTask) {
     srcDir = project.file("css")
     dstDir = project.file("build/css")
-    options.ignoreMinFiles = false
-    options.inputOrientation = InputOrientation.LTR
-    options.outputOrientation = OutputOrientation.LTR
-    outputFormat = com.google.common.css.JobDescription.OutputFormat.COMPRESSED
-    options.copyrightNotice = null
-    options.trueConditionNames = listOf()
-    options.allowDefPropagation = true
-    options.allowUnrecognizedFunctions = true
-    options.allowedNonStandardFunctions = listOf()
-    options.allowedUnrecognizedProperties = listOf()
-    options.allowUnrecognizedProperties = true
-    options.vendor = null
-    options.allowKeyframes = true
-    options.allowWebkitKeyframes = true
-    options.processDependencies = true
-    options.excludedClassesFromRenaming = listOf()
-    options.simplifyCss = true
-    options.eliminateDeadStyles = false
-    options.cssRenamingPrefix = ""
-    options.preserveComments = false
-    outputRenamingMapFormat = com.google.common.css.OutputRenamingMapFormat.JSON
-    options.compileConstants = mapOf()
-    options.sourceMapLevel = com.google.common.css.JobDescription.SourceMapDetailLevel.DEFAULT
-    options.createSourceMaps = false
-    options.originalFileNames = false
-    options.copyOriginalFile = false
+    options {
+        ignoreMinFiles = false
+    }
 }
 ```
 
@@ -279,25 +202,3 @@ task cssMinify(type: org.gradlewebtools.minify.CssMinifyTask) {
 | option                        | effect                        | values                                                                   | default                                                                          |
 |-------------------------------|-------------------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | ignoreMinFiles                | ignore files named ".min."    | true, false                                                              | false                                                                            |
-| inputOrientation              | inputOrientation              | com.google.common.css.JobDescription.InputOrientation                    | com.google.common.css.JobDescription.OutputOrientation.LTR                       |
-| outputOrientation             | outputOrientation             | com.google.common.css.JobDescription.OutputOrientation                   | com.google.common.css.JobDescription.OutputOrientation.LTR                       |
-| outputFormat                  | outputFormat                  | com.google.common.css.JobDescription.OutputFormat                        | com.google.common.css.JobDescription.OutputFormat.COMPRESSED                     |
-| copyrightNotice               | copyrightNotice               | String                                                                   | null                                                                             |
-| trueConditionNames            | trueConditionNames            | list of strings                                                          | empty list                                                                       |
-| allowDefPropagation           | allowDefPropagation           | true, false                                                              | true                                                                             |
-| allowUnrecognizedFunctions    | allowUnrecognizedFunctions    | true, false                                                              | true                                                                             |
-| allowedNonStandardFunctions   | allowedNonStandardFunctions   | list of strings                                                          | empty list                                                                       |
-| allowedUnrecognizedProperties | allowedUnrecognizedProperties | list of strings                                                          | empty list                                                                       |
-| allowUnrecognizedProperties   | allowUnrecognizedProperties   | true, false                                                              | true                                                                             |
-| vendor                        | vendor                        | com.google.common.css.Vendor                                             | null                                                                             |
-| allowKeyframes                | allowKeyframes                | true, false                                                              | true                                                                             |
-| allowWebkitKeyframes          | allowWebkitKeyframes          | true, false                                                              | true                                                                             |
-| processDependencies           | processDependencies           | true, false                                                              | true                                                                             |
-| excludedClassesFromRenaming   | excludedClassesFromRenaming   | list of strings                                                          | empty list                                                                       |
-| simplifyCss                   | simplifyCss                   | true, false                                                              | true                                                                             |
-| eliminateDeadStyles           | eliminateDeadStyles           | true, false                                                              | false                                                                            |
-| cssRenamingPrefix             | CSS renaming prefix           | String                                                                   | empty string                                                                     |
-| preserveComments              | preserveComments              | true, false                                                              | false                                                                            |
-| outputRenamingMapFormat       | outputRenamingMapFormat       | com.google.common.cssOutputRenamingMapFormat                             | com.google.common.cssOutputRenamingMapFormat.JSON                                |
-| compileConstants              | compileConstants              | map                                                                      | empty map                                                                        |
-| sourceMapLevel                | sourceMapLevel                | com.google.common.css.JobDescription.JobDescription.SourceMapDetailLevel | com.google.common.css.JobDescription.JobDescription.SourceMapDetailLevel.DEFAULT |
