@@ -9,12 +9,12 @@ open class MinifyPlugin : Plugin<Project> {
         val extension = project.extensions.create("minification", MinifyPluginExtension::class.java)
         project.afterEvaluate {
             if (extension.addDefaultJsMinifyTask) {
-                val task = project.tasks.create("jsMinify", JsMinifyTask::class.java)
-                extension.defaultJsMinifyTaskContext.applyOn(task)
+                val task = project.tasks.register("jsMinify", JsMinifyTask::class.java)
+                extension.defaultJsMinifyTaskContext.applyOn(task.get())
             }
             if (extension.addDefaultCssMinifyTask) {
-                val task = project.tasks.create("cssMinify", CssMinifyTask::class.java)
-                extension.defaultCssMinifyTaskContext.applyOn(task)
+                val task = project.tasks.register("cssMinify", CssMinifyTask::class.java)
+                extension.defaultCssMinifyTaskContext.applyOn(task.get())
             }
         }
     }
